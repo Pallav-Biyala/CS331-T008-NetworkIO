@@ -1,4 +1,4 @@
-# Project Presentation Slides
+# Presentation
 
 This directory contains the final presentation for **Team T008** for the project Scalable Network I/O: From select to io_uring.
 
@@ -6,8 +6,8 @@ This directory contains the final presentation for **Team T008** for the project
 
 ## Directory Structure:
 
-The folder /ppt contains two modes of submission:
+The /ppt directory contains the presentation in the following format:
 
-- .ppt
-- .pdf
+- `.pptx` — PowerPoint presentation 
+- `.pdf` — PDF version
 ---
