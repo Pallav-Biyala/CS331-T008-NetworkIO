@@ -7,6 +7,6 @@
 
 // Now we just declare the functions
 int set_socket_non_blocking(int server_socket);
-int create_server_socket(int port);
+int create_server_socket(int port, int backlog);
 
 #endif // NETWORK_UTILS_H
