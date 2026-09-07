@@ -5,10 +5,10 @@
 #  Targets:
 #    make            → build server_iouring binary
 #    make clean      → remove build artefacts
+#    make clean all  → full rebuild
 #
-#  Requirements: Linux kernel ≥ 5.1 (io_uring first appeared in 5.1;
-#  IORING_OP_ACCEPT needs ≥ 5.5, IORING_OP_SEND/RECV ≥ 5.6).
-#  No external libraries needed — we call the raw io_uring syscalls directly.
+#  Requirements: Linux kernel ≥ 5.6
+#  No external libraries — raw io_uring syscalls only.
 # ==============================================================================
 
 CC      = gcc

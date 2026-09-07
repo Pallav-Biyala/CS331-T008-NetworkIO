@@ -61,7 +61,7 @@ five clients concurrently:
 ```bash
 for i in 1 2 3 4 5; do
 (
-  python3 -c 'import socket,sys,time; n=sys.argv[1]; s=socket.create_connection(("127.0.0.1",8080)); s.sendall(("message from client "+n+"\\n").encode()); print("client",n,"received:",s.recv(4096).decode().strip()); time.sleep(10); s.close(); print("client",n,"closed")' "$i"
+  python3 -c 'import socket,sys,time; n=sys.argv[1]; s=socket.create_connection(("127.0.0.1",8080)); s.sendall(("message from client "+n+"\n").encode()); print("client",n,"received:",s.recv(4096).decode().strip()); time.sleep(10); s.close(); print("client",n,"closed")' "$i"
 ) &
 done
 wait
@@ -82,7 +82,19 @@ wsl --cd "/mnt/d/GNSK-2/SEM-5/Computer Networks/CS331-T008-NetworkIO/code/io_uri
 See [`notes`](notes) for an explanation of every command and a comparison of
 `select()`, `poll()`, `epoll`, and `io_uring`.
 
+---
 
+## Fairness Fixes (Handicapping io_uring to match poll/epoll overhead)
+
+To ensure the benchmark results reflect true algorithmic differences rather than
+implementation shortcuts, four confounds were intentionally introduced:
+
+| # | Confound | poll & epoll Baseline | Original io_uring | Fix Applied |
+|---|---|---|---|---|
+| 1 | **Memory Allocation** | `malloc()`/`free()` per client | Zero-cost static array | Added `malloc`/`free` per connection; pointer passed via `user_data` |
+| 2 | **Syscall Count** | 3–4 syscalls per connection (uses `fcntl`) | 1–2 syscalls (used `SOCK_NONBLOCK` flag) | Removed `SOCK_NONBLOCK`; call `fcntl()` manually in accept handler |
+| 3 | **Connection Limits** | Caps at 10,000 (poll) / unlimited (epoll) | Hard-capped at 4,096 | Raised `MAX_CLIENTS` to 10,000 |
+| 4 | **Ring Exhaustion** | Safely drops data if buffer fills | Crashes if >256 events arrive at once | `drain_cq()` checks SQ fullness and flushes mid-loop |
 
 ---
 
@@ -116,22 +128,27 @@ CQ head ──reads──◀ CQEs ◀──writes── CQ tail
 
 ### user_data Encoding
 
-Each SQE carries a 64-bit `user_data` tag that arrives back in the CQE:
+Each SQE carries a 64-bit `user_data` tag that arrives back in the CQE.
+The low 4 bits store the op type; the remaining bits store the heap pointer
+to the `client_state` (safe because `malloc` guarantees ≥8-byte alignment):
 
 ```
-bits 63–32 : client fd  (0 for ACCEPT completions referencing server_fd)
-bits 31–0  : op type    (OP_ACCEPT=1, OP_RECV=2, OP_SEND=3, OP_CLOSE=4)
+bits 63–4 : heap pointer to client_state  (0 for ACCEPT / CLOSE)
+bits  3–0 : op type  (OP_ACCEPT=1, OP_RECV=2, OP_SEND=3, OP_CLOSE=4)
 ```
-
-This lets us dispatch completions in O(1) without any hash-table lookup.
 
 ### State Machine per Client
 
 ```
-accept() completes
+accept() completes  →  fcntl() non-block  →  malloc() client_state
       │
       ▼
 [submit RECV] ──recv completes──▶ [submit SEND] ──send completes──▶ [submit RECV]
                                                                           │
                                                                (loop forever until EOF)
+                                                                          │
+                                                                   EOF / error
+                                                                          │
+                                                               free(client_state)
+                                                               submit CLOSE
 ```
