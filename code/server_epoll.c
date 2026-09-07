@@ -214,6 +214,8 @@ int main(int argc, char* argv[]) {
                         continue;
                     }
 
+                    set_tcp_nodelay(client_fd);  // Disable Nagle's algorithm
+
                     // creating client state
                     client_state* state = create_client_state(client_fd);
                     if (!state) {
