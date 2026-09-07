@@ -8,7 +8,7 @@
 #include <errno.h> // Required for errno and EINTR
 
 #define MAX_EVENTS 100
-#define OUT_BUF_CAP 1048576 // Expanded to 1 MB output buffer
+#define OUT_BUF_CAP 65536 // 64KB output buffer
 // --------------------------------------------------------------------------
 //                         CLIENT STATE 
 // -------------------------------------------------------------------------
@@ -20,6 +20,7 @@ typedef struct {
     int fd;
     char out_buf[OUT_BUF_CAP];
     size_t out_len; // How many unsent bytes are currently stored in out_buf
+    int writing; // State transition flag: 1 if interested in EPOLLOUT, 0 otherwise
 } client_state;
 
 // Allocate memory for a new client's state
@@ -28,6 +29,7 @@ client_state* create_client_state(int fd) {
     if (!state) return NULL;
     state->fd = fd;
     state->out_len = 0;
+    state->writing = 0;
     return state;
 }
 
@@ -85,23 +87,35 @@ int flush_outbound_buffer(int epoll_fd, client_state *state){
     }
 
     // Update epoll event interest based on buffer state
-    struct epoll_event ev;
-    memset(&ev, 0, sizeof(ev));
-    ev.data.ptr = state;
-
-    if (state->out_len > 0) {
+    // so now Only trigger epoll_ctl(MOD) when the interest state actually transitions
+    if (state->out_len>0 && !state->writing){
+        struct epoll_event ev;
+        memset(&ev, 0, sizeof(ev));
+        ev.data.ptr = state;
         // Still have unsent data: listen for BOTH read and write readiness
         ev.events = EPOLLIN | EPOLLOUT;
-    } else {
+
+        if (epoll_ctl(epoll_fd, EPOLL_CTL_MOD, state->fd, &ev) == -1) {
+            perror("epoll_ctl: MOD failed in flush");
+            return -1;
+        }
+
+        state->writing = 1;
+    }
+    else if (state->out_len == 0 && state->writing){
+        struct epoll_event ev;
+        memset(&ev, 0, sizeof(ev));
+        ev.data.ptr = state;
         // Buffer completely drained: listen for read events ONLY
         ev.events = EPOLLIN;
-    }
 
-    if (epoll_ctl(epoll_fd, EPOLL_CTL_MOD, state->fd, &ev) == -1) {
-        perror("epoll_ctl: MOD failed in flush");
-        return -1;
-    }
+        if (epoll_ctl(epoll_fd, EPOLL_CTL_MOD, state->fd, &ev) == -1) {
+            perror("epoll_ctl: MOD failed in flush");
+            return -1;
+        }
 
+        state->writing = 0;
+    }
     return 0;
 }
 
@@ -250,7 +264,7 @@ int main(int argc, char* argv[]) {
 
                 // Now we sent all the data (all 0.8KB left sent) and hence now we can recieve new data and send it
                 // Handle Readable Event (EPOLLIN)
-                else if (revents & EPOLLIN){
+                if (revents & EPOLLIN){
                     char buffer[BUFFER_SIZE];
                     ssize_t data = recv(state->fd, buffer, sizeof(buffer), 0);
 
