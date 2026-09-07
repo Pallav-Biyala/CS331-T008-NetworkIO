@@ -1,7 +1,7 @@
 // These lines make sure this header's contents are processed only once.
 // This is called an include guard.
-#ifndef NETWORK_UTILS_H // Has NETWORK_UTILS_H NOT been defined?
-#define NETWORK_UTILS_H // if not defined, define it now
+#ifndef NETWORK_UTILS_H
+#define NETWORK_UTILS_H
 
 #define BUFFER_SIZE 4096
 
