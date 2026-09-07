@@ -4,10 +4,11 @@
 
 int main(void) {
     int port = 8080;
+    int backlog = 5;
     
     printf("Testing server socket creation on port %d...\n", port);
     
-    int listen_fd = create_server_socket(port);
+    int listen_fd = create_server_socket(port, backlog);
     if (listen_fd < 0) {
         fprintf(stderr, "TEST FAILED: Could not create server socket.\n");
         return 1;

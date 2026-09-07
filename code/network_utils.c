@@ -6,6 +6,7 @@
 #include <sys/socket.h> // for socket(), bind() listen()
 #include <netinet/in.h> // for struct sockaddr_in and htons()
 #include <fcntl.h> // for fcntl() non blocking
+#include <netinet/tcp.h> // Required for TCP_NODELAY and IPPROTO_TCP
 
 // So to create our server non blocking, we perform the following operation
 int set_socket_non_blocking(int server_socket){
@@ -25,8 +26,18 @@ int set_socket_non_blocking(int server_socket){
 }
 
 
+// Disable Nagle's algorithm for minimum latency
+int set_tcp_nodelay(int fd) {
+    int flag = 1;
+    if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, (char *)&flag, sizeof(int)) < 0) {
+        perror("setsockopt(TCP_NODELAY) failed");
+        return -1;
+    }
+    return 0;
+}
+
 // So firstly let's try to create our own socket
-int create_server_socket(int port) {
+int create_server_socket(int port, int backlog) {
     // So to setup the server, we need to create a socket.
     // Now, since we are creating a TCP Server, we will use SOCK_Stream and 0 means by default it can go to the protocol depending on the type we gave. AF_INET means we would use IPv4 Addressing
     int server_socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -63,7 +74,8 @@ int create_server_socket(int port) {
     }
 
     // Now once this done, our server is ready to accept connections, so we can now listen to the socket and wait for connections. so its synatx is: listen(socket, backlog). if it returns -1 failed and if 0 succeeded.
-    if (listen(server_socket, SOMAXCONN) == -1) {
+    int actual_backlog = backlog > 0 ? backlog : SOMAXCONN;
+    if (listen(server_socket, actual_backlog) == -1) {
         perror("Listen Failed");
         close(server_socket);
         return -1;
@@ -77,8 +89,9 @@ int create_server_socket(int port) {
     return server_socket;
 }
 
+
 // int main() {
-//     int fd = create_server_socket(8080);
+//     int fd = create_server_socket(8080, 5);
 //     if (fd >= 0) {
 //         printf("SUCCESS! Server socket created with FD: %d\n", fd);
 //         close(fd);
