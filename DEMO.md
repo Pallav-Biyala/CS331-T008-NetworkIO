@@ -76,5 +76,12 @@ cat results/throughput/epoll_c1000_latency_tcpkali.log
 # Syscall counts
 cat results/strace/epoll_c1000_strace.txt
 
-# perf / CPU statscat results/perf/epoll_c1000_perf.txt
+# perf / CPU stats
+cat results/perf/epoll_c1000_perf.txt
+```
+
+## 10. Generate Final Report and Results
+Run the Python script to parse the data, generate the plots, and output the final `metrics_analysis.md` report:
+```bash
+python3 results/generate_all.py
 ```
