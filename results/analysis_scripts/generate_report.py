@@ -4,10 +4,14 @@ import json
 import matplotlib.pyplot as plt
 import numpy as np
 
-results_dir = "/home/hemcharan/Desktop/CS331-T008-NetworkIO/code/results"
+import os
+script_dir = os.path.dirname(os.path.abspath(__file__))
+results_dir = os.path.dirname(script_dir)
+graphs_dir = os.path.join(results_dir, "graphs")
+root_dir = os.path.dirname(results_dir)
 servers = ["select", "poll", "epoll", "iouring", "iouring_sqpoll"]
-conns = [10, 50, 100, 200, 400, 800, 1600, 3200, 4000, 4500, 5000]
-str_conns = [str(c) for c in conns]
+conns = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
+str_conns = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
 
 # 1. PARSE RESULTS
 data = {s: {c: {} for c in str_conns} for s in servers}
@@ -68,7 +72,7 @@ for srv in servers:
         cs = extract_context_switches(os.path.join(results_dir, "perf", f"{srv}_c{c}_perf.txt"))
         data[srv][c] = {"tp_down": tp_down, "tp_up": tp_up, "lat_50": lat_50, "lat_95": lat_95, "lat_99": lat_99, "cpu": cpu, "mem": mem, "cs": cs}
 
-with open(os.path.join(results_dir, 'parsed.json'), 'w') as f:
+with open(os.path.join(graphs_dir, 'parsed.json'), 'w') as f:
     json.dump(data, f, indent=2)
 
 # 2. GENERATE PLOTS
@@ -91,7 +95,7 @@ plt.ylabel("Throughput (Mbps)")
 plt.xscale('log')
 plt.grid(True)
 plt.legend()
-plt.savefig(os.path.join(results_dir, 'throughput_plot.png'))
+plt.savefig(os.path.join(graphs_dir, 'throughput_plot.png'))
 plt.close()
 
 plt.figure(figsize=(10, 6))
@@ -104,7 +108,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True)
 plt.legend()
-plt.savefig(os.path.join(results_dir, 'latency_plot.png'))
+plt.savefig(os.path.join(graphs_dir, 'latency_plot.png'))
 plt.close()
 
 plt.figure(figsize=(10, 6))
@@ -116,7 +120,7 @@ plt.ylabel("CPU Utilization (%)")
 plt.xscale('log')
 plt.grid(True)
 plt.legend()
-plt.savefig(os.path.join(results_dir, 'cpu_plot.png'))
+plt.savefig(os.path.join(graphs_dir, 'cpu_plot.png'))
 plt.close()
 
 plt.figure(figsize=(10, 6))
@@ -131,7 +135,7 @@ plt.xscale('log')
 plt.yscale('log')
 plt.grid(True)
 plt.legend()
-plt.savefig(os.path.join(results_dir, 'memory_plot.png'))
+plt.savefig(os.path.join(graphs_dir, 'memory_plot.png'))
 plt.close()
 
 # 3. GENERATE MARKDOWN
@@ -212,6 +216,6 @@ for s in servers:
         row = f"| {s} | {c} | {d.get('tp_down')} | {d.get('tp_up')} | {d.get('lat_50')} | {d.get('lat_95')} | {d.get('lat_99')} | {d.get('cpu')} | {d.get('mem')} | {d.get('cs')} |"
         md.append(row)
 
-with open(os.path.join(results_dir, 'metrics_analysis.md'), 'w') as f:
+with open(os.path.join(root_dir, 'metrics_analysis.md'), 'w') as f:
     f.write('\n'.join(md))
 

@@ -1,16 +1,23 @@
 # CS331-T008 — Network I/O Benchmark: Demo Commands
 
-Run these in order from the `code/` directory. Steps 1–5 reset every new
+## Repository Structure
+- `code/`: Contains the raw C implementations for the network engines and shared utility headers.
+- `results/`: Contains the benchmark shell scripts, analysis scripts (`analysis_scripts/`), raw logs (`perf/`, `strace/`, `throughput/`), and generated graphs (`graphs/`).
+- `ppt/`: Contains the project presentation.
+- `report/`: Contains the final technical report.
+- `metrics_analysis.md`: The final generated markdown report summarizing the benchmark data.
+
+Run these in order from the project root directory. Steps 1–5 reset every new
 terminal session/reboot — redo them if you're demoing in a fresh shell.
 
 ## 1. Navigate to project
 ```bash
-cd ~/Desktop/CS331-T008-NetworkIO/code
+cd ~/Desktop/CS331-T008-NetworkIO
 ```
 
 ## 2. Kill any leftover server processes
 ```bash
-pkill -f select_server; pkill -f poll_server; pkill -f epoll_server; pkill -f iouring_server
+pkill -f server_select; pkill -f server_poll; pkill -f server_epoll; pkill -f server_iouring
 sudo fuser -k 8080/tcp 2>/dev/null
 ```
 
@@ -32,21 +39,21 @@ sudo sysctl -w kernel.perf_event_paranoid=-1
 
 ## 5. Rebuild all five servers
 ```bash
-gcc -O2 select_server.c network_utils.c -o select_server
-gcc -O2 server_poll.c network_utils.c -o poll_server
-gcc -O2 server_epoll.c network_utils.c -o epoll_server
-gcc -O2 server_iouring.c network_utils.c -o iouring_server -luring
-gcc -O2 server_iouring_sqpoll.c network_utils.c -o iouring_sqpoll_server
+gcc -O2 code/server_select.c code/network_utils.c -o code/server_select
+gcc -O2 code/server_poll.c code/network_utils.c -o code/server_poll
+gcc -O2 code/server_epoll.c code/network_utils.c -o code/server_epoll
+gcc -O2 code/server_iouring.c code/network_utils.c -o code/server_iouring
+gcc -O2 code/server_iouring_sqpoll.c code/network_utils.c -o code/server_iouring_sqpoll
 ```
 
 ## 6. Make benchmark scripts executable
 ```bash
-chmod +x bench_throughput.sh bench_strace.sh bench_perf.sh
+chmod +x results/bench_throughput.sh results/bench_strace.sh results/bench_perf.sh
 ```
 
 ## 7. Sanity check — one manual trial before the full run
 ```bash
-./select_server 8080 &
+./code/server_select 8080 &
 tcpkali -c 10 -m '{"ping"}' -T 5s 127.0.0.1:8080
 kill %1
 ```
@@ -54,16 +61,16 @@ Confirm the job ends with `Terminated`, not `Broken pipe`.
 
 ## 8. Run the full benchmark matrix
 ```bash
-./bench_throughput.sh
-./bench_strace.sh
-./bench_perf.sh
+./results/bench_throughput.sh
+./results/bench_strace.sh
+./results/bench_perf.sh
 ```
 
-- `bench_throughput.sh` → `./results/throughput/` — **two passes per cell**:
+- `results/bench_throughput.sh` → `./results/throughput/` — **two passes per cell**:
   - `<tag>_tcpkali.log` — unlimited rate → aggregate bandwidth (Mbps) + packet rate
   - `<tag>_latency_tcpkali.log` — fixed rate (20 msg/s/conn) → p50/p95/p99/p99.9 latency
-- `bench_strace.sh` → `./results/strace/` — syscall counts (`strace -c`) per engine/connection-count
-- `bench_perf.sh` → `./results/perf/` — context switches, CPU cycles, RSS, and CPU% (`perf stat` + `pidstat`)
+- `results/bench_strace.sh` → `./results/strace/` — syscall counts (`strace -c`) per engine/connection-count
+- `results/bench_perf.sh` → `./results/perf/` — context switches, CPU cycles, RSS, and CPU% (`perf stat` + `pidstat`)
 
 ## 9. Spot-check results
 ```bash
@@ -81,7 +88,8 @@ cat results/perf/epoll_c1000_perf.txt
 ```
 
 ## 10. Generate Final Report and Results
-Run the Python script to parse the data, generate the plots, and output the final `metrics_analysis.md` report:
+Run the Python script to parse the data, generate the plots, and output the final `metrics_analysis.md` report to the root folder:
 ```bash
-python3 results/generate_all.py
+python3 results/analysis_scripts/generate_report.py
 ```
+This script will automatically save all plotted `.png` images and the parsed `parsed.json` data into the `results/graphs/` directory.

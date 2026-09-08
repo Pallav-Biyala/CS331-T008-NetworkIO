@@ -9,17 +9,17 @@ PORT=8080
 LOAD_DURATION=15s
 CONNECT_RATE=2000        # conns/sec tcpkali ramps at — needed for c5000/c10000
 PERF_WINDOW=10
-CONN_COUNTS=(10 50 100 200 400 800 1600 3200 4000 4500 5000)
+CONN_COUNTS=(10 100 500 1000 1500 2000 2500 3000 3500 4000 4500 5000)
 ENGINES=(select poll epoll iouring iouring_sqpoll)
 RESULTS=./results/perf
 mkdir -p "$RESULTS"
 
 declare -A BIN=(
-  [select]=./select_server
-  [poll]=./poll_server
-  [epoll]=./epoll_server
-  [iouring]=./iouring_server
-  [iouring_sqpoll]=./iouring_sqpoll_server
+  [select]=./code/server_select
+  [poll]=./code/server_poll
+  [epoll]=./code/server_epoll
+  [iouring]=./code/server_iouring
+  [iouring_sqpoll]=./code/server_iouring_sqpoll
 )
 
 shuffled=($(printf "%s\n" "${ENGINES[@]}" | shuf))

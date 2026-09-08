@@ -21,17 +21,17 @@
 PORT=8080
 CONNECT_RATE=5000        # conns/sec — raised so ramp fits inside the window at c5000/c10000
 MESSAGE_RATE=20          # msgs/sec per connection for the latency pass
-CONN_COUNTS=(10 50 100 200 400 800 1600 3200 4000 4500 5000)
+CONN_COUNTS=(10 100 500 1000 1500 2000 2500 3000 3500 4000 4500 5000)
 ENGINES=(select poll epoll iouring iouring_sqpoll)
 RESULTS=./results/throughput
 mkdir -p "$RESULTS"
 
 declare -A BIN=(
-  [select]=./select_server
-  [poll]=./poll_server
-  [epoll]=./epoll_server
-  [iouring]=./iouring_server
-  [iouring_sqpoll]=./iouring_sqpoll_server
+  [select]=./code/server_select
+  [poll]=./code/server_poll
+  [epoll]=./code/server_epoll
+  [iouring]=./code/server_iouring
+  [iouring_sqpoll]=./code/server_iouring_sqpoll
 )
 
 # Pre-flight: confirm tcpkali version and flag support

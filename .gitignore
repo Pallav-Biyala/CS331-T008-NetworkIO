@@ -1,2 +1,8 @@
-code/*_server
-code/epoll_server
+# Compiled Binaries
+code/server_*
+code/test_runner
+*.o
+
+# Generated Output & Graphs
+results/graphs/*.png
+results/graphs/*.json
