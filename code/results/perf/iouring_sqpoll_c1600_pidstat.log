@@ -1,0 +1,9 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/08/2026 	_aarch64_	(4 CPU)
+
+11:24:03 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+11:24:04 AM  1000     66331    0.00  100.00    0.00    6.00  100.00     0  iouring_sqpoll_
+11:24:05 AM  1000     66331    0.00  100.00    0.00    7.00  100.00     0  iouring_sqpoll_
+11:24:06 AM  1000     66331    0.00  100.00    0.00    6.00  100.00     0  iouring_sqpoll_
+11:24:07 AM  1000     66331    0.00  100.00    0.00    0.00  100.00     0  iouring_sqpoll_
+11:24:08 AM  1000     66331    0.00   80.00    0.00    0.00   80.00     0  iouring_sqpoll_
+Average:     1000     66331    0.00   96.01    0.00    3.79   96.01     -  iouring_sqpoll_

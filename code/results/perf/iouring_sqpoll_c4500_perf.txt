@@ -1,0 +1,12 @@
+# started on Tue Sep  8 11:25:04 2026
+
+
+ Performance counter stats for process id '66574':
+
+             7,037      context-switches                                                      
+                 0      cpu-migrations                                                        
+   <not supported>      cycles                                                                
+   <not supported>      instructions                                                          
+
+      10.003249379 seconds time elapsed
+

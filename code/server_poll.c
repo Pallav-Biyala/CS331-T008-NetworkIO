@@ -6,8 +6,10 @@
 #include <poll.h>       // struct pollfd, poll(), POLLIN/POLLOUT/POLLERR/POLLHUP/POLLNVAL
 #include <unistd.h>     // close()
 #include <errno.h>      // errno, EINTR, EAGAIN, EWOULDBLOCK
-#include <netinet/tcp.h>// TCP_NODELAY
-#include <netinet/in.h> // IPPROTO_TCP
+#include <signal.h>
+
+// #include <netinet/tcp.h>// TCP_NODELAY
+// #include <netinet/in.h> // IPPROTO_TCP
 
 // MAX_CLIENTS is a fixed cap, not a hard poll() limitation — poll has no
 // FD_SETSIZE-style ceiling (that's a select-only limit). We cap here so that
@@ -49,14 +51,14 @@ void destroy_client_state(client_state* state) {
 // --------------------------------------------------------------------------
 
 // Applied identically to every engine per your team's fairness rule.
-int set_tcp_nodelay(int fd) {
-    int flag = 1;
-    if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag)) < 0) {
-        perror("setsockopt(TCP_NODELAY) failed");
-        return -1;
-    }
-    return 0;
-}
+// int set_tcp_nodelay(int fd) {
+//     int flag = 1;
+//     if (setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &flag, sizeof(flag)) < 0) {
+//         perror("setsockopt(TCP_NODELAY) failed");
+//         return -1;
+//     }
+//     return 0;
+// }
 
 // Flushes as much of state->out_buf as the kernel will currently accept.
 // Unlike epoll_ctl(MOD), poll has no kernel-side interest list to update —
@@ -105,6 +107,9 @@ int flush_outbound_buffer(struct pollfd *fds, int idx, client_state *state) {
 // "poll could do this, select structurally cannot" aside in the writeup.
 //
 int main(int argc, char* argv[]) {
+
+    signal(SIGPIPE, SIG_IGN);
+    
     int port = (argc > 1) ? atoi(argv[1]) : 8080;
     int backlog = (argc > 2) ? atoi(argv[2]) : SOMAXCONN;
 

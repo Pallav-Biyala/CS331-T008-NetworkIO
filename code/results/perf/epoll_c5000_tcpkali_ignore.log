@@ -1,0 +1,12 @@
+Destination: [127.0.0.1]:8080
+Interface lo address [127.0.0.1]:0
+Using interface lo to connect to [127.0.0.1]:8080
+WARNING: 5000 connections might not be opened at a rate 2000 within test duration 15.
+Decrease --connections=5000, or increase --duration=15 or --connect-rate=2000.
+Ramped up to 5000 connections.
+Total data sent:     5419.5 MiB (5682724245 bytes)
+Total data received: 5652.2 MiB (5926776128 bytes)
+Bandwidth per channel: 1.238⇅ Mbps (154.8 kBps)
+Aggregate bandwidth: 3160.755↓, 3030.602↑ Mbps
+Packet rate estimate: 355881.8↓, 263453.9↑ (4↓, 30↑ TCP MSS/op)
+Test duration: 15.0009 s.

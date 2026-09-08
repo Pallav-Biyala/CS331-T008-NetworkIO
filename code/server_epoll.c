@@ -6,6 +6,7 @@
 #include <sys/epoll.h> // this calls epoll_create1()
 #include <unistd.h> // this calls close()
 #include <errno.h> // Required for errno and EINTR
+#include<signal.h>
 
 #define MAX_EVENTS 100
 #define OUT_BUF_CAP 65536 // 64KB output buffer
@@ -125,6 +126,7 @@ int flush_outbound_buffer(int epoll_fd, client_state *state){
 //                          MAIN FUNCTION
 // -------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
+    signal(SIGPIPE, SIG_IGN);
         
     // ------------------------------------------------------------------------
     //                         BUILDING THE SOCKET & EPOLL
