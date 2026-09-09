@@ -1,4 +1,0 @@
-Destination: [127.0.0.1]:8080
-Interface lo address [127.0.0.1]:0
-Using interface lo to connect to [127.0.0.1]:8080
-Ramped up to 2000 connections.

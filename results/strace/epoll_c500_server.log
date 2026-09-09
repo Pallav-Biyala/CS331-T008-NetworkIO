@@ -490,3 +490,6 @@ New client connected with client_fd = 490
 New client csend failed: Connection reset by peer
 send failed: Connection reset by peer
 send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer

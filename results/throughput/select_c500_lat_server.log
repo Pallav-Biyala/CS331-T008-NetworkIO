@@ -1,4 +1,4 @@
-server_select listening on port 8080 (fd=3)
+server_select listening on port 8080 (fd=3, max_clients=10000)
 New client connected: fd=4 (slot 0)
 Client fd=4 disconnected
 New client connected: fd=4 (slot 0)
@@ -672,33 +672,40 @@ Client fd=171 disconnected
 Client fd=172 disconnected
 Client fd=173 disconnected
 Client fd=174 disconnected
-Client fd=175 disconnected
-Client fd=176 disconnected
-Client fd=177 disconnected
-Client fd=178 disconnected
-Client fd=179 disconnected
-Client fd=180 disconnected
-Client fd=181 disconnected
-Client fd=182 disconnected
-Client fd=183 disconnected
-Client fd=184 disconnected
-Client fd=185 disconnected
-Client fd=186 disconnected
-Client fd=187 disconnected
-Client fd=188 disconnected
-Client fd=189 disconnected
-Client fd=190 disconnected
-Client fd=191 disconnected
-Client fd=192 disconnected
-Client fd=193 disconnected
-Client fd=194 disconnected
-Client fd=195 disconnected
-Client fd=196 disconnected
-Client fd=197 disconnected
-Client fd=198 disconnected
-Client fd=199 disconnected
-Client fd=200 disconnected
-Client fd=404 disconnected
+Client fd=399 disconnected
+Client fd=332 disconnected
+Client fd=331 disconnected
+Client fd=330 disconnected
+Client fd=329 disconnected
+Client fd=328 read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+disconnected
+Client fd=327 disconnected
+Client fd=326 disconnected
+Client fd=325 disconnected
+Client fd=324 disconnected
+Client fd=323 disconnected
+Client fd=322 disconnected
+Client fd=321 disconnected
+Client fd=320 disconnected
+Client fd=319 disconnected
+Client fd=318 disconnected
+Client fd=317 disconnected
+Client fd=316 disconnected
+Client fd=315 disconnected
+Client fd=314 disconnected
+Client fd=313 disconnected
+Client fd=312 disconnected
+Client fd=311 disconnected
+Client fd=310 disconnected
+Client fd=309 disconnected
+Client fd=308 disconnected
+Client fd=307 disconnected
 Client fd=306 disconnected
 Client fd=305 disconnected
 Client fd=304 disconnected
@@ -766,13 +773,6 @@ Client fd=243 disconnected
 Client fd=242 disconnected
 Client fd=241 disconnected
 Client fd=240 disconnected
-Client fd=239 disconnected
-Client fd=238 disconnected
-Client fd=237 disconnected
-Client fd=236 disconnected
-Client fd=235 disconnected
-Client fd=234 disconnected
-Client fd=233 disconnected
 Client fd=232 disconnected
 Client fd=231 disconnected
 Client fd=230 disconnected
@@ -805,38 +805,50 @@ Client fd=204 disconnected
 Client fd=203 disconnected
 Client fd=202 disconnected
 Client fd=201 disconnected
-Client fd=307 disconnected
-Client fd=308 disconnected
-Client fd=309 disconnected
-Client fd=310 disconnected
-Client fd=311 disconnected
-Client fd=312 disconnected
-Client fd=313 disconnected
-Client fd=314 disconnected
-Client fd=315 disconnected
-Client fd=316 disconnected
-Client fd=317 disconnected
-Client fd=318 disconnected
-Client fd=319 disconnected
-Client fd=320 disconnected
-Client fd=321 disconnected
-Client fd=322 disconnected
-Client fd=323 disconnected
-Client fd=324 disconnected
-Client fd=325 disconnected
-Client fd=326 disconnected
-Client fd=327 disconnected
-Client fd=328 disconnected
-Client fd=329 disconnected
-Client fd=330 disconnected
-Client fd=331 disconnected
-Client fd=332 disconnected
+Client fd=200 disconnected
+Client fd=199 disconnected
+Client fd=198 disconnected
+Client fd=197 disconnected
+Client fd=196 disconnected
+Client fd=195 disconnected
+Client fd=194 disconnected
+Client fd=193 disconnected
+Client fd=192 disconnected
+Client fd=191 disconnected
+Client fd=190 disconnected
+Client fd=189 disconnected
+Client fd=188 disconnected
+Client fd=187 disconnected
+Client fd=186 disconnected
+Client fd=185 disconnected
+Client fd=184 disconnected
+Client fd=183 disconnected
+Client fd=182 disconnected
+Client fd=181 disconnected
+Client fd=180 disconnected
+Client fd=179 disconnected
+Client fd=178 disconnected
+Client fd=177 disconnected
+Client fd=176 disconnected
+Client fd=175 disconnected
 Client fd=333 disconnected
 Client fd=334 disconnected
 Client fd=335 disconnected
 Client fd=336 disconnected
 Client fd=337 disconnected
-Client fd=338 disconnected
+Clientread error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+read error: Connection reset by peer
+ fd=338 disconnected
 Client fd=339 disconnected
 Client fd=340 disconnected
 Client fd=341 disconnected
@@ -897,12 +909,11 @@ Client fd=395 disconnected
 Client fd=396 disconnected
 Client fd=397 disconnected
 Client fd=398 disconnected
-Client fd=399 disconnected
 Client fd=400 disconnected
 Client fd=401 disconnected
 Client fd=402 disconnected
 Client fd=403 disconnected
-Client fd=503 disconnected
+Client fd=404 disconnected
 Client fd=405 disconnected
 Client fd=406 disconnected
 Client fd=407 disconnected
@@ -978,7 +989,14 @@ Client fd=476 disconnected
 Client fd=477 disconnected
 Client fd=478 disconnected
 Client fd=479 disconnected
-Client fd=480 disconnected
-Client fd=481 disconnected
-Client fd=482 disconnected
-Client fd=483 dis
+Client fd=491 disconnected
+Client fd=492 disconnected
+Client fd=493 disconnected
+Client fd=494 disconnected
+Client fd=495 disconnected
+Client fd=496 disconnected
+Client fd=497 disconnected
+Client fd=498 disconnected
+Client fd=499 disconnected
+Client fd=500 disconnected
+Client fd=501 disconnecteread error: Connection reset by peer

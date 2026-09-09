@@ -1,4 +1,4 @@
-server_select listening on port 8080 (fd=3)
+server_select listening on port 8080 (fd=3, max_clients=10000)
 New client connected: fd=4 (slot 0)
 Client fd=4 disconnected
 New client connected: fd=4 (slot 0)
@@ -412,5 +412,4 @@ New client connected: fd=411 (slot 407)
 New client connected: fd=412 (slot 408)
 New client connected: fd=413 (slot 409)
 New client connected: fd=414 (slot 410)
-New client connected: fd=415 (slot 411)
-New client 
+New client connected: fd=415 (sl

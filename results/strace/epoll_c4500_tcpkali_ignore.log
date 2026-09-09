@@ -4,9 +4,9 @@ Using interface lo to connect to [127.0.0.1]:8080
 WARNING: 4500 connections might not be opened at a rate 2000 within test duration 15.
 Decrease --connections=4500, or increase --duration=15 or --connect-rate=2000.
 Ramped up to 4500 connections.
-Total data sent:     2379.1 MiB (2494673669 bytes)
-Total data received: 1751.9 MiB (1837033595 bytes)
-Bandwidth per channel: 0.513⇅ Mbps (64.2 kBps)
-Aggregate bandwidth: 979.687↓, 1330.405↑ Mbps
-Packet rate estimate: 88638.7↓, 116187.6↑ (4↓, 33↑ TCP MSS/op)
-Test duration: 15.001 s.
+Total data sent:     3578.8 MiB (3752666168 bytes)
+Total data received: 1909.7 MiB (2002493541 bytes)
+Bandwidth per channel: 0.682⇅ Mbps (85.3 kBps)
+Aggregate bandwidth: 1067.934↓, 2001.306↑ Mbps
+Packet rate estimate: 105971.4↓, 175098.9↑ (4↓, 38↑ TCP MSS/op)
+Test duration: 15.0009 s.
