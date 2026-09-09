@@ -33,16 +33,12 @@ New client connected with client_fd = 33
 New client connected with client_fd = 34
 New client connected with client_fd = 35
 New client connected with client_fd = 36
-New client connected with client_fd = 37
-New client connected with client_fd = 38
 New client connected with client_fd = 39
 New client connected with client_fd = 40
 New client connected with client_fd = 41
 New client connected with client_fd = 42
 New client connected with client_fd = 43
 New client connected with client_fd = 44
-New client connected with client_fd = 45
-New client connected with client_fd = 46
 New client connected with client_fd = 47
 New client connected with client_fd = 48
 New client connected with client_fd = 49
@@ -97,7 +93,22 @@ New client connected with client_fd = 97
 New client connected with client_fd = 98
 New client connected with client_fd = 99
 New client connected with client_fd = 100
-New cliesend failed: Connection reset by peer
+New client connected with client_fd = 101
+New client connected with client_fd = 102
+New client connected with client_fd = 104
+New client connected with client_fd = 105
+New send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
 send failed: Connection reset by peer
 send failed: Connection reset by peer
 send failed: Connection reset by peer

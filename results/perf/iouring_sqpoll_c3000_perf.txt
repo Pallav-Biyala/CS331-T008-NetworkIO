@@ -1,12 +1,12 @@
-# started on Wed Sep  9 18:10:12 2026
+# started on Wed Sep  9 20:49:56 2026
 
 
- Performance counter stats for process id '12189':
+ Performance counter stats for process id '22609':
 
-             4,477      context-switches                                                      
+             4,165      context-switches                                                      
                  0      cpu-migrations                                                        
    <not supported>      cycles                                                                
    <not supported>      instructions                                                          
 
-      10.005268922 seconds time elapsed
+      10.003057379 seconds time elapsed
 

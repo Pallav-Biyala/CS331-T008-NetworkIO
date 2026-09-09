@@ -56,7 +56,7 @@ duration_for() {
 # the real PID and break every subsequent kill -0 check.
 start_server() {
   local engine=$1 tag=$2
-  sudo fuser -k "$PORT"/tcp >/dev/null 2>&1
+  fuser -k "$PORT"/tcp >/dev/null 2>&1
   sleep 0.5
   taskset -c 0 "${BIN[$engine]}" "$PORT" > "$RESULTS/${tag}_server.log" 2>&1 &
   echo $!

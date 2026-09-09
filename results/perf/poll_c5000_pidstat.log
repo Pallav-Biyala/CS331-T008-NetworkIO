@@ -1,9 +1,9 @@
 Linux 7.0.0-31-generic (ubuntu-vm) 	09/09/2026 	_aarch64_	(4 CPU)
 
-06:07:13 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-06:07:14 PM  1000     11911    8.00   92.00    0.00    0.00  100.00     0  server_poll
-06:07:15 PM  1000     11911    7.00   93.00    0.00    0.00  100.00     0  server_poll
-06:07:16 PM  1000     11911    8.00   92.00    0.00    0.00  100.00     0  server_poll
-06:07:17 PM  1000     11911    7.92   91.09    0.00    0.00   99.01     0  server_poll
-06:07:18 PM  1000     11911    5.00   64.00    0.00    0.00   69.00     0  server_poll
-Average:     1000     11911    7.19   86.43    0.00    0.00   93.61     -  server_poll
+09:05:00 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+09:05:01 PM  1000     24476    9.00   92.00    0.00    0.00  101.00     0  server_poll
+09:05:02 PM  1000     24476    9.90   85.15    0.00    3.96   95.05     0  server_poll
+09:05:03 PM  1000     24476    8.00   90.00    0.00    1.00   98.00     0  server_poll
+09:05:04 PM  1000     24476    8.00   94.00    0.00    0.00  102.00     0  server_poll
+09:05:05 PM  1000     24476    7.00   90.00    0.00    2.00   97.00     0  server_poll
+Average:     1000     24476    8.38   90.22    0.00    1.40   98.60     -  server_poll

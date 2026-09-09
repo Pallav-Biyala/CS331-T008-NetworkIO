@@ -6,7 +6,7 @@
 # ============================================================
 
 PORT=8080
-LOAD_DURATION=15s
+LOAD_DURATION=25s
 CONNECT_RATE=2000        # conns/sec tcpkali ramps at — needed for c5000/c10000
 PERF_WINDOW=10
 CONN_COUNTS=(10 100 500 1000 1500 2000 2500 3000 3500 4000 4500 5000)
@@ -30,7 +30,7 @@ for engine in "${shuffled[@]}"; do
     tag="${engine}_c${conns}"
     echo "== $tag =="
 
-    sudo fuser -k "$PORT"/tcp 2>/dev/null
+    fuser -k "$PORT"/tcp 2>/dev/null
     sleep 0.5
 
     taskset -c 0 "${BIN[$engine]}" "$PORT" > "$RESULTS/${tag}_server.log" 2>&1 &

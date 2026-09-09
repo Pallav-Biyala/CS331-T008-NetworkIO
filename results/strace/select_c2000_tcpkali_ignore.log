@@ -2,9 +2,9 @@ Destination: [127.0.0.1]:8080
 Interface lo address [127.0.0.1]:0
 Using interface lo to connect to [127.0.0.1]:8080
 Ramped up to 2000 connections.
-Total data sent:     2298.1 MiB (2409772670 bytes)
-Total data received: 2530.1 MiB (2653029568 bytes)
-Bandwidth per channel: 1.350⇅ Mbps (168.8 kBps)
-Aggregate bandwidth: 1414.875↓, 1285.145↑ Mbps
-Packet rate estimate: 149288.9↓, 112420.9↑ (5↓, 38↑ TCP MSS/op)
-Test duration: 15.0008 s.
+Total data sent:     4504.6 MiB (4723383808 bytes)
+Total data received: 4713.6 MiB (4942571768 bytes)
+Bandwidth per channel: 1.933⇅ Mbps (241.6 kBps)
+Aggregate bandwidth: 1976.946↓, 1889.274↑ Mbps
+Packet rate estimate: 178548.5↓, 165518.3↑ (3↓, 41↑ TCP MSS/op)
+Test duration: 20.0008 s.
