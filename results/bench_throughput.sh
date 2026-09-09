@@ -21,7 +21,7 @@
 PORT=8080
 CONNECT_RATE=5000        # conns/sec — raised so ramp fits inside the window at c5000/c10000
 MESSAGE_RATE=20          # msgs/sec per connection for the latency pass
-CONN_COUNTS=(10 100 500 1000 1500 2000 2500 3000 3500 4000 4500 5000)
+CONN_COUNTS=(10 100 1000 2500 5000)
 ENGINES=(select poll epoll iouring iouring_sqpoll)
 RESULTS=./results/throughput
 mkdir -p "$RESULTS"

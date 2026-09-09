@@ -1,64 +1,26 @@
 // =============================================================================
 //  server_iouring.c  —  TCP Echo Server using io_uring
-//  (Intentionally handicapped to match poll/epoll overhead for fair benchmarking)
+//  (Idiomatic version — handicaps removed, MAX_CLIENTS actually enforced)
 // =============================================================================
 //
-//  Four confounds resolved vs. the "naive" io_uring implementation:
+//  Changes vs. the "fair benchmarking" build:
 //
-//  Fix 1 — Memory Allocation
-//    client_state is malloc()/free() per connection (not a static array),
-//    matching the heap cost that poll and epoll both pay.  The heap pointer
-//    is passed through SQE user_data so CQE dispatch is still O(1).
+//  Removed Fix 2 (manual fcntl syscalls)
+//    accept_flags now sets SOCK_NONBLOCK directly in the ACCEPT SQE, so the
+//    kernel hands back an already-nonblocking fd — no fcntl(F_GETFL)/
+//    fcntl(F_SETFL) round trip per connection. This is the whole point of
+//    io_uring: skip the syscall, not re-add it.
 //
-//  Fix 2 — Syscall Count
-//    SOCK_NONBLOCK is NOT set in the ACCEPT SQE.  Instead, after each accept
-//    completion, we call fcntl(F_GETFL) + fcntl(F_SETFL|O_NONBLOCK) manually,
-//    paying the same 2 extra syscalls that poll and epoll pay via
-//    set_socket_non_blocking().
+//  Fixed Fix 3 (MAX_CLIENTS was declared but never enforced)
+//    Added an active_clients counter, incremented in on_accept() and
+//    decremented wherever a client is freed, so the server actually rejects
+//    connections past MAX_CLIENTS instead of accepting unbounded clients
+//    while claiming a 10,000 cap.
 //
-//  Fix 3 — Connection Limits
-//    MAX_CLIENTS raised to 10,000 to match poll's FD_SETSIZE ceiling and
-//    epoll's unlimited model (bounded only by system limits).
-//
-//  Fix 4 — Ring Exhaustion Safety
-//    drain_cq() checks whether the SQ ring is nearly full before submitting
-//    each new SQE and flushes mid-loop when needed, preventing crashes when
-//    > QUEUE_DEPTH events arrive simultaneously.
-//
-// =============================================================================
-//
-//  Architecture Overview
-//  ─────────────────────
-//  Unlike epoll (which tells you "this fd is readable NOW, go do a syscall"),
-//  io_uring works on a completion model:
-//
-//    1. You SUBMIT an operation (accept / recv / send) into a ring buffer.
-//    2. The kernel executes that operation asynchronously.
-//    3. You HARVEST completion events from the same ring — zero extra syscalls
-//       needed while the ring is busy.
-//
-//  Ring structure (two lock-free single-producer / single-consumer queues):
-//
-//    ┌──────────────────────────────────────────┐
-//    │          Submission Queue (SQ)           │
-//    │   user writes SQEs  →  kernel reads      │
-//    └──────────────────────────────────────────┘
-//    ┌──────────────────────────────────────────┐
-//    │          Completion Queue (CQ)           │
-//    │   kernel writes CQEs  →  user reads      │
-//    └──────────────────────────────────────────┘
-//
-//  user_data encoding
-//  ──────────────────
-//  We pack op-type + heap pointer into a single 64-bit integer so each CQE
-//  immediately identifies what just completed and which client_state owns it —
-//  zero hash-table lookup.
-//
-//    bits 63-4  : heap pointer to client_state  (or 0 for ACCEPT)
-//    bits 3-0   : op_type  (OP_ACCEPT / OP_RECV / OP_SEND / OP_CLOSE)
-//
-//  Because malloc() guarantees at least 8-byte alignment, the low 3 bits of
-//  any valid pointer are always 0, so packing op (≤ 4) into bits 3-0 is safe.
+//  Fix 1 (heap alloc per connection) and registered buffers / multishot
+//  accept-recv are NOT changed here — those are larger structural rewrites.
+//  If you want the fully idiomatic version (registered buffers, multishot
+//  ACCEPT/RECV, no per-connection malloc), say so and I'll do that pass too.
 //
 // =============================================================================
 
@@ -69,7 +31,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <fcntl.h>             // Fix 2: fcntl() for manual non-blocking
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <linux/io_uring.h>
@@ -77,14 +38,14 @@
 #include <sys/mman.h>
 #include <stdatomic.h>
 #include <stdint.h>
-#include<signal.h>
+#include <signal.h>
 
 // =============================================================================
 //  Tunables
 // =============================================================================
 
 #define QUEUE_DEPTH   16384    // SQ/CQ ring depth (power-of-2)
-#define MAX_CLIENTS   10000    // Fix 3: raised from 4096 to match poll ceiling
+#define MAX_CLIENTS   10000    // now actually enforced — see active_clients below
 #define OUT_BUF_CAP   65536    // Per-client output buffer (64 KB)
 
 // =============================================================================
@@ -97,7 +58,7 @@
 #define OP_CLOSE   4
 
 // =============================================================================
-//  Per-client state  (Fix 1: heap-allocated per connection)
+//  Per-client state
 // =============================================================================
 
 typedef struct {
@@ -109,7 +70,9 @@ typedef struct {
     int    recv_in_flight;
 } client_state;
 
-// Allocate a fresh client_state on the heap — same cost as poll/epoll
+// Live connection count — enforces MAX_CLIENTS (previously declared, never checked)
+static int active_clients = 0;
+
 static client_state *alloc_client(int fd) {
     client_state *cs = malloc(sizeof(client_state));
     if (!cs) return NULL;
@@ -117,22 +80,21 @@ static client_state *alloc_client(int fd) {
     cs->out_len        = 0;
     cs->send_in_flight = 0;
     cs->recv_in_flight = 0;
+    active_clients++;
     return cs;
 }
 
-// Free the client's heap memory and close the fd
 static void free_client(client_state *cs) {
     if (!cs) return;
+    active_clients--;
     free(cs);
 }
 
 // =============================================================================
 //  user_data helpers
-//  Pack: tag = (ptr & ~0xFULL) | op   Unpack with ud_ptr() / ud_op()
 // =============================================================================
 
 static inline uint64_t make_ud(client_state *cs, uint32_t op) {
-    // For ACCEPT we pass cs=NULL; for all others cs is a valid heap pointer.
     return ((uint64_t)(uintptr_t)cs & ~(uint64_t)0xF) | (uint64_t)(op & 0xF);
 }
 
@@ -161,14 +123,12 @@ static int io_uring_enter(int ring_fd, unsigned to_submit,
 typedef struct {
     int ring_fd;
 
-    // Submission Queue
     unsigned               *sq_head;
     unsigned               *sq_tail;
     unsigned               *sq_ring_mask;
     unsigned               *sq_array;
     struct io_uring_sqe    *sqes;
 
-    // Completion Queue
     unsigned               *cq_head;
     unsigned               *cq_tail;
     unsigned               *cq_ring_mask;
@@ -188,7 +148,6 @@ static int ring_init(io_uring_t *r, unsigned depth) {
     r->sq_entries = params.sq_entries;
     r->cq_entries = params.cq_entries;
 
-    // mmap 1: SQ ring (head/tail/mask/array)
     size_t sq_ring_sz = params.sq_off.array + params.sq_entries * sizeof(unsigned);
     void *sq_ring = mmap(NULL, sq_ring_sz, PROT_READ|PROT_WRITE,
                          MAP_SHARED|MAP_POPULATE, r->ring_fd, IORING_OFF_SQ_RING);
@@ -199,13 +158,11 @@ static int ring_init(io_uring_t *r, unsigned depth) {
     r->sq_ring_mask = (unsigned *)((char *)sq_ring + params.sq_off.ring_mask);
     r->sq_array     = (unsigned *)((char *)sq_ring + params.sq_off.array);
 
-    // mmap 2: SQE array
     size_t sqes_sz = params.sq_entries * sizeof(struct io_uring_sqe);
     r->sqes = mmap(NULL, sqes_sz, PROT_READ|PROT_WRITE,
                    MAP_SHARED|MAP_POPULATE, r->ring_fd, IORING_OFF_SQES);
     if (r->sqes == MAP_FAILED) { perror("mmap sqes"); return -1; }
 
-    // mmap 3: CQ ring (head/tail/mask/cqes)
     size_t cq_ring_sz = params.cq_off.cqes + params.cq_entries * sizeof(struct io_uring_cqe);
     void *cq_ring = mmap(NULL, cq_ring_sz, PROT_READ|PROT_WRITE,
                          MAP_SHARED|MAP_POPULATE, r->ring_fd, IORING_OFF_CQ_RING);
@@ -219,16 +176,12 @@ static int ring_init(io_uring_t *r, unsigned depth) {
     return 0;
 }
 
-// ─── SQ helpers ──────────────────────────────────────────────────────────────
-
-// How many SQE slots are currently free in the ring?
 static inline unsigned sq_space_left(io_uring_t *r) {
     unsigned head = atomic_load_explicit((_Atomic unsigned *)r->sq_head,
                                           memory_order_acquire);
     return r->sq_entries - (*r->sq_tail - head);
 }
 
-// Get a free SQE slot; returns NULL if ring is full.
 static struct io_uring_sqe *ring_get_sqe(io_uring_t *r) {
     unsigned head = atomic_load_explicit((_Atomic unsigned *)r->sq_head,
                                           memory_order_acquire);
@@ -243,7 +196,6 @@ static void ring_submit_advance(io_uring_t *r) {
                           *r->sq_tail + 1, memory_order_release);
 }
 
-// Submit pending SQEs; wait_nr > 0 blocks until that many CQEs are ready.
 static int ring_submit(io_uring_t *r, unsigned wait_nr) {
     unsigned tail = atomic_load_explicit((_Atomic unsigned *)r->sq_tail,
                                           memory_order_relaxed);
@@ -258,10 +210,9 @@ static int ring_submit(io_uring_t *r, unsigned wait_nr) {
 }
 
 // =============================================================================
-//  SQE submit helpers — one per op type
+//  SQE submit helpers
 // =============================================================================
 
-// Fix 4 helper: flush the ring mid-loop if it's nearly full
 static void maybe_flush(io_uring_t *r) {
     if (sq_space_left(r) < 4) {
         ring_submit(r, 0);
@@ -270,7 +221,7 @@ static void maybe_flush(io_uring_t *r) {
 
 static int submit_accept(io_uring_t *r, int server_fd,
                          struct sockaddr_in *addr, socklen_t *addrlen) {
-    maybe_flush(r);  // Fix 4: guard against ring exhaustion
+    maybe_flush(r);
     struct io_uring_sqe *sqe = ring_get_sqe(r);
     if (!sqe) return -1;
     memset(sqe, 0, sizeof(*sqe));
@@ -278,15 +229,16 @@ static int submit_accept(io_uring_t *r, int server_fd,
     sqe->fd           = server_fd;
     sqe->addr         = (uint64_t)(uintptr_t)addr;
     sqe->addr2        = (uint64_t)(uintptr_t)addrlen;
-    // Fix 2: DO NOT set SOCK_NONBLOCK here; we call fcntl() manually below
-    sqe->accept_flags = 0;
+    // Idiomatic: ask the kernel for an already-nonblocking fd directly —
+    // no fcntl() round trip needed after accept completes.
+    sqe->accept_flags = SOCK_NONBLOCK;
     sqe->user_data    = make_ud(NULL, OP_ACCEPT);
     ring_submit_advance(r);
     return 0;
 }
 
 static int submit_recv(io_uring_t *r, client_state *cs) {
-    maybe_flush(r);  // Fix 4
+    maybe_flush(r);
     struct io_uring_sqe *sqe = ring_get_sqe(r);
     if (!sqe) return -1;
     memset(sqe, 0, sizeof(*sqe));
@@ -300,7 +252,7 @@ static int submit_recv(io_uring_t *r, client_state *cs) {
 }
 
 static int submit_send(io_uring_t *r, client_state *cs) {
-    maybe_flush(r);  // Fix 4
+    maybe_flush(r);
     struct io_uring_sqe *sqe = ring_get_sqe(r);
     if (!sqe) return -1;
     memset(sqe, 0, sizeof(*sqe));
@@ -315,9 +267,9 @@ static int submit_send(io_uring_t *r, client_state *cs) {
 }
 
 static int submit_close(io_uring_t *r, int fd) {
-    maybe_flush(r);  // Fix 4
+    maybe_flush(r);
     struct io_uring_sqe *sqe = ring_get_sqe(r);
-    if (!sqe) { close(fd); return 0; }   // fallback: close synchronously
+    if (!sqe) { close(fd); return 0; }
     memset(sqe, 0, sizeof(*sqe));
     sqe->opcode    = IORING_OP_CLOSE;
     sqe->fd        = fd;
@@ -330,7 +282,6 @@ static int submit_close(io_uring_t *r, int fd) {
 //  Completion handlers
 // =============================================================================
 
-// Forward declarations
 static void on_accept(io_uring_t *r, int server_fd,
                       struct sockaddr_in *addr, socklen_t *addrlen, int result);
 static void on_recv  (io_uring_t *r, client_state *cs, int result);
@@ -351,18 +302,20 @@ static void on_accept(io_uring_t *r, int server_fd,
 
     int client_fd = result;
 
-    // Fix 2: manually call fcntl() instead of using SOCK_NONBLOCK in the SQE.
-    // This matches the 2-syscall overhead that epoll and poll both pay via
-    // set_socket_non_blocking().
-    if (set_socket_non_blocking(client_fd) < 0) {
-        fprintf(stderr, "set_socket_non_blocking failed for fd=%d\n", client_fd);
+    // MAX_CLIENTS is now actually enforced — previously this check did not
+    // exist anywhere, so the server accepted unlimited connections while
+    // claiming a 10,000 cap in the startup banner.
+    if (active_clients >= MAX_CLIENTS) {
+        fprintf(stderr, "MAX_CLIENTS (%d) reached, rejecting fd=%d\n",
+                MAX_CLIENTS, client_fd);
         submit_close(r, client_fd);
         return;
     }
 
+    // fd is already non-blocking (SOCK_NONBLOCK set in the ACCEPT SQE above) —
+    // no fcntl() calls needed.
     set_tcp_nodelay(client_fd);
 
-    // Fix 1: allocate client state on the heap just like poll/epoll do
     client_state *cs = alloc_client(client_fd);
     if (!cs) {
         fprintf(stderr, "malloc failed for fd=%d\n", client_fd);
@@ -370,7 +323,7 @@ static void on_accept(io_uring_t *r, int server_fd,
         return;
     }
 
-    printf("New client connected: fd=%d\n", client_fd);
+    printf("New client connected: fd=%d (active=%d)\n", client_fd, active_clients);
 
     if (submit_recv(r, cs) < 0) {
         fprintf(stderr, "submit_recv failed for fd=%d\n", client_fd);
@@ -391,7 +344,7 @@ static void on_recv(io_uring_t *r, client_state *cs, int result) {
         else
             printf("Client disconnected: fd=%d\n", cs->fd);
         int fd = cs->fd;
-        free_client(cs);          // Fix 1: free heap state
+        free_client(cs);
         submit_close(r, fd);
         return;
     }
@@ -417,7 +370,6 @@ static void on_recv(io_uring_t *r, client_state *cs, int result) {
         }
         cs->send_in_flight = 1;
     }
-    // If a send is already in flight, on_send() will re-arm the recv.
 }
 
 // ── SEND ─────────────────────────────────────────────────────────────────────
@@ -439,7 +391,6 @@ static void on_send(io_uring_t *r, client_state *cs, int result) {
     cs->out_len -= sent;
     if (cs->out_len > 0) {
         memmove(cs->out_buf, cs->out_buf + sent, cs->out_len);
-        // Still data to drain — re-arm SEND
         if (submit_send(r, cs) < 0) {
             int fd = cs->fd;
             free_client(cs);
@@ -448,7 +399,6 @@ static void on_send(io_uring_t *r, client_state *cs, int result) {
             cs->send_in_flight = 1;
         }
     } else {
-        // Buffer fully drained — re-arm RECV
         if (!cs->recv_in_flight) {
             if (submit_recv(r, cs) < 0) {
                 int fd = cs->fd;
@@ -462,7 +412,7 @@ static void on_send(io_uring_t *r, client_state *cs, int result) {
 }
 
 // =============================================================================
-//  Completion Queue drain  (Fix 4: flushes mid-loop when SQ is nearly full)
+//  Completion Queue drain
 // =============================================================================
 
 static void drain_cq(io_uring_t *r, int server_fd,
@@ -480,8 +430,6 @@ static void drain_cq(io_uring_t *r, int server_fd,
         uint32_t     op  = ud_op(ud);
         client_state *cs = ud_ptr(ud);
 
-        // Advance head BEFORE dispatching so the kernel can reuse the slot.
-        // Fix 4: also check ring pressure after every handler call.
         head++;
         atomic_store_explicit((_Atomic unsigned *)r->cq_head,
                               head, memory_order_release);
@@ -497,18 +445,14 @@ static void drain_cq(io_uring_t *r, int server_fd,
                 on_send(r, cs, res);
                 break;
             case OP_CLOSE:
-                // Nothing to do — fd was closed by the kernel.
-                // cs is NULL for CLOSE SQEs we submitted after free_client().
                 break;
             default:
                 fprintf(stderr, "Unknown op=%u in CQE\n", op);
                 break;
         }
 
-        // Fix 4: flush SQ mid-loop if it's getting full so we don't stall
         if (sq_space_left(r) < 4) {
             ring_submit(r, 0);
-            // Refresh CQ tail — new completions may have arrived
             tail = atomic_load_explicit((_Atomic unsigned *)r->cq_tail,
                                          memory_order_acquire);
         }
@@ -524,11 +468,9 @@ int main(int argc, char *argv[]) {
     int port    = (argc > 1) ? atoi(argv[1]) : 8080;
     int backlog = (argc > 2) ? atoi(argv[2]) : SOMAXCONN;
 
-    // Create and bind the listening socket (reuses shared network_utils helper)
     int server_fd = create_server_socket(port, backlog);
     if (server_fd < 0) return 1;
 
-    // Initialise the io_uring ring
     io_uring_t ring;
     memset(&ring, 0, sizeof(ring));
     if (ring_init(&ring, QUEUE_DEPTH) < 0) {
@@ -536,8 +478,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    // Prime the first ACCEPT SQE — one always lives in the ring permanently;
-    // each completion re-arms it immediately.
     struct sockaddr_in client_addr;
     socklen_t client_addrlen = sizeof(client_addr);
     memset(&client_addr, 0, sizeof(client_addr));
@@ -559,12 +499,6 @@ int main(int argc, char *argv[]) {
            "(queue_depth=%d, max_clients=%d, server_fd=%d, ring_fd=%d)\n",
            port, QUEUE_DEPTH, MAX_CLIENTS, server_fd, ring.ring_fd);
 
-    // =========================================================================
-    //  Main event loop
-    //  1. Block until ≥1 CQE is ready (and simultaneously submits any SQEs)
-    //  2. Drain all ready CQEs — each one may enqueue more SQEs
-    //  3. Flush any freshly enqueued SQEs (non-blocking)
-    // =========================================================================
     while (1) {
         if (ring_submit(&ring, 1) < 0) {
             if (errno == EINTR) continue;
@@ -574,7 +508,6 @@ int main(int argc, char *argv[]) {
 
         drain_cq(&ring, server_fd, &client_addr, &client_addrlen);
 
-        // Non-blocking flush for SQEs enqueued during drain_cq
         ring_submit(&ring, 0);
     }
 
