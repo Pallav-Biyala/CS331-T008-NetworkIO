@@ -26,10 +26,7 @@ shuffled=($(printf "%s\n" "${ENGINES[@]}" | shuf))
 
 for engine in "${shuffled[@]}"; do
   for conns in "${CONN_COUNTS[@]}"; do
-    if [[ "$engine" == "select" && "$conns" -ge 1024 ]]; then
-      echo "Skipping select @ $conns (exceeds FD_SETSIZE)"
-      continue
-    fi
+
     tag="${engine}_c${conns}"
     echo "== $tag =="
 

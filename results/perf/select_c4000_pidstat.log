@@ -1,0 +1,9 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/09/2026 	_aarch64_	(4 CPU)
+
+06:38:11 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:38:12 PM  1000     15861    9.00   91.00    0.00    0.00  100.00     0  server_select
+06:38:13 PM  1000     15861    9.00   91.00    0.00    0.00  100.00     0  server_select
+06:38:14 PM  1000     15861    8.00   92.00    0.00    0.00  100.00     0  server_select
+06:38:15 PM  1000     15861    9.00   91.00    0.00    0.00  100.00     0  server_select
+06:38:16 PM  1000     15861    2.00   19.00    0.00    0.00   21.00     0  server_select
+Average:     1000     15861    7.40   76.80    0.00    0.00   84.20     -  server_select

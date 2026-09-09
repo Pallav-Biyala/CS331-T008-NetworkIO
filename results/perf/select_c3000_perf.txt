@@ -1,0 +1,12 @@
+# started on Wed Sep  9 18:37:14 2026
+
+
+ Performance counter stats for process id '15801':
+
+                73      context-switches                                                      
+                 0      cpu-migrations                                                        
+   <not supported>      cycles                                                                
+   <not supported>      instructions                                                          
+
+      10.002395547 seconds time elapsed
+
