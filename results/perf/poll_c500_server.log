@@ -1,0 +1,684 @@
+poll server listening on port 8080 with backlog 4096 (server_fd=3, max_clients=10000)
+New client connected with client_fd = 4 (active=1)
+Client disconnected (client_fd = 4)
+New client connected with client_fd = 4 (active=1)
+New client connected with client_fd = 5 (active=2)
+New client connected with client_fd = 6 (active=3)
+New client connected with client_fd = 7 (active=4)
+New client connected with client_fd = 8 (active=5)
+New client connected with client_fd = 9 (active=6)
+New client connected with client_fd = 10 (active=7)
+New client connected with client_fd = 11 (active=8)
+New client connected with client_fd = 12 (active=9)
+New client connected with client_fd = 13 (active=10)
+New client connected with client_fd = 14 (active=11)
+New client connected with client_fd = 15 (active=12)
+New client connected with client_fd = 16 (active=13)
+New client connected with client_fd = 17 (active=14)
+New client connected with client_fd = 18 (active=15)
+New client connected with client_fd = 19 (active=16)
+New client connected with client_fd = 20 (active=17)
+New client connected with client_fd = 21 (active=18)
+New client connected with client_fd = 22 (active=19)
+New client connected with client_fd = 23 (active=20)
+New client connected with client_fd = 24 (active=21)
+New client connected with client_fd = 25 (active=22)
+New client connected with client_fd = 26 (active=23)
+New client connected with client_fd = 27 (active=24)
+New client connected with client_fd = 28 (active=25)
+New client connected with client_fd = 29 (active=26)
+New client connected with client_fd = 30 (active=27)
+New client connected with client_fd = 31 (active=28)
+New client connected with client_fd = 32 (active=29)
+New client connected with client_fd = 33 (active=30)
+New client connected with client_fd = 34 (active=31)
+New client connected with client_fd = 35 (active=32)
+New client connected with client_fd = 36 (active=33)
+New client connected with client_fd = 37 (active=34)
+New client connected with client_fd = 38 (active=35)
+New client connected with client_fd = 39 (active=36)
+New client connected with client_fd = 40 (active=37)
+New client connected with client_fd = 41 (active=38)
+New client connected with client_fd = 42 (active=39)
+New client connected with client_fd = 43 (active=40)
+New client connected with client_fd = 44 (active=41)
+New client connected with client_fd = 45 (active=42)
+New client connected with client_fd = 46 (active=43)
+New client connected with client_fd = 47 (active=44)
+New client connected with client_fd = 48 (active=45)
+New client connected with client_fd = 49 (active=46)
+New client connected with client_fd = 50 (active=47)
+New client connected with client_fd = 51 (active=48)
+New client connected with client_fd = 52 (active=49)
+New client connected with client_fd = 53 (active=50)
+New client connected with client_fd = 54 (active=51)
+New client connected with client_fd = 55 (active=52)
+New client connected with client_fd = 56 (active=53)
+New client connected with client_fd = 57 (active=54)
+New client connected with client_fd = 58 (active=55)
+New client connected with client_fd = 59 (active=56)
+New client connected with client_fd = 60 (active=57)
+New client connected with client_fd = 61 (active=58)
+New client connected with client_fd = 62 (active=59)
+New client connected with client_fd = 63 (active=60)
+New client connected with client_fd = 64 (active=61)
+New client connected with client_fd = 65 (active=62)
+New client connected with client_fd = 66 (active=63)
+New client connected with client_fd = 67 (active=64)
+New client connected with client_fd = 68 (active=65)
+New client connected with client_fd = 69 (active=66)
+New client connected with client_fd = 70 (active=67)
+New client connected with client_fd = 71 (active=68)
+New client connected with client_fd = 72 (active=69)
+New client connected with client_fd = 73 (active=70)
+New client connected with client_fd = 74 (active=71)
+New client connected with client_fd = 75 (active=72)
+New client connected with client_fd = 76 (active=73)
+New client connected with client_fd = 77 (active=74)
+New client connected with client_fd = 78 (active=75)
+New client connected with client_fd = 79 (active=76)
+New client connected with client_fd = 80 (active=77)
+New client connected with client_fd = 81 (active=78)
+New client connected with client_fd = 82 (active=79)
+New client connected with client_fd = 83 (active=80)
+New client connected with client_fd = 84 (active=81)
+New client connected with client_fd = 85 (active=82)
+New client connected with client_fd = 86 (active=83)
+New client connected with client_fd = 87 (active=84)
+New client connected with client_fd = 88 (active=85)
+New client connected with client_fd = 89 (active=86)
+New client connected with client_fd = 90 (active=87)
+New client connected with client_fd = 91 (active=88)
+New client connected with client_fd = 92 (active=89)
+New client connected with client_fd = 93 (active=90)
+New client connected with client_fd = 94 (active=91)
+New client connected with client_fd = 95 (active=92)
+New client connected with client_fd = 96 (active=93)
+New client connected with client_fd = 97 (active=94)
+New client connected with client_fd = 98 (active=95)
+New client connected with client_fd = 99 (active=96)
+New client connected with client_fd = 100 (active=97)
+New client connected with client_fd = 101 (active=98)
+New client connected with client_fd = 102 (active=99)
+New client connected with client_fd = 103 (active=100)
+New client connected with client_fd = 104 (active=101)
+New client connected with client_fd = 105 (active=102)
+New client connected with client_fd = 106 (active=103)
+New client connected with client_fd = 107 (active=104)
+New client connected with client_fd = 108 (active=105)
+New client connected with client_fd = 109 (active=106)
+New client connected with client_fd = 110 (active=107)
+New client connected with client_fd = 111 (active=108)
+New client connected with client_fd = 112 (active=109)
+New client connected with client_fd = 113 (active=110)
+New client connected with client_fd = 114 (active=111)
+New client connected with client_fd = 115 (active=112)
+New client connected with client_fd = 116 (active=113)
+New client connected with client_fd = 117 (active=114)
+New client connected with client_fd = 118 (active=115)
+New client connected with client_fd = 119 (active=116)
+New client connected with client_fd = 120 (active=117)
+New client connected with client_fd = 121 (active=118)
+New client connected with client_fd = 122 (active=119)
+New client connected with client_fd = 123 (active=120)
+New client connected with client_fd = 124 (active=121)
+New client connected with client_fd = 125 (active=122)
+New client connected with client_fd = 126 (active=123)
+New client connected with client_fd = 127 (active=124)
+New client connected with client_fd = 128 (active=125)
+New client connected with client_fd = 129 (active=126)
+New client connected with client_fd = 130 (active=127)
+New client connected with client_fd = 131 (active=128)
+New client connected with client_fd = 132 (active=129)
+New client connected with client_fd = 133 (active=130)
+New client connected with client_fd = 134 (active=131)
+New client connected with client_fd = 135 (active=132)
+New client connected with client_fd = 136 (active=133)
+New client connected with client_fd = 137 (active=134)
+New client connected with client_fd = 138 (active=135)
+New client connected with client_fd = 139 (active=136)
+New client connected with client_fd = 140 (active=137)
+New client connected with client_fd = 141 (active=138)
+New client connected with client_fd = 142 (active=139)
+New client connected with client_fd = 143 (active=140)
+New client connected with client_fd = 144 (active=141)
+New client connected with client_fd = 145 (active=142)
+New client connected with client_fd = 146 (active=143)
+New client connected with client_fd = 147 (active=144)
+New client connected with client_fd = 148 (active=145)
+New client connected with client_fd = 149 (active=146)
+New client connected with client_fd = 150 (active=147)
+New client connected with client_fd = 151 (active=148)
+New client connected with client_fd = 152 (active=149)
+New client connected with client_fd = 153 (active=150)
+New client connected with client_fd = 154 (active=151)
+New client connected with client_fd = 155 (active=152)
+New client connected with client_fd = 156 (active=153)
+New client connected with client_fd = 157 (active=154)
+New client connected with client_fd = 158 (active=155)
+New client connected with client_fd = 159 (active=156)
+New client connected with client_fd = 160 (active=157)
+New client connected with client_fd = 161 (active=158)
+New client connected with client_fd = 162 (active=159)
+New client connected with client_fd = 163 (active=160)
+New client connected with client_fd = 164 (active=161)
+New client connected with client_fd = 165 (active=162)
+New client connected with client_fd = 166 (active=163)
+New client connected with client_fd = 167 (active=164)
+New client connected with client_fd = 168 (active=165)
+New client connected with client_fd = 169 (active=166)
+New client connected with client_fd = 170 (active=167)
+New client connected with client_fd = 171 (active=168)
+New client connected with client_fd = 172 (active=169)
+New client connected with client_fd = 173 (active=170)
+New client connected with client_fd = 174 (active=171)
+New client connected with client_fd = 175 (active=172)
+New client connected with client_fd = 176 (active=173)
+New client connected with client_fd = 177 (active=174)
+New client connected with client_fd = 178 (active=175)
+New client connected with client_fd = 179 (active=176)
+New client connected with client_fd = 180 (active=177)
+New client connected with client_fd = 181 (active=178)
+New client connected with client_fd = 182 (active=179)
+New client connected with client_fd = 183 (active=180)
+New client connected with client_fd = 184 (active=181)
+New client connected with client_fd = 185 (active=182)
+New client connected with client_fd = 186 (active=183)
+New client connected with client_fd = 187 (active=184)
+New client connected with client_fd = 188 (active=185)
+New client connected with client_fd = 189 (active=186)
+New client connected with client_fd = 190 (active=187)
+New client connected with client_fd = 191 (active=188)
+New client connected with client_fd = 192 (active=189)
+New client connected with client_fd = 193 (active=190)
+New client connected with client_fd = 194 (active=191)
+New client connected with client_fd = 195 (active=192)
+New client connected with client_fd = 196 (active=193)
+New client connected with client_fd = 197 (active=194)
+New client connected with client_fd = 198 (active=195)
+New client connected with client_fd = 199 (active=196)
+New client connected with client_fd = 200 (active=197)
+New client connected with client_fd = 201 (active=198)
+New client connected with client_fd = 202 (active=199)
+New client connected with client_fd = 203 (active=200)
+New client connected with client_fd = 204 (active=201)
+New client connected with client_fd = 205 (active=202)
+New client connected with client_fd = 206 (active=203)
+New client connected with client_fd = 207 (active=204)
+New client connected with client_fd = 208 (active=205)
+New client connected with client_fd = 209 (active=206)
+New client connected with client_fd = 210 (active=207)
+New client connected with client_fd = 211 (active=208)
+New client connected with client_fd = 212 (active=209)
+New client connected with client_fd = 213 (active=210)
+New client connected with client_fd = 214 (active=211)
+New client connected with client_fd = 215 (active=212)
+New client connected with client_fd = 216 (active=213)
+New client connected with client_fd = 217 (active=214)
+New client connected with client_fd = 218 (active=215)
+New client connected with client_fd = 219 (active=216)
+New client connected with client_fd = 220 (active=217)
+New client connected with client_fd = 221 (active=218)
+New client connected with client_fd = 222 (active=219)
+New client connected with client_fd = 223 (active=220)
+New client connected with client_fd = 224 (active=221)
+New client connected with client_fd = 225 (active=222)
+New client connected with client_fd = 226 (active=223)
+New client connected with client_fd = 227 (active=224)
+New client connected with client_fd = 228 (active=225)
+New client connected with client_fd = 229 (active=226)
+New client connected with client_fd = 230 (active=227)
+New client connected with client_fd = 231 (active=228)
+New client connected with client_fd = 232 (active=229)
+New client connected with client_fd = 233 (active=230)
+New client connected with client_fd = 234 (active=231)
+New client connected with client_fd = 235 (active=232)
+New client connected with client_fd = 236 (active=233)
+New client connected with client_fd = 237 (active=234)
+New client connected with client_fd = 238 (active=235)
+New client connected with client_fd = 239 (active=236)
+New client connected with client_fd = 240 (active=237)
+New client connected with client_fd = 241 (active=238)
+New client connected with client_fd = 242 (active=239)
+New client connected with client_fd = 243 (active=240)
+New client connected with client_fd = 244 (active=241)
+New client connected with client_fd = 245 (active=242)
+New client connected with client_fd = 246 (active=243)
+New client connected with client_fd = 247 (active=244)
+New client connected with client_fd = 248 (active=245)
+New client connected with client_fd = 249 (active=246)
+New client connected with client_fd = 250 (active=247)
+New client connected with client_fd = 251 (active=248)
+New client connected with client_fd = 252 (active=249)
+New client connected with client_fd = 253 (active=250)
+New client connected with client_fd = 254 (active=251)
+New client connected with client_fd = 255 (active=252)
+New client connected with client_fd = 256 (active=253)
+New client connected with client_fd = 257 (active=254)
+New client connected with client_fd = 258 (active=255)
+New client connected with client_fd = 259 (active=256)
+New client connected with client_fd = 260 (active=257)
+New client connected with client_fd = 261 (active=258)
+New client connected with client_fd = 262 (active=259)
+New client connected with client_fd = 263 (active=260)
+New client connected with client_fd = 264 (active=261)
+New client connected with client_fd = 265 (active=262)
+New client connected with client_fd = 266 (active=263)
+New client connected with client_fd = 267 (active=264)
+New client connected with client_fd = 268 (active=265)
+New client connected with client_fd = 269 (active=266)
+New client connected with client_fd = 270 (active=267)
+New client connected with client_fd = 271 (active=268)
+New client connected with client_fd = 272 (active=269)
+New client connected with client_fd = 273 (active=270)
+New client connected with client_fd = 274 (active=271)
+New client connected with client_fd = 275 (active=272)
+New client connected with client_fd = 276 (active=273)
+New client connected with client_fd = 277 (active=274)
+New client connected with client_fd = 278 (active=275)
+New client connected with client_fd = 279 (active=276)
+New client connected with client_fd = 280 (active=277)
+New client connected with client_fd = 281 (active=278)
+New client connected with client_fd = 282 (active=279)
+New client connected with client_fd = 283 (active=280)
+New client connected with client_fd = 284 (active=281)
+New client connected with client_fd = 285 (active=282)
+New client connected with client_fd = 286 (active=283)
+New client connected with client_fd = 287 (active=284)
+New client connected with client_fd = 288 (active=285)
+New client connected with client_fd = 289 (active=286)
+New client connected with client_fd = 290 (active=287)
+New client connected with client_fd = 291 (active=288)
+New client connected with client_fd = 292 (active=289)
+New client connected with client_fd = 293 (active=290)
+New client connected with client_fd = 294 (active=291)
+New client connected with client_fd = 295 (active=292)
+New client connected with client_fd = 296 (active=293)
+New client connected with client_fd = 297 (active=294)
+New client connected with client_fd = 298 (active=295)
+New client connected with client_fd = 299 (active=296)
+New client connected with client_fd = 300 (active=297)
+New client connected with client_fd = 301 (active=298)
+New client connected with client_fd = 302 (active=299)
+New client connected with client_fd = 303 (active=300)
+New client connected with client_fd = 304 (active=301)
+New client connected with client_fd = 305 (active=302)
+New client connected with client_fd = 306 (active=303)
+New client connected with client_fd = 307 (active=304)
+New client connected with client_fd = 308 (active=305)
+New client connected with client_fd = 309 (active=306)
+New client connected with client_fd = 310 (active=307)
+New client connected with client_fd = 311 (active=308)
+New client connected with client_fd = 312 (active=309)
+New client connected with client_fd = 313 (active=310)
+New client connected with client_fd = 314 (active=311)
+New client connected with client_fd = 315 (active=312)
+New client connected with client_fd = 316 (active=313)
+New client connected with client_fd = 317 (active=314)
+New client connected with client_fd = 318 (active=315)
+New client connected with client_fd = 319 (active=316)
+New client connected with client_fd = 320 (active=317)
+New client connected with client_fd = 321 (active=318)
+New client connected with client_fd = 322 (active=319)
+New client connected with client_fd = 323 (active=320)
+New client connected with client_fd = 324 (active=321)
+New client connected with client_fd = 325 (active=322)
+New client connected with client_fd = 326 (active=323)
+New client connected with client_fd = 327 (active=324)
+New client connected with client_fd = 328 (active=325)
+New client connected with client_fd = 329 (active=326)
+New client connected with client_fd = 330 (active=327)
+New client connected with client_fd = 331 (active=328)
+New client connected with client_fd = 332 (active=329)
+New client connected with client_fd = 333 (active=330)
+New client connected with client_fd = 334 (active=331)
+New client connected with client_fd = 335 (active=332)
+New client connected with client_fd = 336 (active=333)
+New client connected with client_fd = 337 (active=334)
+New client connected with client_fd = 338 (active=335)
+New client connected with client_fd = 339 (active=336)
+New client connected with client_fd = 340 (active=337)
+New client connected with client_fd = 341 (active=338)
+New client connected with client_fd = 342 (active=339)
+New client connected with client_fd = 343 (active=340)
+New client connected with client_fd = 344 (active=341)
+New client connected with client_fd = 345 (active=342)
+New client connected with client_fd = 346 (active=343)
+New client connected with client_fd = 347 (active=344)
+New client connected with client_fd = 348 (active=345)
+New client connected with client_fd = 349 (active=346)
+New client connected with client_fd = 350 (active=347)
+New client connected with client_fd = 351 (active=348)
+New client connected with client_fd = 352 (active=349)
+New client connected with client_fd = 353 (active=350)
+New client connected with client_fd = 354 (active=351)
+New client connected with client_fd = 355 (active=352)
+New client connected with client_fd = 356 (active=353)
+New client connected with client_fd = 357 (active=354)
+New client connected with client_fd = 358 (active=355)
+New client connected with client_fd = 359 (active=356)
+New client connected with client_fd = 360 (active=357)
+New client connected with client_fd = 361 (active=358)
+New client connected with client_fd = 362 (active=359)
+New client connected with client_fd = 363 (active=360)
+New client connected with client_fd = 364 (active=361)
+New client connected with client_fd = 365 (active=362)
+New client connected with client_fd = 366 (active=363)
+New client connected with client_fd = 367 (active=364)
+New client connected with client_fd = 368 (active=365)
+New client connected with client_fd = 369 (active=366)
+New client connected with client_fd = 370 (active=367)
+New client connected with client_fd = 371 (active=368)
+New client connected with client_fd = 372 (active=369)
+New client connected with client_fd = 373 (active=370)
+New client connected with client_fd = 374 (active=371)
+New client connected with client_fd = 375 (active=372)
+New client connected with client_fd = 376 (active=373)
+New client connected with client_fd = 377 (active=374)
+New client connected with client_fd = 378 (active=375)
+New client connected with client_fd = 379 (active=376)
+New client connected with client_fd = 380 (active=377)
+New client connected with client_fd = 381 (active=378)
+New client connected with client_fd = 382 (active=379)
+New client connected with client_fd = 383 (active=380)
+New client connected with client_fd = 384 (active=381)
+New client connected with client_fd = 385 (active=382)
+New client connected with client_fd = 386 (active=383)
+New client connected with client_fd = 387 (active=384)
+New client connected with client_fd = 388 (active=385)
+New client connected with client_fd = 389 (active=386)
+New client connected with client_fd = 390 (active=387)
+New client connected with client_fd = 391 (active=388)
+New client connected with client_fd = 392 (active=389)
+New client connected with client_fd = 393 (active=390)
+New client connected with client_fd = 394 (active=391)
+New client connected with client_fd = 395 (active=392)
+New client connected with client_fd = 396 (active=393)
+New client connected with client_fd = 397 (active=394)
+New client connected with client_fd = 398 (active=395)
+New client connected with client_fd = 399 (active=396)
+New client connected with client_fd = 400 (active=397)
+New client connected with client_fd = 401 (active=398)
+New client connected with client_fd = 402 (active=399)
+New client connected with client_fd = 403 (active=400)
+New client connected with client_fd = 404 (active=401)
+New client connected with client_fd = 405 (active=402)
+New client connected with client_fd = 406 (active=403)
+New client connected with client_fd = 407 (active=404)
+New client connected with client_fd = 408 (active=405)
+New client connected with client_fd = 409 (active=406)
+New client connected with client_fd = 410 (active=407)
+New client connected with client_fd = 411 (active=408)
+New client connected with client_fd = 412 (active=409)
+New client connected with client_fd = 413 (active=410)
+New client connected with client_fd = 414 (active=411)
+New client connected with client_fd = 415 (active=412)
+New client connected with client_fd = 416 (active=413)
+New client connected with client_fd = 417 (active=414)
+New client connected with client_fd = 418 (active=415)
+New client connected with client_fd = 419 (active=416)
+New client connected with client_fd = 420 (active=417)
+New client connected with client_fd = 421 (active=418)
+New client connected with client_fd = 422 (active=419)
+New client connected with client_fd = 423 (active=420)
+New client connected with client_fd = 424 (active=421)
+New client connected with client_fd = 425 (active=422)
+New client connected with client_fd = 426 (active=423)
+New client connected with client_fd = 427 (active=424)
+New client connected with client_fd = 428 (active=425)
+New client connected with client_fd = 429 (active=426)
+New client connected with client_fd = 430 (active=427)
+New client connected with client_fd = 431 (active=428)
+New client connected with client_fd = 432 (active=429)
+New client connected with client_fd = 433 (active=430)
+New client connected with client_fd = 434 (active=431)
+New client connected with client_fd = 435 (active=432)
+New client connected with client_fd = 436 (active=433)
+New client connected with client_fd = 437 (active=434)
+New client connected with client_fd = 438 (active=435)
+New client connected with client_fd = 439 (active=436)
+New client connected with client_fd = 440 (active=437)
+New client connected with client_fd = 441 (active=438)
+New client connected with client_fd = 442 (active=439)
+New client connected with client_fd = 443 (active=440)
+New client connected with client_fd = 444 (active=441)
+New client connected with client_fd = 445 (active=442)
+New client connected with client_fd = 446 (active=443)
+New client connected with client_fd = 447 (active=444)
+New client connected with client_fd = 448 (active=445)
+New client connected with client_fd = 449 (active=446)
+New client connected with client_fd = 450 (active=447)
+New client connected with clsend failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer
+send failed: Connection reset by peer

@@ -1,0 +1,12 @@
+# started on Wed Sep  9 12:15:05 2026
+
+
+ Performance counter stats for process id '9917':
+
+                74      context-switches                                                      
+                 0      cpu-migrations                                                        
+   <not supported>      cycles                                                                
+   <not supported>      instructions                                                          
+
+      10.003560879 seconds time elapsed
+

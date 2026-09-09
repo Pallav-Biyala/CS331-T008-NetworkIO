@@ -33,98 +33,46 @@ New client connected with client_fd = 32 (active=29)
 New client connected with client_fd = 33 (active=30)
 New client connected with client_fd = 34 (active=31)
 New client connected with client_fd = 35 (active=32)
-New client connected with client_fd = 38 (active=33)
-New client connected with client_fd = 39 (active=34)
-New client connected with client_fd = 40 (active=35)
-New client connected with client_fd = 41 (active=36)
-New client connected with client_fd = 42 (active=37)
-New client connected with client_fd = 43 (active=38)
-New client connected with client_fd = 49 (active=39)
-New client connected with client_fd = 50 (active=40)
-New client connected with client_fd = 51 (active=41)
-New client connected with client_fd = 52 (active=42)
-New client connected with client_fd = 53 (active=43)
-New client connected with client_fd = 54 (active=44)
-New client connected with client_fd = 55 (active=45)
-New client connected with client_fd = 56 (active=46)
-New client connected with client_fd = 57 (active=47)
-New client connected with client_fd = 58 (active=48)
-New client connected with client_fd = 59 (active=49)
-New client connected with client_fd = 60 (active=50)
-New client connected with client_fd = 61 (active=51)
-New client connected with client_fd = 62 (active=52)
-New client connected with client_fd = 63 (active=53)
-New client connected with client_fd = 64 (active=54)
-New client connected with client_fd = 65 (active=55)
-New client connected with client_fd = 66 (active=56)
-New client connected with client_fd = 67 (active=57)
-New client connected with client_fd = 68 (active=58)
-New client connected with client_fd = 69 (active=59)
-New client connected with client_fd = 70 (active=60)
-New client connected with client_fd = 71 (active=61)
-New client connected with client_fd = 72 (active=62)
-New client connected with client_fd = 73 (active=63)
-New client connected with client_fd = 74 (active=64)
-New client connected with client_fd = 75 (active=65)
-New client connected with client_fd = 76 (active=66)
-New client connected with client_fd = 77 (active=67)
-New client connected with client_fd = 78 (active=68)
-New client connected with client_fd = 79 (active=69)
-New client connected with client_fd = 80 (active=70)
-New client connected with client_fd = 81 (active=71)
-New client connected with client_fd = 82 (active=72)
-New client connected with client_fd = 83 (active=73)
-New client connected with client_fd = 84 (active=74)
-New client connesend failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
-send failed: Connection reset by peer
+New client connected with client_fd = 36 (active=33)
+New client connected with client_fd = 37 (active=34)
+New client connected with client_fd = 38 (active=35)
+New client connected with client_fd = 39 (active=36)
+New client connected with client_fd = 40 (active=37)
+New client connected with client_fd = 41 (active=38)
+New client connected with client_fd = 42 (active=39)
+New client connected with client_fd = 43 (active=40)
+New client connected with client_fd = 44 (active=41)
+New client connected with client_fd = 45 (active=42)
+New client connected with client_fd = 46 (active=43)
+New client connected with client_fd = 47 (active=44)
+New client connected with client_fd = 48 (active=45)
+New client connected with client_fd = 49 (active=46)
+New client connected with client_fd = 50 (active=47)
+New client connected with client_fd = 51 (active=48)
+New client connected with client_fd = 52 (active=49)
+New client connected with client_fd = 53 (active=50)
+New client connected with client_fd = 54 (active=51)
+New client connected with client_fd = 55 (active=52)
+New client connected with client_fd = 56 (active=53)
+New client connected with client_fd = 57 (active=54)
+New client connected with client_fd = 58 (active=55)
+New client connected with client_fd = 59 (active=56)
+New client connected with client_fd = 60 (active=57)
+New client connected with client_fd = 61 (active=58)
+New client connected with client_fd = 62 (active=59)
+New client connected with client_fd = 63 (active=60)
+New client connected with client_fd = 64 (active=61)
+New client connected with client_fd = 65 (active=62)
+New client connected with client_fd = 66 (active=63)
+New client connected with client_fd = 67 (active=64)
+New client connected with client_fd = 68 (active=65)
+New client connected with client_fd = 69 (active=66)
+New client connected with client_fd = 70 (active=67)
+New client connected with client_fd = 71 (active=68)
+New client connected with client_fd = 72 (active=69)
+New client connected with client_fd = 73 (active=70)
+New client connected with client_fd = 74 (active=71)
+New client connected with client_fd = 75 (active=72)
+New client connected with client_fd = 76 (active=73)
+New client connected with client_fd = 77 (active=74)
+New client conne

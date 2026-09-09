@@ -1,0 +1,9 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/09/2026 	_aarch64_	(4 CPU)
+
+12:03:26 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:03:27 PM  1000      9250    7.92   92.08    0.00    0.00  100.00     0  server_iouring
+12:03:28 PM  1000      9250    7.00   93.00    0.00    0.00  100.00     0  server_iouring
+12:03:29 PM  1000      9250    2.00   20.00    0.00    0.00   22.00     0  server_iouring
+12:03:30 PM  1000      9250    0.00    0.00    0.00    0.00    0.00     0  server_iouring
+12:03:31 PM  1000      9250    0.00    0.00    0.00    0.00    0.00     0  server_iouring
+Average:     1000      9250    3.39   41.04    0.00    0.00   44.42     -  server_iouring

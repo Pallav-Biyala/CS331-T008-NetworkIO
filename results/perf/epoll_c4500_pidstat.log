@@ -1,9 +1,9 @@
-Linux 7.0.0-31-generic (ubuntu-vm) 	09/08/2026 	_aarch64_	(4 CPU)
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/09/2026 	_aarch64_	(4 CPU)
 
-11:20:54 AM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
-11:20:55 AM  1000     65858    7.92   91.09    0.00    0.00   99.01     0  epoll_server
-11:20:56 AM  1000     65858    6.00   94.00    0.00    0.00  100.00     0  epoll_server
-11:20:57 AM  1000     65858    8.00   92.00    0.00    0.00  100.00     0  epoll_server
-11:20:58 AM  1000     65858    6.00   94.00    0.00    0.00  100.00     0  epoll_server
-11:20:59 AM  1000     65858    4.00   43.00    0.00    0.00   47.00     0  epoll_server
-Average:     1000     65858    6.39   82.83    0.00    0.00   89.22     -  epoll_server
+12:16:02 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+12:16:03 PM  1000      9949    8.00   93.00    0.00    0.00  101.00     0  server_epoll
+12:16:04 PM  1000      9949    8.00   91.00    0.00    0.00   99.00     0  server_epoll
+12:16:05 PM  1000      9949    6.93   93.07    0.00    0.00  100.00     0  server_epoll
+12:16:06 PM  1000      9949    8.91   91.09    0.00    0.00  100.00     0  server_epoll
+12:16:07 PM  1000      9949    5.94   65.35    0.00    0.00   71.29     0  server_epoll
+Average:     1000      9949    7.55   86.68    0.00    0.00   94.23     -  server_epoll

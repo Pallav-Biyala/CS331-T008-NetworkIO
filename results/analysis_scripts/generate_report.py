@@ -8,6 +8,7 @@ import os
 script_dir = os.path.dirname(os.path.abspath(__file__))
 results_dir = os.path.dirname(script_dir)
 graphs_dir = os.path.join(results_dir, "graphs")
+os.makedirs(graphs_dir, exist_ok=True)
 root_dir = os.path.dirname(results_dir)
 servers = ["select", "poll", "epoll", "iouring", "iouring_sqpoll"]
 conns = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
