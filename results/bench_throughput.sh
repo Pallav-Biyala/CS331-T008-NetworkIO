@@ -21,7 +21,7 @@
 PORT=8080
 CONNECT_RATE=5000        # conns/sec — raised so ramp fits inside the window at c5000/c10000
 MESSAGE_RATE=20          # msgs/sec per connection for the latency pass
-CONN_COUNTS=(10 100 1000 2500 5000)
+CONN_COUNTS=(10 100 500 1000 1500 2000 2500 3000 3500 4000 4500 5000)
 ENGINES=(select poll epoll iouring iouring_sqpoll)
 RESULTS=./results/throughput
 mkdir -p "$RESULTS"
@@ -74,12 +74,7 @@ shuffled=($(printf "%s\n" "${ENGINES[@]}" | shuf))
 
 for engine in "${shuffled[@]}"; do
   for conns in "${CONN_COUNTS[@]}"; do
-    # select() uses a fixed fd_set bitmap; FD_SETSIZE=1024 on Linux.
-    # Passing fd >= 1024 to FD_SET silently overflows → skip rather than corrupt.
-    if [[ "$engine" == "select" && "$conns" -ge 1024 ]]; then
-      echo "Skipping select @ $conns (exceeds FD_SETSIZE=1024)"
-      continue
-    fi
+    # select() FD_SETSIZE is now dynamically expanded to 10000 in server_select.c.
 
     tag="${engine}_c${conns}"
     dur=$(duration_for "$conns")

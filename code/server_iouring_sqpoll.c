@@ -68,7 +68,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
-#include <fcntl.h>             // Fix 2: fcntl() for manual non-blocking
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <linux/io_uring.h>
@@ -108,6 +107,9 @@ typedef struct {
     int    recv_in_flight;
 } client_state;
 
+// Live connection count — enforces MAX_CLIENTS
+static int active_clients = 0;
+
 // Allocate a fresh client_state on the heap — same cost as poll/epoll
 static client_state *alloc_client(int fd) {
     client_state *cs = malloc(sizeof(client_state));
@@ -116,12 +118,14 @@ static client_state *alloc_client(int fd) {
     cs->out_len        = 0;
     cs->send_in_flight = 0;
     cs->recv_in_flight = 0;
+    active_clients++;
     return cs;
 }
 
 // Free the client's heap memory and close the fd
 static void free_client(client_state *cs) {
     if (!cs) return;
+    active_clients--;
     free(cs);
 }
 
@@ -293,8 +297,8 @@ static int submit_accept(io_uring_t *r, int server_fd,
     sqe->fd           = server_fd;
     sqe->addr         = (uint64_t)(uintptr_t)addr;
     sqe->addr2        = (uint64_t)(uintptr_t)addrlen;
-    // Fix 2: DO NOT set SOCK_NONBLOCK here; we call fcntl() manually below
-    sqe->accept_flags = 0;
+    // ask the kernel for an already-nonblocking fd directly
+    sqe->accept_flags = SOCK_NONBLOCK;
     sqe->user_data    = make_ud(NULL, OP_ACCEPT);
     ring_submit_advance(r);
     return 0;
@@ -366,11 +370,9 @@ static void on_accept(io_uring_t *r, int server_fd,
 
     int client_fd = result;
 
-    // Fix 2: manually call fcntl() instead of using SOCK_NONBLOCK in the SQE.
-    // This matches the 2-syscall overhead that epoll and poll both pay via
-    // set_socket_non_blocking().
-    if (set_socket_non_blocking(client_fd) < 0) {
-        fprintf(stderr, "set_socket_non_blocking failed for fd=%d\n", client_fd);
+    if (active_clients >= MAX_CLIENTS) {
+        fprintf(stderr, "MAX_CLIENTS (%d) reached, rejecting fd=%d\n",
+                MAX_CLIENTS, client_fd);
         submit_close(r, client_fd);
         return;
     }
@@ -385,7 +387,7 @@ static void on_accept(io_uring_t *r, int server_fd,
         return;
     }
 
-    printf("New client connected: fd=%d\n", client_fd);
+    printf("New client connected: fd=%d (active=%d)\n", client_fd, active_clients);
 
     if (submit_recv(r, cs) < 0) {
         fprintf(stderr, "submit_recv failed for fd=%d\n", client_fd);
