@@ -8,10 +8,14 @@
 #include <errno.h>
 #include <signal.h>
 
-#define MAX_CLIENTS 10000
+// select() is fundamentally limited to monitoring fds 0..1023 (FD_SETSIZE=1024).
+// The kernel's select() syscall ignores nfds > 1024 regardless of bitmap size.
+// This is a well-known limitation of select() vs poll/epoll.
+#define MAX_CLIENTS 1024
 #define OUT_BUF_CAP 65536
 
-// Custom fd_set definition to safely bypass glibc's hardcoded FD_SETSIZE=1024 limit and FORTIFY_SOURCE
+// Custom fd_set bitmap that matches the real kernel limit of 1024 fds.
+// We keep our own bitmap to avoid glibc FORTIFY_SOURCE warnings.
 #define MY_FD_SETSIZE MAX_CLIENTS
 typedef struct {
     long int fds_bits[MY_FD_SETSIZE / (8 * sizeof(long int)) + 1];

@@ -1,15 +1,22 @@
-import os
-import re
+import sys, os, re
+# Force UTF-8 output on Windows
+if hasattr(sys.stdout, 'reconfigure'):
+    sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 import json
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 
-import os
-script_dir = os.path.dirname(os.path.abspath(__file__))
-results_dir = os.path.dirname(script_dir)
-graphs_dir = os.path.join(results_dir, "graphs")
+# Derive all paths relative to this script for portability.
+script_dir  = os.path.dirname(os.path.abspath(__file__))
+results_dir = os.path.dirname(script_dir)           # …/results/
+output_dir  = os.path.join(results_dir, 'results_v2')
+graphs_dir  = os.path.join(output_dir, 'graphs')
 os.makedirs(graphs_dir, exist_ok=True)
-root_dir = os.path.dirname(results_dir)
+os.makedirs(output_dir, exist_ok=True)
+root_dir    = os.path.dirname(results_dir)
 servers = ["select", "poll", "epoll", "iouring", "iouring_sqpoll"]
 conns = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
 str_conns = [10, 100, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000]
@@ -22,20 +29,20 @@ def extract_throughput(file):
         with open(file, 'r') as f:
             for line in f:
                 if "Aggregate bandwidth:" in line:
-                    m = re.search(r"Aggregate bandwidth: ([\d.]+)↓, ([\d.]+)↑ Mbps", line)
+                    m = re.search(r'Aggregate bandwidth:\s*([\d.]+)\S*,\s*([\d.]+)\S*\s*Mbps', line)
                     if m: return float(m.group(1)), float(m.group(2))
     except Exception: pass
-    return None, None
+    return 0, 0
 
 def extract_latency(file):
     try:
         with open(file, 'r') as f:
             for line in f:
                 if "Message latency at percentiles:" in line:
-                    m = re.search(r"percentiles: ([\d.]+)/([\d.]+)/([\d.]+)/", line)
+                    m = re.search(r'percentiles:\s*([\d.]+)/([\d.]+)/([\d.]+)/', line)
                     if m: return float(m.group(1)), float(m.group(2)), float(m.group(3))
     except Exception: pass
-    return None, None, None
+    return 0, 0, 0
 
 def extract_cpu(file):
     try:
@@ -45,14 +52,14 @@ def extract_cpu(file):
                     parts = line.split()
                     if len(parts) >= 8: return float(parts[7])
     except Exception: pass
-    return None
+    return 0
 
 def extract_mem(file_before, file_after):
     try:
         with open(file_before, 'r') as f: before = int(f.read().strip())
         with open(file_after, 'r') as f: after = int(f.read().strip())
         return after - before
-    except Exception: return None
+    except Exception: return 0
 
 def extract_context_switches(file):
     try:
@@ -61,7 +68,7 @@ def extract_context_switches(file):
                 if "context-switches" in line:
                     return int(line.split()[0].replace(',', ''))
     except Exception: pass
-    return None
+    return 0
 
 for srv in servers:
     for c in str_conns:
@@ -73,7 +80,7 @@ for srv in servers:
         cs = extract_context_switches(os.path.join(results_dir, "perf", f"{srv}_c{c}_perf.txt"))
         data[srv][c] = {"tp_down": tp_down, "tp_up": tp_up, "lat_50": lat_50, "lat_95": lat_95, "lat_99": lat_99, "cpu": cpu, "mem": mem, "cs": cs}
 
-with open(os.path.join(graphs_dir, 'parsed.json'), 'w') as f:
+with open(os.path.join(output_dir, 'parsed.json'), 'w') as f:
     json.dump(data, f, indent=2)
 
 # 2. GENERATE PLOTS
@@ -83,8 +90,12 @@ def get_data(metric, use_null=False):
         res[s] = []
         for c in str_conns:
             val = data[s][c].get(metric)
-            if val is None: res[s].append(np.nan if use_null else 0)
-            else: res[s].append(val)
+            # Only treat None as missing (file absent or parse failed).
+            # A genuine zero (e.g. 0 context switches) is a real data point.
+            if val is None:
+                res[s].append(np.nan if use_null else 0)
+            else:
+                res[s].append(val)
     return res
 
 plt.figure(figsize=(10, 6))
@@ -144,12 +155,34 @@ def fmt(val, template="{}", null_val="*N/A*"): return template.format(val) if va
 
 md = []
 md.append("# Network I/O Server Performance Analysis\n")
-md.append("This document provides a comprehensive breakdown of the performance metrics across different Network I/O multiplexing strategies (`select`, `poll`, `epoll`, `io_uring`, and `io_uring` with `SQPOLL`).\n")
+md.append(
+    "This document provides a comprehensive breakdown of the performance metrics across "
+    "different Network I/O multiplexing strategies (`select`, `poll`, `epoll`, `io_uring`, "
+    "and `io_uring` with `SQPOLL`).\n"
+)
+
+# ── Important caveat about benchmark structure ────────────────────────────────
+md.append("> **Important — three separate benchmark scripts**\n>\n"
+    "> All numbers in this report come from **three isolated benchmark scripts** "
+    "with different durations, connection rates, and instrumentation levels.  "
+    "Metrics from different columns must **not** be interpreted as if they came "
+    "from the same run:\n>\n"
+    "> | Script | Measures | tcpkali duration | Note |\n"
+    "> |--------|----------|-----------------|------|\n"
+    "> | `bench_throughput.sh` (pass 1) | Aggregate bandwidth (Mbps) | 15 s (c<5000), 30 s (c>=5000) | No instrumentation |\n"
+    "> | `bench_throughput.sh` (pass 2) | RTT latency percentiles | same | Fixed rate 20 msg/s/conn; **separate server start** from pass 1 |\n"
+    "> | `bench_strace.sh` | Syscall counts | 20 s | strace `-c` attached for 10 s window; **heavy ptrace overhead** — throughput numbers from this run are not representative |\n"
+    "> | `bench_perf.sh` | Context switches, CPU%, RSS | 25 s | `perf stat` for 10 s + `pidstat` 5 s; RSS-after captured mid-load (~18 s in) |\n>\n"
+)
 md.append("## 1. Metrics Tables\n")
 
-# Throughput Table
-md.append("### Throughput (Mbps) - Downlink ↓ / Uplink ↑")
-md.append("* **Calculation/Source:** Extracted directly from the `tcpkali` tool logs located in `results/throughput/*_tcpkali.log`. The benchmark tool outputs a line `Aggregate bandwidth: X↓, Y↑ Mbps` at the end of its 30-second run. We extract the `X` (downlink) and `Y` (uplink) values which represent the raw application-layer payload throughput achieved by the server.\n")
+md.append("### Throughput (Mbps) — Downlink (client->server) / Uplink (server->client)")
+md.append(
+    "* **Source:** `bench_throughput.sh` pass 1 (unlimited message rate, no instrumentation).\n"
+    "  tcpkali reports `Aggregate bandwidth: X(down), Y(up) Mbps` at the end of the run.\n"
+    "  Duration: **15 s** for c < 5000 connections; **30 s** for c >= 5000 connections.\n"
+    "  *These numbers come from a clean run with no strace/perf overhead.*\n"
+)
 md.append("![Throughput Plot](./throughput_plot.png)\n")
 md.append("| Connections | `select` | `poll` | `epoll` | `io_uring` | `io_uring` (sqpoll) |")
 md.append("|-------------|----------|--------|---------|------------|---------------------|")
@@ -162,8 +195,15 @@ for c in str_conns:
 md.append("\n")
 
 # Latency Table
-md.append("### Latency (ms) - 50th / 95th / 99th Percentile")
-md.append("* **Calculation/Source:** Also extracted from the `tcpkali` logs in `results/throughput/*_latency_tcpkali.log`. The tool outputs a summary line `Message latency at percentiles: 17.5/67.8/297.7/297.7 ms (50/95/99/99.9%)`. We extract the first three values which represent the 50th (median), 95th, and 99th percentile round-trip times (RTT). This measures the time from the client sending a message until it receives the server's response.\n")
+md.append("### Latency (ms) — 50th / 95th / 99th Percentile")
+md.append(
+    "* **Source:** `bench_throughput.sh` pass 2 (`--message-rate 20` msg/s per connection).\n"
+    "  This is a **separate server instance** from pass 1 — throughput and latency "
+    "were measured independently because flooding the pipe (pass 1) prevents "
+    "per-message RTT timestamping.  Duration: **15 s** / **30 s** (same schedule as pass 1).\n"
+    "  tcpkali outputs `Message latency at percentiles: p50/p95/p99/p99.9 ms`; "
+    "we extract p50, p95, and p99.\n"
+)
 md.append("![Latency Plot](./latency_plot.png)\n")
 md.append("| Connections | `select` | `poll` | `epoll` | `io_uring` | `io_uring` (sqpoll) |")
 md.append("|-------------|----------|--------|---------|------------|---------------------|")
@@ -177,7 +217,13 @@ md.append("\n")
 
 # CPU Table
 md.append("### CPU Utilization (%)")
-md.append("* **Calculation/Source:** Monitored using the `pidstat` tool running in the background during the benchmark and saved to `results/perf/*_pidstat.log`. We parse the final `Average:` line printed by `pidstat` at the end of the test. We extract the `%CPU` column (the 8th column), which is calculated as `%usr + %system`. This percentage represents the total time a **single CPU core** was saturated by the server process (e.g., 94.0% means the process used 94% of one core's capacity).\n")
+md.append(
+    "* **Source:** `bench_perf.sh` — `pidstat -p <pid> 1 5` run after the `perf stat` "
+    "window (i.e., approximately 18 s into the 25 s load).  "
+    "We parse the final `Average:` line and extract the `%CPU` column "
+    "(`%usr + %system`), representing the fraction of one CPU core used by the server process.\n"
+    "  *This is from a separate run from the throughput benchmark.*\n"
+)
 md.append("![CPU Plot](./cpu_plot.png)\n")
 md.append("| Connections | `select` | `poll` | `epoll` | `io_uring` | `io_uring` (sqpoll) |")
 md.append("|-------------|----------|--------|---------|------------|---------------------|")
@@ -187,8 +233,17 @@ for c in str_conns:
 md.append("\n")
 
 # Memory Table
-md.append("### Memory Usage (RSS Delta in KB)")
-md.append("* **Calculation/Source:** Before and after the 30-second benchmark, a script read the Resident Set Size (RSS) directly from the kernel via `/proc/<pid>/statm`. These values are saved in `results/perf/*_rss_before.txt` and `*_rss_after.txt`. The values are converted to Kilobytes, and the final metric is the formula `RSS_After_Test - RSS_Before_Test`. This represents the net memory growth (heap allocations, kernel buffers mapped to user space, or leaks) during the load test.\n")
+md.append("### Memory Usage — RSS Delta (KB)")
+md.append(
+    "* **Source:** `bench_perf.sh` reads RSS via `ps -o rss= -p <pid>` (units: KB) "
+    "before the load starts and again after the `perf stat` + `pidstat` windows "
+    "(approximately 18 s into the 25 s tcpkali run, **before tcpkali has finished**).\n"
+    "  The delta `RSS_after - RSS_before` reflects net memory growth during the "
+    "measured window.  Because tcpkali is still running when RSS-after is sampled, "
+    "this is **not** a final steady-state reading.\n"
+    "  Note: `ps -o rss=` returns values already in KB — no unit conversion is applied.\n"
+    "  *This is from a separate run from the throughput benchmark.*\n"
+)
 md.append("![Memory Plot](./memory_plot.png)\n")
 md.append("| Connections | `select` | `poll` | `epoll` | `io_uring` | `io_uring` (sqpoll) |")
 md.append("|-------------|----------|--------|---------|------------|---------------------|")
@@ -198,8 +253,14 @@ for c in str_conns:
 md.append("\n")
 
 # Context Switches Table
-md.append("### Context Switches (per 10s benchmark)")
-md.append("* **Calculation/Source:** Profiled using the `perf stat -e context-switches` command attached to the server process for a fixed 10-second window while under maximum load. The raw count is extracted from the `results/perf/*_perf.txt` logs. This counts how many times the kernel had to swap the server process on and off the CPU, indicating scheduling overhead and event-loop blocking.\n")
+md.append("### Context Switches (10 s perf stat window)")
+md.append(
+    "* **Source:** `bench_perf.sh` — `perf stat -e context-switches -p <pid>` "
+    "attached mid-run for a fixed 10 s window (starting 3 s after load begins, "
+    "after connection ramp-up).  Measures how many times the kernel descheduled "
+    "the server process during that window.\n"
+    "  *This is from a separate run from the throughput benchmark.*\n"
+)
 md.append("| Connections | `select` | `poll` | `epoll` | `io_uring` | `io_uring` (sqpoll) |")
 md.append("|-------------|----------|--------|---------|------------|---------------------|")
 for c in str_conns:
@@ -217,6 +278,7 @@ for s in servers:
         row = f"| {s} | {c} | {d.get('tp_down')} | {d.get('tp_up')} | {d.get('lat_50')} | {d.get('lat_95')} | {d.get('lat_99')} | {d.get('cpu')} | {d.get('mem')} | {d.get('cs')} |"
         md.append(row)
 
-with open(os.path.join(root_dir, 'metrics_analysis.md'), 'w') as f:
+with open(os.path.join(output_dir, 'metrics_analysis.md'), 'w') as f:
     f.write('\n'.join(md))
+print(f"Saved markdown report → {output_dir}/metrics_analysis.md")
 

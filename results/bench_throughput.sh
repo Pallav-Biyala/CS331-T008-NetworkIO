@@ -74,7 +74,8 @@ shuffled=($(printf "%s\n" "${ENGINES[@]}" | shuf))
 
 for engine in "${shuffled[@]}"; do
   for conns in "${CONN_COUNTS[@]}"; do
-    # select() FD_SETSIZE is now dynamically expanded to 10000 in server_select.c.
+    # select() is limited to fds 0..1023 (MAX_CLIENTS=1024 in server_select.c).
+    # High connection counts will hit this ceiling; see server_select.c for details.
 
     tag="${engine}_c${conns}"
     dur=$(duration_for "$conns")
