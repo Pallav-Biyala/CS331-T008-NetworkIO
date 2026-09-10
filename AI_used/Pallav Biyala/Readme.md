@@ -37,25 +37,111 @@ AI was particularly useful for explaining concepts that were initially unclear a
 
 ---
 
-#### 4) Step by Step Details:
+### 4) Step by Step Details:
 
-| Stage | What was reviewed | What AI caught / contributed |
-|---|---|---|
-| 1. Foundation | `network_utils.c` (socket creation, `SO_REUSEADDR`, `fcntl` non-blocking) | Confirmed correctness; flagged that accepted client sockets (not just the listener) would also need to be set non-blocking later. |
-| 2. First epoll draft | `server.c` v1 — `epoll_create1`, `epoll_ctl`, accept loop, `EAGAIN` draining | Flagged: (1) unbounded partial-write data loss on `send()`, (2) starvation risk from combining level-triggered epoll with a drain-until-`EAGAIN` loop, (3) `epoll_ctl` failure in accept loop wrongly using `break` instead of `continue`, (4) fd-lifecycle ownership mixed into `register_socket_epoll`, (5) uninitialized `epoll_event` struct padding. |
-| 3. Bug-fix pass | v2 after applying above fixes | Caught a new compile error (`ev` used in `main()` but declared only inside a different function) and a missing `#include <string.h>`, introduced while applying the previous round's fixes. |
-| 4. Level-triggered decision | v3 | Confirmed the switch to level-triggered epoll (dropping the inner drain loop) correctly resolved the starvation issue. |
-| 5. Partial-write design | Conceptual discussion, no code yet | Explained *why* `send()` can partially fail under `EAGAIN`, and outlined the three components needed to fix it properly: per-client state struct, a pointer-based epoll lookup (`epoll_data.ptr`) instead of an fd-indexed array, and an `EPOLLOUT`-driven flush routine. |
-| 6. `client_state` struct + `flush_outbound_buffer` | v4 | Verified the `memmove`-based buffer-shifting logic, the `EPOLL_CTL_MOD` re-arming logic, and the listener/client disambiguation via `data.ptr == NULL`. Caught a real bug: `&&` used instead of `&` when checking `revents` bitmasks (meant every event ran every branch, regardless of what actually fired). |
-| 7. Stress testing | N/A — new test artifacts | AI wrote a Python stress-test harness (concurrency test, slow-reader test designed to force `EAGAIN`, and a connection-churn test) and ran it against the compiled server. This surfaced a real, previously undetected bug: the fixed-size `out_buf` (64 KB) could overflow under a large/slow-reading client, at which point the server disconnected the client rather than corrupting or silently dropping data. |
-| 8. Design decision on buffer overflow | Team discussion | Team decided to treat the overflow-disconnect behavior as a **documented limitation** rather than implementing full read-side backpressure, and to keep `OUT_BUF_CAP` at 64 KB (not 1 MB) specifically to keep benchmarking comparable against select/poll/io_uring. |
-| 9. Poll implementation review | Teammate's `server_poll.c` | Reviewed for a shared review pass. Found one materially serious bug: accepted client sockets were never set non-blocking, meaning a slow client's `write()` would block the entire single-threaded event loop (not just drop data, as the code's own comment assumed). Also flagged a minor `EINTR` handling gap on `read()`. |
-| 10. `TCP_NODELAY` | Cross-cutting change | Discussed why Nagle's algorithm + delayed ACK can distort request/response latency benchmarks, and added a shared `set_tcp_nodelay()` helper to `network_utils.c`/`.h` so every I/O-model implementation applies it identically (for benchmark fairness). |
-| 11. Report writing | Introduction, socket lifecycle, blocking/non-blocking I/O sections | AI reviewed drafts written independently for technical accuracy (e.g., confirming that blocking `read()` correctly puts *the thread*, not "the server," to sleep) and suggested small clarity/structure edits. No section was AI-generated from scratch — all text was human-authored, then checked. |
+### Stage 1 — Understanding the Problem
+
+AI was used to understand the scalability problem in network servers:
+
+Blocking I/O
+      ↓
+Non-blocking I/O
+      ↓
+How do we efficiently identify ready sockets?
+      ↓
+I/O Multiplexing
+      ↓
+select → poll → epoll → io_uring
+
+This helped establish the conceptual progression used in the report.
+
+### Stage 2 — Understanding Epoll
+
+For the epoll implementation, AI was used extensively to understand:
+<ul>
+<li>epoll instances</li>
+<li>file descriptors</li>
+<li>epoll_create1()</li>
+<li>epoll_ctl()</li>
+<li>epoll_wait()</li>
+<li>readiness notifications</li>
+<li>EPOLLIN</li>
+<li>EPOLLOUT</li>
+<li>non-blocking sockets</li>
+<li>EAGAIN/EWOULDBLOCK</li>
+<li>partial writes</li>
+</ul>
+The concepts were discussed interactively rather than simply copying a finished implementation.
+
+### Stage 3 — Code Review
+
+The epoll implementation was reviewed with AI after development.
+
+The review identified and discussed issues such as:
+<ul>
+<li>handling non-blocking client sockets
+<li>partial send() operations
+<li>maintaining an output buffer
+<li>enabling EPOLLOUT when unsent data remains
+<li>handling disconnects
+<li>handling EPOLLERR/EPOLLHUP
+<li>understanding why closing a file descriptor can result in the operating system reusing that FD number
+<li>distinguishing level-triggered behaviour from edge-triggered behaviour
+</ul>
+
+### Stage 4 — Testing
+
+The implementation was tested using local TCP clients such as nc.
+
+Multiple client connections were tested to verify that:
+<ul>
+<li>multiple client sockets could be handled simultaneously;
+<li>data received from clients was echoed back;
+<li>clients could disconnect and reconnect;
+<li>file descriptors could be reused by the operating system.
+</ul>
+A separate stress-test script was also discussed to send a larger amount of data and verify that the echoed response was received.
+
+### Stage 5 — Report Preparation
+
+AI was used to review the report's explanations and make them clearer while retaining the team's own structure and understanding.
+
+For example, the restaurant/table-and-bell analogy was used to explain the difference between repeatedly checking every FD and receiving notifications for ready FDs.
+
+AI also helped identify technically misleading wording and suggested corrections while the final wording and content were decided by the team.
+
+### Stage 6 — Benchmark Interpretation
+
+AI was consulted while interpreting benchmark results, particularly when the measured performance of poll and epoll did not always follow the assumption that epoll must be faster.
+
+The discussion helped distinguish between:
+<ul>
+<li>theoretical scalability,
+<li>actual measured performance,
+<li>workload dependence,
+<li>virtualization effects,
+<li>implementation differences,
+<li>and benchmark variability.
+</ul>
+The team therefore avoided making the unsupported claim that newer mechanisms are always faster.
 
 ---
 
-### 5) Summary
+### 5) Role of AI in the Final Project
 
-AI was used as a **reviewer and debugging aid**, not as a code author. Every bug it identified is traceable to a specific line the student wrote; the fix was implemented by the student in the next iteration and re-checked. The one piece of AI-authored artifact in this workflow is the Python stress-test script (Section 3, stage 7), which was written by AI to validate the human-written C server, and its results (pass/fail per test) directly informed a real design decision (Section 3, stage 8) that the team made together.
+AI was used primarily for:
+<ul>
+<li>Conceptual learning
+<li>Technical clarification
+<li>Code review
+<li>Debugging assistance
+<li>Testing discussion
+<li>Edge-case analysis
+<li>Report editing
+<li>Benchmark-result interpretation
+</ul>
+The team remained responsible for writing, testing, integrating, and validating the project implementation.
 
+AI-generated suggestions were reviewed by the team before being incorporated into the project.
+
+---
