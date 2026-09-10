@@ -17,6 +17,8 @@ The link to my AI chat for all three AIs is given below:
 - `ChatGPT`: https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f
 - `Claude`: https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c
 
+---
+
 ### 3) Thought Process:
 AI was used as a supporting tool rather than as a replacement for the team's implementation work.
 
@@ -33,10 +35,9 @@ The general workflow was:
 
 AI was particularly useful for explaining concepts that were initially unclear and for acting as an additional code-review perspective.
 
---
+---
 
 #### 4) Step by Step Details:
-# AI Usage Disclosure — Epoll Server Component
 
 | Stage | What was reviewed | What AI caught / contributed |
 |---|---|---|
