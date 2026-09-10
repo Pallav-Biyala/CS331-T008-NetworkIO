@@ -1,6 +1,5 @@
-## AI Documentation:
+# AI Documentation:
 --
-
 ### 1) Tools Used:
 The AI tools used by me in this project are:
 - Gemini
