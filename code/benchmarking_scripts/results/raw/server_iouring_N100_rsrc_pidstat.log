@@ -1,0 +1,62 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/10/2026 	_aarch64_	(4 CPU)
+
+07:09:29 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:30 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:29 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:30 PM  1000     13093     28.00      0.00  server_iouring
+
+07:09:30 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:31 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:30 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:31 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:31 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:32 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:31 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:32 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:32 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:33 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:32 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:33 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:33 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:34 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:33 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:34 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:34 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:35 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:34 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:35 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:35 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:36 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:35 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:36 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:36 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:37 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:36 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:37 PM  1000     13093      0.00      0.00  server_iouring
+
+07:09:37 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:09:38 PM  1000     13093    0.00    0.00    0.00    0.00    0.00     1  server_iouring
+
+07:09:37 PM   UID       PID   cswch/s nvcswch/s  Command
+07:09:38 PM  1000     13093      0.00      0.00  server_iouring
+
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000     13093    0.00    0.00    0.00    0.00    0.00     -  server_iouring
+
+Average:      UID       PID   cswch/s nvcswch/s  Command
+Average:     1000     13093      3.10      0.00  server_iouring

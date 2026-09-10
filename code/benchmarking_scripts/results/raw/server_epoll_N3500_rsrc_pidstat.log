@@ -1,0 +1,68 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/10/2026 	_aarch64_	(4 CPU)
+
+07:06:58 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:06:59 PM  1000     12677    0.00    2.00    0.00    0.00    2.00     1  server_epoll
+
+07:06:58 PM   UID       PID   cswch/s nvcswch/s  Command
+07:06:59 PM  1000     12677    506.00      1.00  server_epoll
+
+07:06:59 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:00 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:06:59 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:00 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:00 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:01 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:00 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:01 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:01 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:02 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:01 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:02 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:02 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:03 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:02 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:03 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:03 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:04 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:03 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:04 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:04 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:05 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:04 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:05 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:05 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:06 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:05 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:06 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:06 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:07 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:06 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:07 PM  1000     12677      0.00      0.00  server_epoll
+
+07:07:07 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+07:07:08 PM  1000     12677    0.00    0.00    0.00    0.00    0.00     1  server_epoll
+
+07:07:07 PM   UID       PID   cswch/s nvcswch/s  Command
+07:07:08 PM  1000     12677      0.00      0.00  server_epoll
+
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000     12677    0.00    0.20    0.00    0.00    0.20     -  server_epoll
+
+Average:      UID       PID   cswch/s nvcswch/s  Command
+Average:     1000     12677     50.60      0.10  server_epoll

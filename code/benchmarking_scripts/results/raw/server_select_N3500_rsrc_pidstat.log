@@ -1,0 +1,68 @@
+Linux 7.0.0-31-generic (ubuntu-vm) 	09/10/2026 	_aarch64_	(4 CPU)
+
+06:59:30 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:31 PM  1000     11362    1.00   33.00    0.00    0.00   34.00     3  server_select
+
+06:59:30 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:31 PM  1000     11362    877.00     37.00  server_select
+
+06:59:31 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:32 PM  1000     11362    3.00   34.00    0.00    1.00   37.00     2  server_select
+
+06:59:31 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:32 PM  1000     11362    900.00     41.00  server_select
+
+06:59:32 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:33 PM  1000     11362    3.00   33.00    0.00    0.00   36.00     1  server_select
+
+06:59:32 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:33 PM  1000     11362    901.00     32.00  server_select
+
+06:59:33 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:34 PM  1000     11362    2.00   34.00    0.00    0.00   36.00     2  server_select
+
+06:59:33 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:34 PM  1000     11362    898.00     29.00  server_select
+
+06:59:34 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:35 PM  1000     11362    2.00   33.00    0.00    1.00   35.00     0  server_select
+
+06:59:34 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:35 PM  1000     11362    898.00     24.00  server_select
+
+06:59:35 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:36 PM  1000     11362    2.00   34.00    0.00    0.00   36.00     0  server_select
+
+06:59:35 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:36 PM  1000     11362    895.00     26.00  server_select
+
+06:59:36 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:37 PM  1000     11362    3.00   33.00    0.00    0.00   36.00     3  server_select
+
+06:59:36 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:37 PM  1000     11362    900.00     13.00  server_select
+
+06:59:37 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:38 PM  1000     11362    3.00   34.00    0.00    1.00   37.00     1  server_select
+
+06:59:37 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:38 PM  1000     11362    899.00     49.00  server_select
+
+06:59:38 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:39 PM  1000     11362    2.00   34.00    0.00    0.00   36.00     0  server_select
+
+06:59:38 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:39 PM  1000     11362    896.00     20.00  server_select
+
+06:59:39 PM   UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+06:59:40 PM  1000     11362    3.00   33.00    0.00    0.00   36.00     1  server_select
+
+06:59:39 PM   UID       PID   cswch/s nvcswch/s  Command
+06:59:40 PM  1000     11362    899.00     31.00  server_select
+
+
+Average:      UID       PID    %usr %system  %guest   %wait    %CPU   CPU  Command
+Average:     1000     11362    2.40   33.50    0.00    0.30   35.90     -  server_select
+
+Average:      UID       PID   cswch/s nvcswch/s  Command
+Average:     1000     11362    896.30     30.20  server_select
