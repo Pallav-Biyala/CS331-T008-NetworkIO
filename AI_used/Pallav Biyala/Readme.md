@@ -1,5 +1,5 @@
 # AI Documentation:
---
+---
 ### 1) Tools Used:
 The AI tools used by me in this project are:
 - Gemini
@@ -8,7 +8,7 @@ The AI tools used by me in this project are:
 
 The primary use was to understand networking and I/O multiplexing concepts, review implementation decisions, identify possible issues in the code, and improve the clarity of the project documentation.
 
---
+---
 
 #### 2) Prompts:
 The link to my AI chat for all three AIs is given below:
