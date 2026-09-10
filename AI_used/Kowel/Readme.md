@@ -3,7 +3,7 @@
 This document outlines how artificial intelligence tools were integrated into my specific portion of the team project. 
 
 **Team Division of Labor Context:**
-* **Guransh:** Implementation of the `select` and `poll` single-threaded TCP echo servers and presentation slides.
+* **Guransh:** Implementation of the `select` and single-threaded TCP echo servers and presentation slides.
 * **My Role:** Core conceptual research, kernel-level mechanics, and the implementation of the `poll` single-threaded TCP echo server.
 * **Sai Krishna:** Implementation of the modern asynchronous engine `io_uring`.
 * **Hemcharan:** Load generation (tcpkali/wrk), benchmarking, profiling, and final analysis.
