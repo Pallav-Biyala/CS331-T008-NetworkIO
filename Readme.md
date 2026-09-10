@@ -7,10 +7,10 @@
 ## Team Members
 | Name | Roll Number | Role |
 | :--- | :--- | :--- |
-| Chitiveli Hemcharan Varma | 2411095 | - |
-| Gella Naga Sai Krishna | 24110122 | - |
-| Guransh Kaur Saran | 24110127 | - |
-| Kowel P Laloo | 24110168 | - |
-| Pallav Biyala | 24110234 | - |
+| Chitiveli Hemcharan Varma | 2411095 | Benchmarking |
+| Gella Naga Sai Krishna | 24110122 | io_uring |
+| Guransh Kaur Saran | 24110127 | select |
+| Kowel P Laloo | 24110168 | poll |
+| Pallav Biyala | 24110234 | epoll |
 
 ---
