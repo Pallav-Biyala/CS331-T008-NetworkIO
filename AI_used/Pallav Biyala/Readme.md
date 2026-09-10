@@ -24,9 +24,9 @@ AI was used as a supporting tool rather than as a replacement for the team's imp
 
 The general workflow was:
 
-- Understand the networking concept with the help of ChatGPT.
+- Understand the networking concept with the help of the AIs.
 - Develop the implementation based on the team's understanding of the required mechanism.
-- Share the implementation with ChatGPT for code review and conceptual checking.
+- Share the implementation with AIs for code review and conceptual checking.
 - Identify possible bugs, limitations, or edge cases.
 - Test the implementation locally.
 - Discuss the observed behaviour and possible causes with AI.
