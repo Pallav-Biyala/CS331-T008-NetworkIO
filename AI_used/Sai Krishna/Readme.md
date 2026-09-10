@@ -6,6 +6,8 @@ The following AI tools were used during this project:
 
 - Claude in Antigravity
 - GitHub Copilot in Visual Studio Code
+- Gemini for understanding and ideation
+- Chatgpt for understanding and ideation
 
 ### Prompts
 
