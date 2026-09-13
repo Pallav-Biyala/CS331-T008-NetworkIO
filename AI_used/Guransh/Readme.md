@@ -8,24 +8,19 @@
 ## Tools Used
 
 - **Claude** – mainly used for debugging the `select()` server code, understanding syscall behaviour, and getting help structuring the PPT content.
-- **Gemini** – used for quick doubts, generating some explanations for slides, and double checking a few socket programming concepts.
+- **Gemini** – used for quick doubts, generating some slides.
 
 ---
 
 ## Prompts Used
 
-Below are (roughly) the prompts I gave, kept in the same wording I actually typed:
+### Claude Chats
+- [Chat 1](claude%20chat%201.md)
+- [Chat 2](claude%20chat%202.md)
 
-1. "hey can u explain what is select(), epoll(), poll()? and how select() works in socket programming, like whats fd_set and why do we need FD_ZERO FD_SET etc"
-2. "im writing a server in C using select(), act like a teacher and help me write this step by step"
-3. "whats the diff between select and poll and epoll in simple words, need this phrased for a report"
-4. "how do i handle the case when select() returns but its the listening socket thats ready vs a client socket, kinda confused on the loop logic"
-5. "can u give me a rough outline for ppt slides on select() based server, like what should go in the slide"
-6. "make the slides sound more professional and interesting to read”
-7. "why is my FD_ISSET check not working properly"
-8. "explain select() server limitations for my report, like why its not scalable for many clients"
-9. "can u just check if this explanation of select() is technically correct"
-10. "need a simple diagram (like text diragram) for ppt showing select() monitoring multiple fds at once"
+### Gemini Chats
+- [Chat 1](gemini%20chat%201.pdf)
+- [Chat 2](gemini%20chat%202.pdf)
 
 ---
 
@@ -35,22 +30,22 @@ I used AI to write the select server code for me from scratch, but I asked it to
 
 For conceptual doubt, I used both Claude and Gemini almost like a doubt-clearing session, asking follow-up questions until it made sense to me, since I needed to explain some of this in the report too.
 
-For the PPT, I used AI more for structuring/wording than content generation, I already knew what I wanted to present, but I used Claude to help me turn my rough explanations into slide-friendly bullet points. Gemini was used as a quick "sanity check" to verify a couple of technical statements before putting them on slides, since I didn't want to present something factually wrong.
+For the PPT, I used AI more for restructuring than content generation, I already knew what I wanted to present, but I used Claude to help me turn my explanations into slides. Gemini was used as a quick helper.
 
-Overall, AI was used as a teacher + debugging aid + concept-clarifier + slide-phrasing helper. The core logic of the select server, the actual report writing, and the final slide content/design were done by me.
+Overall, AI was used as a teacher + debugging aid + concept-clarifier + slide-helper. 
 
 ---
 
 ## Step-by-Step Details of AI Contribution
 
-| Stage | Where AI helped | How |
-|---|---|---|
-| Initial select() server coding | Understanding syscall | Asked Claude to explain `select()`, `fd_set`, `FD_ZERO`/`FD_SET`/`FD_ISSET`/`FD_CLR` before I started writing the accept/read loop |
-| Debugging (listening vs client socket | Bug fixing | Pasted my code into Claude, it pointed out I wasn't handling the listening socket vs client socket check properly inside the loop |
-| Debugging (max_fd issue) | Bug fixing | Asked Claude why `FD_ISSET` checks were failing, turned out I wasn't updating `max_fd` after adding a new client fd, fixed this myself after the explanation |
-| Report writing (select server section) | Concept clarity only | Asked Claude/Gemini to explain select vs poll vs epoll and why select has a scalability limit (fd_set size limit, O(n) scanning), then used it to write the actual report paragraphs using that understanding |
-| PPT structuring | Outline suggestion | Asked Claude for a rough slide-by-slide outline for presenting a select() server (intro → syscall → server loop → limitations → demo) |
-| PPT wording | Bullet-point phrasing | Gave Claude my own explanations and asked it to condense them into short slide-friendly bullets |
-| PPT fact-check | Verification | Asked Gemini to check if a couple of technical statements about select() were correct before finalizing slides |
-| Diagram idea | Visual planning | Asked Claude for a simple way to describe/draw select() monitoring multiple fds, used this idea to make one of the diagram slides myself |
-
+| Stage | Tool | Where AI helped | How |
+|---|---|---|---|
+| Understanding `select()` | Claude | Concept clarity | Asked Claude to explain `select()`, `fd_set`, and `FD_ZERO`/`FD_SET`/`FD_ISSET`/`FD_CLR`, plus what "blocking" actually means, before writing the accept/read loop |
+| Writing the select-loop code | Claude | Code scaffolding | Built the server skeleton, client-fd array, the `select()` loop, and the accept/read/echo logic piece-by-piece with Claude |
+| Debugging (missing header) | Claude | Bug fixing | Compiler said `accept()` was implicitly declared; Claude spotted that `sys/socket.h` wasn't included in `select_server.c` |
+| Debugging (`perror` misuse) | Claude | Bug fixing | Compiler flagged "too many arguments to `perror`"; Claude explained `perror()` isn't `printf`-style and fixed the line to use `printf` instead |
+| Debugging (non-blocking client sockets, FD_SETSIZE, EAGAIN) | Claude | Bug fixing / code review | After teammates ran the code past Gemini as well, pasted the consolidated feedback to Claude, which turned it into concrete fixes: making client sockets non-blocking after `accept()`, adding an `FD_SETSIZE` guard, and handling `EAGAIN`/`EWOULDBLOCK` on `read()` instead of treating it as a disconnect |
+| Report writing (select() limitations) | Claude + Gemini | Concept clarity | Asked Claude to explain the `FD_SETSIZE = 1024` cap and O(N) scanning for the report's limitations section; separately asked Gemini for a select vs poll vs epoll vs io_uring restaurant analogy to frame the same scaling argument |
+| Graph fact-check | Gemini | Verification | Asked Gemini why the `server_select` context-switch line disappears/overlaps in the benchmark graph, to get an accurate explanation before writing the caption |
+| Slide content (restaurant analogy) | Gemini | Slide-content generation | Had Gemini shorten the select/poll/epoll/io_uring restaurant analogy into slide-ready bullets, then fold it into a single existing slide layout |
+| Slide deck build | Claude | File generation | Gave Claude the finished `presentation_slides.md` plus the 4 benchmark graph images and had it generate the actual 6-slide `.pptx` (fixed slide count according to updated structure) |
