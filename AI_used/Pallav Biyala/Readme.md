@@ -5,6 +5,7 @@ The following AI tools were utilized during the research, implementation, and an
 * **Google Gemini**
 * **OpenAI ChatGPT**
 * **Anthropic Claude**
+* **Trae AI**
 
 Primary usage focused on understanding networking and I/O multiplexing concepts, reviewing architecture decisions, identifying edge-case bugs, and refining project documentation.
 
@@ -14,7 +15,7 @@ Primary usage focused on understanding networking and I/O multiplexing concepts,
 Transparency links to the full AI interaction logs for this project:
 * **Gemini Share Link:** [https://share.gemini.google/zCBlE6R2HfoJ](https://share.gemini.google/zCBlE6R2HfoJ)
 * **ChatGPT Share Link:** [https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f](https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f)
-* **Claude Share Link:** [https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c](https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c) <br>
+* **Claude Share Link:** [https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c](https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c) , https://claude.ai/share/f3ab5335-e333-48aa-9671-79e0b70994ce <br>
 
 (I thought since my team modified my AI documentation and removed these links, so I thought these wont be required so I unfortunately deleted these chats)
 
