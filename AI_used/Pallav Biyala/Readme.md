@@ -1,88 +1,87 @@
-# AI Usage Documentation
+# AI Use & Collaboration Disclosure
 
 ## 1. Tools Used
-**ChatGPT** was used as an AI-assisted learning, code-review, debugging, and documentation tool during the development of the `epoll` component. The primary use was to understand networking and I/O multiplexing concepts, review implementation decisions, identify possible issues in the code, and improve the clarity of the project documentation.
+The following AI tools were utilized during the research, implementation, and analysis phases of this project:
+* **Google Gemini**
+* **OpenAI ChatGPT**
+* **Anthropic Claude**
 
-## 2. How AI Was Integrated Into the Workflow
-AI was used as a supporting tool rather than as a replacement for the team's implementation work. The general workflow was:
+Primary usage focused on understanding networking and I/O multiplexing concepts, reviewing architecture decisions, identifying edge-case bugs, and refining project documentation.
 
-1. Understand the networking concept with the help of ChatGPT.
-2. Develop the implementation based on the team's understanding of the required mechanism.
-3. Share the implementation with ChatGPT for code review and conceptual checking.
-4. Identify possible bugs, limitations, or edge cases.
-5. Test the implementation locally.
-6. Discuss the observed behaviour and possible causes with AI.
-7. Make implementation decisions based on the team's judgement and project requirements.
-8. Document the mechanism and implementation in the project report.
+---
 
-AI was particularly useful for explaining concepts that were initially unclear and for acting as an additional code-review perspective.
+## 2. Prompts & Conversation History
+Transparency links to the full AI interaction logs for this project:
+* **Gemini Share Link:** [https://share.gemini.google/zCBlE6R2HfoJ](https://share.gemini.google/zCBlE6R2HfoJ)
+* **ChatGPT Share Link:** [https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f](https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f)
+* **Claude Share Link:** [https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c](https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c)
 
-## 3. Step-by-Step AI Contribution
+(I thought since my team modified my AI documentation, removing links, these wont be required so I unfortunately deleted these chats)
+---
 
-### Stage 1 — Understanding the Problem
-AI was used to understand the scalability problem in network servers, establishing the conceptual progression:
-Blocking I/O → Non-blocking I/O → How do we efficiently identify ready sockets? → I/O Multiplexing → `select` → `poll` → `epoll` → `io_uring`.
+## 3. Methodology & Thought Process
+AI was leveraged strictly as an interactive tutor and secondary code reviewer—not as a substitute for human development and system architecture decisions.
 
-| Prompt | Purpose |
-| :--- | :--- |
-| "Explain blocking and non-blocking I/O." | Established the base distinction driving the whole project. |
-| "Why is non-blocking I/O useful for handling multiple clients?" | Motivated the need for I/O multiplexing. |
-| "Explain select, poll, epoll and io_uring and how they differ." | Framed the overall `select → poll → epoll → io_uring` progression used in the report. |
+**Standard Development Workflow:**
+1. **Conceptual Mastery:** Explored low-level networking and kernel primitives via AI interaction.
+2. **Implementation:** Developed the C server implementations independently based on core understanding.
+3. **Static Review:** Shared original implementations with AI to perform static code analysis and conceptual checks.
+4. **Edge Case Analysis:** Identified potential deadlocks, buffer overflows, and state handling errors.
+5. **Local Validation:** Executed unit tests and stress tests locally.
+6. **Iterative Refinement:** Discussed observed runtime behavior with AI to analyze root causes.
+7. **Human Judgment:** Made all final architecture and code decisions based on engineering trade-offs and project requirements.
+8. **Documentation:** Documented findings, mechanisms, and benchmarks in the final report.
 
-### Stage 2 — Understanding Epoll
-For the epoll implementation, AI was used extensively to understand epoll instances, file descriptors, readiness notifications, and non-blocking I/O mechanics. The concepts were discussed interactively rather than simply copying a finished implementation.
+---
 
-| Prompt | Purpose |
-| :--- | :--- |
-| "What exactly does epoll do?" | Built the base conceptual model of epoll before implementation. |
-| "Explain epoll_create1(), epoll_ctl() and epoll_wait()." | Clarified the three core epoll syscalls. |
-| "What does EPOLLIN mean?" / "What does EPOLLOUT mean?" | Clarified readiness-event flags. |
-| "Explain level-triggered epoll." | Established why the implementation uses level-triggered (not edge-triggered) mode. |
-| "What is EAGAIN/EWOULDBLOCK and why does it occur with non-blocking sockets?" | Explained the error code driving the non-blocking read/write handling. |
+## 4. Step-by-Step Breakdown
 
-### Stage 3 — Code Review
-The epoll implementation was reviewed with AI after development, surfacing issues such as non-blocking client sockets, partial writes, output buffering, `EPOLLOUT` re-arming, disconnect handling, and level- vs. edge-triggered behaviour.
+### Stage 1 — System Scale & Problem Definition
+Constructed the theoretical foundation of high-concurrency network servers:
+$$\text{Blocking I/O} \longrightarrow \text{Non-Blocking I/O} \longrightarrow \text{I/O Multiplexing} \longrightarrow (\text{select} \to \text{poll} \to \text{epoll} \to \text{io\_uring})$$
 
-| Prompt | Purpose |
-| :--- | :--- |
-| "Check this epoll implementation for issues." | General review pass on the implementation. |
-| "Is the accepted client socket non-blocking?" | Verified sockets were configured correctly. |
-| "Why do we need an output buffer here?" | Clarified the need to buffer unsent data. |
-| "What happens if send() only sends part of the data?" | Surfaced the partial-write problem. |
-| "Explain whether this implementation correctly handles partial writes." | Confirmed the fix handled partial writes correctly. |
-| "Is this limitation acceptable for the scope of our project?" | Sanity-checked scope decisions against project requirements. |
+### Stage 2 — Epoll Kernel Architecture Deep-Dive
+Analyzed low-level system calls and kernel-space primitives:
+* `epoll_create1()`, `epoll_ctl()`, and `epoll_wait()` lifecycles
+* Interest set registration vs. ready list notifications
+* Handling non-blocking sockets with `EPOLLIN` and `EPOLLOUT` bitmasks
+* Managing `EAGAIN` / `EWOULDBLOCK` signals and partial write offsets
 
-### Stage 4 — Testing
-The implementation was tested using local TCP clients such as `nc`, verifying simultaneous client handling, correct echo behaviour, disconnect/reconnect handling, and FD reuse by the OS. A separate stress-test script was also discussed.
+### Stage 3 — Code Review & Edge-Case Identification
+Conducted review passes on custom server code to handle low-level edge cases:
+* Managing client-side non-blocking sockets and output buffer queues
+* Enabling `EPOLLOUT` triggers dynamically when unsent buffer data remains
+* Connection teardown protocols and `EPOLLERR` / `EPOLLHUP` handling
+* Analyzing file descriptor allocation, reuse, and lifecycle by the kernel
+* Level-Triggered (`LT`) vs. Edge-Triggered (`ET`) operational nuances
 
-| Prompt | Purpose |
-| :--- | :--- |
-| (Discussion-based — used to interpret test behaviour such as FD reuse after a client disconnects, and to design a Python stress-test script.) | Interpreted observed runtime behaviour and validated echoed data under load. |
+### Stage 4 — Testing & Validation
+Verified server behavior under concurrent connections using utilities like `netcat` (`nc`):
+* Verified simultaneous multi-client connection persistence
+* Confirmed non-blocking echo responses and read/write buffer accuracy
+* Validated socket recycling and graceful disconnect behavior
+* Analyzed stress-testing results under high message volume payloads
 
-### Stage 5 — Report Preparation
-AI was used to review the report's explanations and make them clearer while retaining the team's own structure and understanding — including reviewing wording, structure, and the epoll explanation (e.g. a restaurant/table-and-bell analogy for polling vs. notification).
+### Stage 5 — Documentation & Technical Communication
+Refined explanations in the final project report for clarity and precision:
+* Formulated real-world analogies (e.g., restaurant polling vs. ready notification bells) to illustrate $O(N)$ scanning vs. $O(1)$ event loops.
+* Corrected technically misleading terminology while retaining human-authored structure.
 
-| Prompt | Purpose |
-| :--- | :--- |
-| "Review this section of the report for technical correctness." | Checked explanations for accuracy. |
-| "Can you make this explanation clearer?" | Improved wording and organization of the epoll write-up. |
+### Stage 6 — Benchmark Interpretation & Metric Analysis
+Evaluated performance anomalies where `poll` and `epoll` exhibited unexpected throughput or latency behavior:
+* Separated theoretical algorithmic complexity $O(1)$ vs. $O(N)$ from practical runtime metrics.
+* Evaluated environmental variables: workload characteristics, virtualization context, load-generator behavior, and hardware constraints.
+* Avoided blanket claims, ensuring claims reflected actual empirical data rather than assumptions.
 
-### Stage 6 — Benchmark Interpretation
-AI was consulted while interpreting benchmark results, particularly when measured `poll`/`epoll` performance did not always follow the assumption that `epoll` must be faster — helping distinguish theoretical scalability from actual measured performance, workload dependence, virtualization effects, and benchmark variability.
+---
 
-| Prompt | Purpose |
-| :--- | :--- |
-| "Why might poll and epoll show similar performance here instead of epoll being clearly faster?" | Avoided the unsupported claim that newer mechanisms are always faster. |
+## 5. Scope & Summary of AI Involvement
+AI served exclusively as a tool for:
+* **Conceptual Learning & System Architecture Analysis**
+* **Technical & System Call Clarifications**
+* **Code Review & Static Safety Checks**
+* **Edge-Case & Failure Mode Analysis**
+* **Report Proofreading & Clarity Improvements**
+* **Benchmark Result Interpretation**
 
-## 4. Role of AI in the Final Project
-AI was used primarily for:
-- Conceptual learning
-- Technical clarification
-- Code review
-- Debugging assistance
-- Testing discussion
-- Edge-case analysis
-- Report editing
-- Benchmark-result interpretation
-
-The team remained responsible for writing, testing, integrating, and validating the project implementation. AI-generated suggestions were reviewed by the team before being incorporated into the project.
+All core logic, code execution, integration, and final benchmarking validation remain the original, verified work of the project team.
