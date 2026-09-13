@@ -1,6 +1,7 @@
 # AI Usage Disclosure
 
 **Name:** Guransh Kaur Saran
+
 **Contribution to project:** Implemented the `select()`-based server, made the presentation (PPT), and contributed to the report section for the select server.
 
 ---
