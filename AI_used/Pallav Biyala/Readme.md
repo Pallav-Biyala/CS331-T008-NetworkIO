@@ -15,8 +15,7 @@ Transparency links to the full AI interaction logs for this project:
 * **Gemini Share Link:** [https://share.gemini.google/zCBlE6R2HfoJ](https://share.gemini.google/zCBlE6R2HfoJ)
 * **ChatGPT Share Link:** [https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f](https://chatgpt.com/share/6aa234f9-3790-83e8-8b83-b4093ef4505f)
 * **Claude Share Link:** [https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c](https://claude.ai/share/4a08daa8-321a-4d31-b480-f32f2ea5477c)
-
-(I thought since my team modified my AI documentation, removing links, these wont be required so I unfortunately deleted these chats)
+(I thought since my team modified my AI documentation and removed these links, so I thought these wont be required so I unfortunately deleted these chats)
 ---
 
 ## 3. Methodology & Thought Process
