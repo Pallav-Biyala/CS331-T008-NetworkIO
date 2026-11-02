@@ -72,3 +72,20 @@ test-filesrv: filesrv
 		--poll ./build/filesrv-poll \
 		--epoll ./build/filesrv-epoll \
 		--uring ./build/filesrv-uring
+
+# Benchmark fixture: generated (deterministic, not tracked by Git).
+BENCH_FIXTURE := files/bench-4MiB.bin
+
+.PHONY: bench-fixture test-filesrv-bench
+
+bench-fixture: $(BENCH_FIXTURE)
+
+$(BENCH_FIXTURE): code/tools/make_fixture.py
+	python3 code/tools/make_fixture.py $@ 4194304
+
+test-filesrv-bench: filesrv bench-fixture
+	python3 code/tests/filesrv_bench_check.py \
+		--select ./build/filesrv-select \
+		--poll ./build/filesrv-poll \
+		--epoll ./build/filesrv-epoll \
+		--uring ./build/filesrv-uring

@@ -8,6 +8,12 @@
 *.jsonl
 *.stats
 
+# Benchmark campaign output (code/tools/run_experiment)
+/results/
+
+# Generated benchmark fixture (make bench-fixture)
+/files/bench-4MiB.bin
+
 # Python cache files
 __pycache__/
 *.py[cod]
