@@ -63,3 +63,12 @@ $(BUILD)/filesrv-uring: $(CORE) $(URING) $(FILESRV) | $(BUILD)
 
 clean:
 	rm -rf $(BUILD)
+
+.PHONY: test-filesrv
+
+test-filesrv: filesrv
+	python3 code/tests/filesrv_gate.py \
+		--select ./build/filesrv-select \
+		--poll ./build/filesrv-poll \
+		--epoll ./build/filesrv-epoll \
+		--uring ./build/filesrv-uring
