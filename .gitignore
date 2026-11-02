@@ -7,3 +7,7 @@
 # Runtime statistics and temporary output
 *.jsonl
 *.stats
+
+# Python cache files
+__pycache__/
+*.py[cod]
