@@ -19,6 +19,8 @@ DURATION=30
 WARMUP=10
 COOLDOWN=10
 MSG_SIZE=512
+ACTIVE_SHARE=1.0
+UNTHROTTLED=0
 OUTPUT="results.csv"
 
 print_usage() {
@@ -29,6 +31,8 @@ Usage: $0 -s <select|poll|epoll|uring> [options]
   -p  Server port (default: $PORT)
   -c  Number of concurrent TCP connections (default: $CONNS)
   -r  Target request rate (ops/sec) (default: $RATE)
+  -u  Unthrottled mode (maximum throughput, sets rate=0)
+  -a  Active connection share (0.0 < share <= 1.0, default: $ACTIVE_SHARE)
   -d  Duration of the steady‑state phase in seconds (default: $DURATION)
   -w  Warm‑up time in seconds (default: $WARMUP)
   -C  Cool‑down time in seconds (default: $COOLDOWN)
@@ -39,13 +43,15 @@ EOF
 }
 
 # Parse arguments
-while getopts "s:h:p:c:r:d:w:C:m:o:" opt; do
+while getopts "s:h:p:c:r:ua:d:w:C:m:o:" opt; do
   case $opt in
     s) SERVER_TYPE=$OPTARG ;;
     h) HOST=$OPTARG ;;
     p) PORT=$OPTARG ;;
     c) CONNS=$OPTARG ;;
     r) RATE=$OPTARG ;;
+    u) UNTHROTTLED=1; RATE=0 ;;
+    a) ACTIVE_SHARE=$OPTARG ;;
     d) DURATION=$OPTARG ;;
     w) WARMUP=$OPTARG ;;
     C) COOLDOWN=$OPTARG ;;
@@ -66,6 +72,11 @@ if [[ "$OUTPUT" == "results.csv" ]]; then
   OUTPUT="results_${SERVER_TYPE}_c${CONNS}_r${RATE}_m${MSG_SIZE}.csv"
 fi
 
+EXTRA_FLAGS=""
+if [[ $UNTHROTTLED -eq 1 || "$RATE" == "0" ]]; then
+  EXTRA_FLAGS="--unthrottled"
+fi
+
 # Pin the client to a couple of cores for reproducibility
 TASKSET_CMD="taskset -c 1-2"
 
@@ -75,6 +86,8 @@ $TASKSET_CMD ./echo_loadgen \
   --port "$PORT" \
   --connections "$CONNS" \
   --rate "$RATE" \
+  $EXTRA_FLAGS \
+  --active-share "$ACTIVE_SHARE" \
   --duration "$DURATION" \
   --warmup "$WARMUP" \
   --cooldown "$COOLDOWN" \

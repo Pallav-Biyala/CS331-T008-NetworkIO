@@ -82,7 +82,7 @@ struct Config {
     std::string host = "127.0.0.1";
     uint16_t port = 8080;
     uint32_t connections = 100;
-    double rate = 1000.0;           // Target aggregate messages per second
+    double rate = 1000.0;           // Target aggregate messages per second (0 = unthrottled)
     double duration = 30.0;         // Measurement duration in seconds
     size_t msg_size = 512;          // Application message size in bytes
     std::string output_csv = "";
@@ -90,6 +90,8 @@ struct Config {
     double cooldown = 0.0;          // Cooldown duration in seconds
     uint64_t timeout_ms = 5000;     // Request timeout in milliseconds
     double connect_timeout = 10.0;  // Initial connect timeout in seconds
+    bool unthrottled = false;       // If true, send as fast as possible (closed-loop)
+    double active_share = 1.0;      // Fraction of connections that actively send traffic (0.0 < share <= 1.0)
 };
 
 enum class ConnState {
@@ -133,7 +135,9 @@ void print_usage(const char *prog) {
               << "  --host <ip|hostname>     Server address (default: 127.0.0.1)\n"
               << "  --port <port>            Server port (default: 8080)\n"
               << "  --connections <N>        Number of persistent TCP connections (default: 100)\n"
-              << "  --rate <R>               Target aggregate message rate in msgs/sec (default: 1000)\n"
+              << "  --rate <R>               Target aggregate message rate in msgs/sec (0 = unthrottled, default: 1000)\n"
+              << "  --unthrottled            Send as fast as possible (maximum throughput mode)\n"
+              << "  --active-share <float>   Fraction of connections active (0.0 < share <= 1.0, default: 1.0)\n"
               << "  --duration <sec>         Measurement duration in seconds (default: 30)\n"
               << "  --msg-size <bytes>       Message frame size in bytes (default: 512)\n"
               << "  --output <csv_path>      Output CSV file path\n"
@@ -153,6 +157,11 @@ bool parse_args(int argc, char **argv, Config &cfg) {
         if (eq != std::string::npos) {
             val = arg.substr(eq + 1);
             arg = arg.substr(0, eq);
+        } else if (arg == "--unthrottled") {
+            // boolean flag without value
+            cfg.unthrottled = true;
+            cfg.rate = 0.0;
+            continue;
         } else if (i + 1 < argc && argv[i + 1][0] != '-') {
             val = argv[++i];
         }
@@ -169,6 +178,15 @@ bool parse_args(int argc, char **argv, Config &cfg) {
         } else if (arg == "--rate") {
             if (val.empty()) return false;
             cfg.rate = std::stod(val);
+            if (cfg.rate == 0.0) {
+                cfg.unthrottled = true;
+            }
+        } else if (arg == "--unthrottled") {
+            cfg.unthrottled = true;
+            cfg.rate = 0.0;
+        } else if (arg == "--active-share") {
+            if (val.empty()) return false;
+            cfg.active_share = std::stod(val);
         } else if (arg == "--duration") {
             if (val.empty()) return false;
             cfg.duration = std::stod(val);
@@ -207,8 +225,12 @@ bool parse_args(int argc, char **argv, Config &cfg) {
         std::cerr << "Error: --connections must be positive\n";
         return false;
     }
-    if (cfg.rate <= 0.0) {
-        std::cerr << "Error: --rate must be positive\n";
+    if (!cfg.unthrottled && cfg.rate <= 0.0) {
+        std::cerr << "Error: --rate must be positive (or specify --unthrottled)\n";
+        return false;
+    }
+    if (cfg.active_share <= 0.0 || cfg.active_share > 1.0) {
+        std::cerr << "Error: --active-share must be in range (0.0, 1.0]\n";
         return false;
     }
     if (cfg.duration <= 0.0) {
@@ -353,7 +375,17 @@ int main(int argc, char **argv) {
     std::vector<Connection> conns(cfg.connections);
     std::deque<uint32_t> idle_conns;
 
-    std::cout << "Connecting " << cfg.connections << " persistent TCP connections to "
+    uint32_t active_count = std::max(1U, static_cast<uint32_t>(std::round(cfg.connections * cfg.active_share)));
+    std::vector<bool> is_active(cfg.connections, false);
+    for (uint32_t i = 0; i < cfg.connections; ++i) {
+        if ((static_cast<uint64_t>(i) * active_count / cfg.connections) !=
+            (static_cast<uint64_t>(i + 1) * active_count / cfg.connections)) {
+            is_active[i] = true;
+        }
+    }
+
+    std::cout << "Connecting " << cfg.connections << " persistent TCP connections ("
+              << active_count << " active, " << (cfg.connections - active_count) << " idle) to "
               << cfg.host << ":" << cfg.port << "...\n";
 
     uint64_t conn_start_ns = get_time_ns();
@@ -386,7 +418,9 @@ int main(int argc, char **argv) {
         if (rc == 0) {
             conns[i].state = ConnState::IDLE;
             connected_count++;
-            idle_conns.push_back(i);
+            if (is_active[i]) {
+                idle_conns.push_back(i);
+            }
             ev.events = EPOLLIN | EPOLLERR | EPOLLHUP;
             ev.data.u32 = i;
             epoll_ctl(epoll_fd, EPOLL_CTL_ADD, fd, &ev);
@@ -443,7 +477,9 @@ int main(int argc, char **argv) {
             if (getsockopt(conn.fd, SOL_SOCKET, SO_ERROR, &so_error, &len) == 0 && so_error == 0) {
                 conn.state = ConnState::IDLE;
                 connected_count++;
-                idle_conns.push_back(id);
+                if (is_active[id]) {
+                    idle_conns.push_back(id);
+                }
                 ev.events = EPOLLIN | EPOLLERR | EPOLLHUP;
                 ev.data.u32 = id;
                 epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev);
@@ -484,18 +520,65 @@ int main(int argc, char **argv) {
     uint64_t concurrency_stalls = 0;
 
     std::vector<uint32_t> rtt_samples_us;
-    rtt_samples_us.reserve(static_cast<size_t>(cfg.rate * cfg.duration * 1.5) + 10000);
+    size_t sample_reserve = cfg.unthrottled ? 2000000 : (static_cast<size_t>(cfg.rate * cfg.duration * 1.5) + 10000);
+    rtt_samples_us.reserve(sample_reserve);
 
     uint64_t measurement_actual_start_ns = 0;
     uint64_t measurement_actual_end_ns = 0;
 
+    auto send_on_conn = [&](uint32_t cid, uint64_t now_ns) {
+        Connection &conn = conns[cid];
+        prepare_frame(conn, cfg, now_ns);
+        struct epoll_event ev_mod;
+        ev_mod.data.u32 = cid;
+        ssize_t n = send(conn.fd, conn.send_buf.data(), cfg.msg_size, MSG_NOSIGNAL);
+        if (n == static_cast<ssize_t>(cfg.msg_size)) {
+            conn.send_bytes_written = cfg.msg_size;
+            conn.state = ConnState::WAITING_REPLY;
+            if (phase == BenchPhase::MEASURING) total_sent++;
+            ev_mod.events = EPOLLIN | EPOLLERR | EPOLLHUP;
+            epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev_mod);
+        } else if (n > 0) {
+            conn.send_bytes_written = static_cast<size_t>(n);
+            conn.state = ConnState::SENDING;
+            ev_mod.events = EPOLLOUT | EPOLLIN | EPOLLERR | EPOLLHUP;
+            epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev_mod);
+        } else if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+            conn.send_bytes_written = 0;
+            conn.state = ConnState::SENDING;
+            ev_mod.events = EPOLLOUT | EPOLLIN | EPOLLERR | EPOLLHUP;
+            epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev_mod);
+        } else {
+            if (phase == BenchPhase::MEASURING) send_errors++;
+            conn.state = ConnState::CLOSED;
+            epoll_ctl(epoll_fd, EPOLL_CTL_DEL, conn.fd, nullptr);
+            close(conn.fd);
+            conn.fd = -1;
+        }
+    };
+
+    auto start_unthrottled_burst = [&]() {
+        uint64_t now_ns = get_time_ns();
+        std::vector<uint32_t> ready_ids(idle_conns.begin(), idle_conns.end());
+        idle_conns.clear();
+        for (uint32_t cid : ready_ids) {
+            send_on_conn(cid, now_ns);
+        }
+    };
+
     if (phase == BenchPhase::WARMUP) {
-        std::cout << "Starting " << cfg.warmup << "s warmup phase at target rate "
-                  << cfg.rate << " msgs/sec...\n";
+        std::cout << "Starting " << cfg.warmup << "s warmup phase "
+                  << (cfg.unthrottled ? "(unthrottled / max rate)...\n" : ("at target rate " + std::to_string(static_cast<int>(cfg.rate)) + " msgs/sec...\n"));
+        if (cfg.unthrottled) {
+            start_unthrottled_burst();
+        }
     } else {
-        std::cout << "Starting " << cfg.duration << "s measurement phase at target rate "
-                  << cfg.rate << " msgs/sec...\n";
+        std::cout << "Starting " << cfg.duration << "s measurement phase "
+                  << (cfg.unthrottled ? "(unthrottled / max rate)...\n" : ("at target rate " + std::to_string(static_cast<int>(cfg.rate)) + " msgs/sec...\n"));
         measurement_actual_start_ns = phase_start_ns;
+        if (cfg.unthrottled) {
+            start_unthrottled_burst();
+        }
     }
 
     uint64_t timeout_ns = cfg.timeout_ms * 1000000ULL;
@@ -584,15 +667,23 @@ int main(int argc, char **argv) {
                                 conn.expected_recv_seq++;
                                 conn.next_send_seq++;
                                 conn.recv_bytes_read = 0;
-                                conn.state = ConnState::IDLE;
-                                idle_conns.push_back(id);
+                                if (cfg.unthrottled && (phase == BenchPhase::WARMUP || phase == BenchPhase::MEASURING)) {
+                                    send_on_conn(id, get_time_ns());
+                                } else {
+                                    conn.state = ConnState::IDLE;
+                                    idle_conns.push_back(id);
+                                }
                             } else {
                                 if (phase == BenchPhase::MEASURING) mismatched_msgs++;
                                 conn.recv_bytes_read = 0;
                                 conn.expected_recv_seq++;
                                 conn.next_send_seq++;
-                                conn.state = ConnState::IDLE;
-                                idle_conns.push_back(id);
+                                if (cfg.unthrottled && (phase == BenchPhase::WARMUP || phase == BenchPhase::MEASURING)) {
+                                    send_on_conn(id, get_time_ns());
+                                } else {
+                                    conn.state = ConnState::IDLE;
+                                    idle_conns.push_back(id);
+                                }
                             }
                             break;
                         }
@@ -632,7 +723,13 @@ int main(int argc, char **argv) {
                 conn.in_flight_start_ns = 0;
                 conn.next_send_seq++;
                 conn.expected_recv_seq = conn.next_send_seq;
-                idle_conns.push_back(i);
+                if (is_active[i]) {
+                    if (cfg.unthrottled && (phase == BenchPhase::WARMUP || phase == BenchPhase::MEASURING)) {
+                        send_on_conn(i, get_time_ns());
+                    } else {
+                        idle_conns.push_back(i);
+                    }
+                }
             }
         }
 
@@ -640,11 +737,14 @@ int main(int argc, char **argv) {
         if (phase == BenchPhase::WARMUP) {
             if (now_ns - phase_start_ns >= warmup_duration_ns) {
                 std::cout << "Warmup complete. Starting " << cfg.duration
-                          << "s measurement phase at target rate " << cfg.rate << " msgs/sec...\n";
+                          << "s measurement phase " << (cfg.unthrottled ? "(unthrottled / max rate)...\n" : ("at target rate " + std::to_string(static_cast<int>(cfg.rate)) + " msgs/sec...\n"));
                 phase = BenchPhase::MEASURING;
                 phase_start_ns = now_ns;
                 measurement_actual_start_ns = now_ns;
                 messages_scheduled = 0;
+                if (cfg.unthrottled) {
+                    start_unthrottled_burst();
+                }
             }
         } else if (phase == BenchPhase::MEASURING) {
             if (now_ns - phase_start_ns >= measure_duration_ns) {
@@ -665,8 +765,8 @@ int main(int argc, char **argv) {
             }
         }
 
-        // 4. Open-Loop Rate Generation / Scheduling
-        if (phase == BenchPhase::WARMUP || phase == BenchPhase::MEASURING) {
+        // 4. Open-Loop Rate Generation / Scheduling (used when not unthrottled)
+        if (!cfg.unthrottled && (phase == BenchPhase::WARMUP || phase == BenchPhase::MEASURING)) {
             uint64_t elapsed_in_phase_ns = now_ns - phase_start_ns;
             uint64_t target_messages = static_cast<uint64_t>((elapsed_in_phase_ns * cfg.rate) / 1e9);
 
@@ -683,37 +783,7 @@ int main(int argc, char **argv) {
                 idle_conns.pop_front();
                 messages_scheduled++;
 
-                Connection &conn = conns[cid];
-                prepare_frame(conn, cfg, now_ns);
-
-                // Attempt immediate nonblocking send
-                ssize_t n = send(conn.fd, conn.send_buf.data(), cfg.msg_size, MSG_NOSIGNAL);
-                if (n == static_cast<ssize_t>(cfg.msg_size)) {
-                    conn.send_bytes_written = cfg.msg_size;
-                    conn.state = ConnState::WAITING_REPLY;
-                    if (phase == BenchPhase::MEASURING) total_sent++;
-                    ev.events = EPOLLIN | EPOLLERR | EPOLLHUP;
-                    ev.data.u32 = cid;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev);
-                } else if (n > 0) {
-                    conn.send_bytes_written = static_cast<size_t>(n);
-                    conn.state = ConnState::SENDING;
-                    ev.events = EPOLLOUT | EPOLLIN | EPOLLERR | EPOLLHUP;
-                    ev.data.u32 = cid;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev);
-                } else if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
-                    conn.send_bytes_written = 0;
-                    conn.state = ConnState::SENDING;
-                    ev.events = EPOLLOUT | EPOLLIN | EPOLLERR | EPOLLHUP;
-                    ev.data.u32 = cid;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_MOD, conn.fd, &ev);
-                } else {
-                    if (phase == BenchPhase::MEASURING) send_errors++;
-                    conn.state = ConnState::CLOSED;
-                    epoll_ctl(epoll_fd, EPOLL_CTL_DEL, conn.fd, nullptr);
-                    close(conn.fd);
-                    conn.fd = -1;
-                }
+                send_on_conn(cid, now_ns);
             }
         }
     }
@@ -754,7 +824,7 @@ int main(int argc, char **argv) {
         rtt_avg = sum / n;
     }
 
-    bool target_achieved = (total_sent >= static_cast<uint64_t>(cfg.rate * actual_duration_s * 0.95));
+    bool target_achieved = cfg.unthrottled ? true : (total_sent >= static_cast<uint64_t>(cfg.rate * actual_duration_s * 0.95));
 
     // Print formatted summary table to stdout
     std::cout << "\n======================================================================\n"
@@ -763,8 +833,10 @@ int main(int argc, char **argv) {
               << std::fixed << std::setprecision(2)
               << "Target Configuration:\n"
               << "  Server:                  " << cfg.host << ":" << cfg.port << "\n"
-              << "  Concurrent Connections:  " << cfg.connections << "\n"
-              << "  Target Offered Rate:     " << cfg.rate << " msgs/sec\n"
+              << "  Concurrent Connections:  " << cfg.connections << " (" << active_count << " active, "
+              << (cfg.connections - active_count) << " idle)\n"
+              << "  Active Share:            " << (cfg.active_share * 100.0) << " %\n"
+              << "  Target Offered Rate:     " << (cfg.unthrottled ? "UNTHROTTLED (max speed)" : (std::to_string(cfg.rate) + " msgs/sec")) << "\n"
               << "  Message Size:            " << cfg.msg_size << " bytes\n"
               << "  Configured Duration:     " << cfg.duration << " s"
               << " (Warmup: " << cfg.warmup << " s, Cooldown: " << cfg.cooldown << " s)\n\n"
@@ -786,7 +858,7 @@ int main(int argc, char **argv) {
               << "  Concurrency Stalls:      " << concurrency_stalls << "\n"
               << "======================================================================\n";
 
-    if (!target_achieved) {
+    if (!target_achieved && !cfg.unthrottled) {
         std::cout << "\n[NOTICE] Throughput limitation reached:\n"
                   << "  The generator was unable to sustain " << cfg.rate << " msgs/sec with "
                   << cfg.connections << " connections (Achieved: " << actual_send_rate << " msgs/sec).\n"
