@@ -1,82 +1,118 @@
-# CS331-T008 Benchmarking Runbook
+# CS331-T008 Benchmarking Runbook (Direct Mode / No SSH)
 
-This runbook gives the exact commands in sequential order to run the automated echo-server benchmarking suite using `scripts/run_experiments.sh`.
+This runbook gives the exact commands to run the automated echo-server benchmarking suite directly between the two laptops without needing SSH.
 
 ---
 
-## 1. One-Time Setup & Build
+## 1. Setup & Build (Both Laptops)
 
-### On Both Machines (Server & Client):
-Ensure latest code and rebuild binaries:
+Ensure both laptops have the latest code and binaries compiled:
 ```bash
 cd ~/linux-network-io-bench
 git pull origin loadgen-bench
 make clean && make echo && make loadgen
 ```
 
-### On Client Machine:
-Set up passwordless SSH to the Server (Omen at `192.168.50.1`):
-```bash
-./scripts/setup_ssh.sh koko 192.168.50.1
-```
-*(Verify by running: `ssh koko@192.168.50.1 "echo OK"` — should print `OK` without asking for a password).*
-
 ---
 
-## 2. Dry Run Verification (Client)
+## 2. Dry Run Check (Client)
 
-Verify the test grid, SSH, server binaries, and parameters without sending traffic:
+Verify the 49-configuration matrix without sending traffic:
 ```bash
 ./scripts/run_experiments.sh --dry-run
 ```
-Output will print the 49 scheduled configurations and confirm all pre-flight checks passed.
 
 ---
 
-## 3. Phase 2: Pilot Run (Quick Sanity Calibration)
+## 3. How to Run Experiments (Mechanism by Mechanism)
 
-Run only a single round of Experiment E1 to verify end-to-end telemetry and timing:
-```bash
-./scripts/run_experiments.sh --only E1 --rounds 1
-```
-- Verifies that servers launch over SSH, port bind succeeds, loadgen records CSV rows, server process snapshots (CPU, memory, counters) are captured, and server teardown works cleanly.
+You start the server once on the **Server (Omen)**, then run the client suite on the **Client**. The script automatically runs all matrix points (E1, E1s, E2, E3) for that mechanism, repeats them across rounds, retries on error, and appends clean CSV rows into `results/master.csv` and `results/E*.csv`.
 
 ---
 
-## 4. Phase 3: Full Experiment Sweep (Hard Cap ≤ 3.0 Hours)
+### Step A: Benchmark **`epoll`**
 
-Run the complete 49-configuration matrix with 5 repeats across randomized rounds:
-```bash
-./scripts/run_experiments.sh --max-hours 3.0 --rounds 5
-```
+1. **On Server (Omen):**
+   ```bash
+   ./scripts/run_server.sh -s epoll -p 8080 -m 512
+   ```
+   *(Leave this running in the terminal)*
 
-### Monitoring Progress:
-The runner automatically logs progress to the terminal and `results/run.log`.
-After each round, it prints:
-- Completed runs and invalid run count.
-- Elapsed time and projected total finish time.
-- If invalid runs occur (e.g. dropped packets), it automatically retries up to 2 times.
+2. **On Client:**
+   ```bash
+   ./scripts/run_experiments.sh --mech epoll --rounds 5
+   ```
+   *(Runs all tests for epoll, logs progress, and saves results)*
 
----
-
-## 5. Resuming an Interrupted Sweep
-
-If the run is interrupted (Ctrl+C, power, timeout), simply re-run the same command:
-```bash
-./scripts/run_experiments.sh --max-hours 3.0 --rounds 5
-```
-The script automatically reads `results/master.csv` and **skips any configurations and repeats that are already completed and valid**.
+3. **When Client completes:** Go to Server terminal and press `Ctrl+C`.
 
 ---
 
-## 6. Copying Results Out by USB Drive
+### Step B: Benchmark **`select`**
 
-Once the sweep finishes:
-1. Plug your FAT32/exFAT USB flash drive into the Client laptop.
-2. Copy the `results/` folder to the USB drive:
+1. **On Server:**
+   ```bash
+   ./scripts/run_server.sh -s select -p 8080 -m 512
+   ```
+
+2. **On Client:**
+   ```bash
+   ./scripts/run_experiments.sh --mech select --rounds 5
+   ```
+
+3. **When Client completes:** Press `Ctrl+C` on Server.
+
+---
+
+### Step C: Benchmark **`poll`**
+
+1. **On Server:**
+   ```bash
+   ./scripts/run_server.sh -s poll -p 8080 -m 512
+   ```
+
+2. **On Client:**
+   ```bash
+   ./scripts/run_experiments.sh --mech poll --rounds 5
+   ```
+
+3. **When Client completes:** Press `Ctrl+C` on Server.
+
+---
+
+### Step D: Benchmark **`uring`**
+
+1. **On Server:**
+   ```bash
+   ./scripts/run_server.sh -s uring -p 8080 -m 512
+   ```
+
+2. **On Client:**
+   ```bash
+   ./scripts/run_experiments.sh --mech uring --rounds 5
+   ```
+
+3. **When Client completes:** Press `Ctrl+C` on Server.
+
+---
+
+## 4. Resuming if Interrupted
+
+The script automatically skips configurations and repeats that are already completed and valid.
+If interrupted, simply re-run the same command on the Client:
 ```bash
-USB_MOUNT=$(ls -d /media/$USER/* | head -n 1)
-cp -r ~/linux-network-io-bench/results "$USB_MOUNT/"
-sync
+./scripts/run_experiments.sh --mech <type> --rounds 5
 ```
-3. Unplug USB drive and plug it into Laptop 3 for immediate report generation.
+
+---
+
+## 5. Copying Results Out by USB
+
+Once all 4 mechanisms are finished:
+1. Plug your USB drive into the Client.
+2. Copy the results:
+   ```bash
+   cp -r ~/linux-network-io-bench/results /media/$USER/*/
+   sync
+   ```
+3. Bring the USB drive to Laptop 3 for immediate report generation and plotting!

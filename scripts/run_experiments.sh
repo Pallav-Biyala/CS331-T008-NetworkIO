@@ -17,42 +17,47 @@ REPO_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 # Default CLI arguments
 DRY_RUN=0
 ONLY_EXP=""
+ONLY_MECH=""
 MAX_HOURS=3.0
 ROUNDS=5
 CONF_FILE="$SCRIPT_DIR/experiments.conf"
-SERVER_USER="${SERVER_USER:-koko}"
 SERVER_HOST="${SERVER_HOST:-192.168.50.1}"
-SERVER_REPO="${SERVER_REPO:-~/linux-network-io-bench}"
 PORT=8080
 MSG_SIZE=512
 WARMUP=5
 COOLDOWN=5
+USE_SSH=0
+SERVER_USER="${SERVER_USER:-koko}"
+SERVER_REPO="${SERVER_REPO:-~/linux-network-io-bench}"
 
 print_usage() {
     cat <<EOF
 Usage: $0 [options]
-  --dry-run               Show execution plan without starting servers or loadgen
+  --mech <type>           Run experiments for a specific mechanism only (select|poll|epoll|uring)
   --only <exp>            Filter to run only a specific experiment (e.g. E1, E1s, E2, E3)
-  --max-hours <float>     Hard timeout guard in hours (default: $MAX_HOURS)
   --rounds <int>          Number of repeats per configuration (default: $ROUNDS)
-  --conf <file>           Path to experiments configuration file (default: $CONF_FILE)
-  --server-user <user>    Remote SSH user on server (default: $SERVER_USER)
   --server-host <ip>      Remote server IP (default: $SERVER_HOST)
   --port <port>           Server port (default: $PORT)
+  --max-hours <float>     Hard timeout guard in hours (default: $MAX_HOURS)
+  --dry-run               Show execution plan without sending traffic
+  --conf <file>           Path to experiments configuration file (default: $CONF_FILE)
+  --use-ssh               Enable remote server start/stop via SSH (default: disabled)
   --help, -h              Show this help message
 EOF
 }
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
-        --dry-run) DRY_RUN=1; shift ;;
+        --mech) ONLY_MECH="$2"; shift 2 ;;
         --only) ONLY_EXP="$2"; shift 2 ;;
-        --max-hours) MAX_HOURS="$2"; shift 2 ;;
         --rounds) ROUNDS="$2"; shift 2 ;;
-        --conf) CONF_FILE="$2"; shift 2 ;;
-        --server-user) SERVER_USER="$2"; shift 2 ;;
         --server-host) SERVER_HOST="$2"; shift 2 ;;
         --port) PORT="$2"; shift 2 ;;
+        --max-hours) MAX_HOURS="$2"; shift 2 ;;
+        --dry-run) DRY_RUN=1; shift ;;
+        --conf) CONF_FILE="$2"; shift 2 ;;
+        --use-ssh) USE_SSH=1; shift ;;
+        --server-user) SERVER_USER="$2"; shift 2 ;;
         -h|--help) print_usage; exit 0 ;;
         *) echo "[ERROR] Unknown option: $1" >&2; print_usage; exit 1 ;;
     esac
@@ -76,11 +81,13 @@ log() {
 cleanup_on_exit() {
     local exit_code=$?
     if [[ $exit_code -ne 0 ]]; then
-        log "[WARNING] Script interrupted or failed with exit code $exit_code."
+        log "[WARNING] Script interrupted or finished with exit code $exit_code."
     fi
-    log "[INFO] Cleaning up remote server processes..."
-    ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
-        "${SERVER_REPO}/scripts/server_ctl.sh cleanup" >/dev/null 2>&1 || true
+    if [[ $USE_SSH -eq 1 ]]; then
+        log "[INFO] Cleaning up remote server processes via SSH..."
+        ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
+            "${SERVER_REPO}/scripts/server_ctl.sh cleanup" >/dev/null 2>&1 || true
+    fi
     pkill -f "echo_loadgen" >/dev/null 2>&1 || true
     exit $exit_code
 }
@@ -127,36 +134,46 @@ if [[ -d /sys/devices/system/cpu/cpu0/cpufreq ]]; then
     fi
 fi
 
-# Check SSH connectivity to server
-log "[INFO] Verifying SSH connectivity to ${SERVER_USER}@${SERVER_HOST}..."
-if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" "echo SSH_OK" &>/dev/null; then
-    log "[FATAL] Cannot connect via passwordless SSH to ${SERVER_USER}@${SERVER_HOST}."
-    log "        Please run ./scripts/setup_ssh.sh first to configure keys."
-    exit 1
-fi
-log "[OK] Passwordless SSH verified."
-
-# Check server binaries and server_ctl.sh
-log "[INFO] Verifying server binaries on remote host..."
-CHECK_REMOTE_BINS="
-    set -e
-    for b in echo-select echo-poll echo-epoll echo-uring; do
-        if [ ! -x ${SERVER_REPO}/build/\$b ]; then
-            echo \"MISSING_BIN:\$b\"; exit 1
-        fi
-    done
-    if [ ! -x ${SERVER_REPO}/scripts/server_ctl.sh ]; then
-        echo \"MISSING_CTL\"; exit 1
+if [[ $USE_SSH -eq 1 ]]; then
+    # Check SSH connectivity to server
+    log "[INFO] Verifying SSH connectivity to ${SERVER_USER}@${SERVER_HOST}..."
+    if ! ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" "echo SSH_OK" &>/dev/null; then
+        log "[FATAL] Cannot connect via passwordless SSH to ${SERVER_USER}@${SERVER_HOST}."
+        log "        Please run ./scripts/setup_ssh.sh first to configure keys."
+        exit 1
     fi
-    echo \"REMOTE_BINS_OK\"
-"
-REMOTE_CHECK_RES=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" "$CHECK_REMOTE_BINS" 2>&1 || true)
-if [[ "$REMOTE_CHECK_RES" != *"REMOTE_BINS_OK"* ]]; then
-    log "[FATAL] Remote server check failed: $REMOTE_CHECK_RES"
-    log "        Ensure 'make echo' was executed on the Server laptop in $SERVER_REPO"
-    exit 1
+    log "[OK] Passwordless SSH verified."
+
+    # Check server binaries and server_ctl.sh
+    log "[INFO] Verifying server binaries on remote host..."
+    CHECK_REMOTE_BINS="
+        set -e
+        for b in echo-select echo-poll echo-epoll echo-uring; do
+            if [ ! -x ${SERVER_REPO}/build/\$b ]; then
+                echo \"MISSING_BIN:\$b\"; exit 1
+            fi
+        done
+        if [ ! -x ${SERVER_REPO}/scripts/server_ctl.sh ]; then
+            echo \"MISSING_CTL\"; exit 1
+        fi
+        echo \"REMOTE_BINS_OK\"
+    "
+    REMOTE_CHECK_RES=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" "$CHECK_REMOTE_BINS" 2>&1 || true)
+    if [[ "$REMOTE_CHECK_RES" != *"REMOTE_BINS_OK"* ]]; then
+        log "[FATAL] Remote server check failed: $REMOTE_CHECK_RES"
+        log "        Ensure 'make echo' was executed on the Server laptop in $SERVER_REPO"
+        exit 1
+    fi
+    log "[OK] Remote server binaries and server_ctl.sh verified."
+else
+    log "[INFO] Direct Mode (No SSH): Target server expected at ${SERVER_HOST}:${PORT}"
+    if nc -z -w 2 "$SERVER_HOST" "$PORT" 2>/dev/null; then
+        log "[OK] Target server at ${SERVER_HOST}:${PORT} is UP and reachable!"
+    else
+        log "[NOTICE] Server at ${SERVER_HOST}:${PORT} is currently not reachable."
+        log "         Ensure the server is running on the Server laptop (e.g. ./scripts/run_server.sh -s epoll)."
+    fi
 fi
-log "[OK] Remote server binaries and server_ctl.sh verified."
 
 # Generate results/env.txt
 log "[INFO] Recording environment metadata to $ENV_FILE..."
@@ -189,6 +206,9 @@ while IFS= read -r line || [[ -n "$line" ]]; do
 
     IFS=',' read -r exp mech conns rate active_share duration <<< "$line"
     if [[ -n "$ONLY_EXP" && "$exp" != "$ONLY_EXP" ]]; then
+        continue
+    fi
+    if [[ -n "$ONLY_MECH" && "$mech" != "$ONLY_MECH" ]]; then
         continue
     fi
     CONFIG_LIST+=("$line")
@@ -311,21 +331,23 @@ for round in $(seq 1 "$ROUNDS"); do
                 RAW_OUTPUT_CSV="$RAW_DIR/${exp}-${mech}-c${conns}-a${active_share}-r${rate}-round${round}-att${ATTEMPT}.csv"
                 rm -f "$RAW_OUTPUT_CSV"
 
-                # 1. Start Server over SSH
-                START_OUT=$(ssh -o BatchMode=yes -o ConnectTimeout=10 "${SERVER_USER}@${SERVER_HOST}" \
-                    "${SERVER_REPO}/scripts/server_ctl.sh start $mech $PORT $MSG_SIZE 0" 2>&1 || true)
-                
-                if [[ "$START_OUT" != *"SERVER_STARTED"* ]]; then
-                    RUN_VALID=0
-                    RUN_INVALID_REASON="server_start_failed: $START_OUT"
-                    log "[ERROR] $RUN_INVALID_REASON"
-                    sleep 1
-                    continue
+                # 1. Start Server & Snapshot (if SSH enabled)
+                if [[ $USE_SSH -eq 1 ]]; then
+                    START_OUT=$(ssh -o BatchMode=yes -o ConnectTimeout=10 "${SERVER_USER}@${SERVER_HOST}" \
+                        "${SERVER_REPO}/scripts/server_ctl.sh start $mech $PORT $MSG_SIZE 0" 2>&1 || true)
+                    
+                    if [[ "$START_OUT" != *"SERVER_STARTED"* ]]; then
+                        RUN_VALID=0
+                        RUN_INVALID_REASON="server_start_failed: $START_OUT"
+                        log "[ERROR] $RUN_INVALID_REASON"
+                        sleep 1
+                        continue
+                    fi
                 fi
 
                 # 2. Wait until Server Port is accepting TCP connections
                 PORT_READY=0
-                for _ in {1..20}; do
+                for _ in {1..30}; do
                     if nc -z -w 1 "$SERVER_HOST" "$PORT" 2>/dev/null; then
                         PORT_READY=1
                         break
@@ -335,15 +357,22 @@ for round in $(seq 1 "$ROUNDS"); do
 
                 if [[ $PORT_READY -eq 0 ]]; then
                     RUN_VALID=0
-                    RUN_INVALID_REASON="server_port_unreachable"
+                    RUN_INVALID_REASON="server_port_${SERVER_HOST}_${PORT}_unreachable"
                     log "[ERROR] $RUN_INVALID_REASON"
-                    ssh "${SERVER_USER}@${SERVER_HOST}" "${SERVER_REPO}/scripts/server_ctl.sh stop" >/dev/null 2>&1 || true
+                    if [[ $USE_SSH -eq 1 ]]; then
+                        ssh "${SERVER_USER}@${SERVER_HOST}" "${SERVER_REPO}/scripts/server_ctl.sh stop" >/dev/null 2>&1 || true
+                    else
+                        log "[WAIT] Please ensure the '$mech' server is running on the Server laptop ($SERVER_HOST:$PORT)."
+                    fi
                     continue
                 fi
 
                 # 3. Snapshot Server Counters Before Loadgen
-                SNAP_BEFORE=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
-                    "${SERVER_REPO}/scripts/server_ctl.sh snapshot" 2>&1 || true)
+                SNAP_BEFORE=""
+                if [[ $USE_SSH -eq 1 ]]; then
+                    SNAP_BEFORE=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
+                        "${SERVER_REPO}/scripts/server_ctl.sh snapshot" 2>&1 || true)
+                fi
 
                 # 4. Execute Load Generator on Client
                 EXTRA_LOADGEN_ARGS=""
@@ -368,13 +397,14 @@ for round in $(seq 1 "$ROUNDS"); do
                 LOADGEN_RC=$?
                 set -e
 
-                # 5. Snapshot Server Counters After Loadgen
-                SNAP_AFTER=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
-                    "${SERVER_REPO}/scripts/server_ctl.sh snapshot" 2>&1 || true)
-
-                # 6. Stop Server
-                ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
-                    "${SERVER_REPO}/scripts/server_ctl.sh stop" >/dev/null 2>&1 || true
+                # 5. Snapshot Server Counters After Loadgen & Stop Server
+                SNAP_AFTER=""
+                if [[ $USE_SSH -eq 1 ]]; then
+                    SNAP_AFTER=$(ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
+                        "${SERVER_REPO}/scripts/server_ctl.sh snapshot" 2>&1 || true)
+                    ssh -o BatchMode=yes -o ConnectTimeout=5 "${SERVER_USER}@${SERVER_HOST}" \
+                        "${SERVER_REPO}/scripts/server_ctl.sh stop" >/dev/null 2>&1 || true
+                fi
 
                 CPU_FREQ_AFTER=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq 2>/dev/null || echo 0)
 
@@ -517,3 +547,4 @@ log "Total completed runs: $TOTAL_RUNS_COMPLETED | Total invalid runs: $TOTAL_IN
 log "Results written to: $MASTER_CSV"
 log "Experiment CSVs: $RESULTS_DIR/E1.csv, $RESULTS_DIR/E1s.csv, $RESULTS_DIR/E2.csv, $RESULTS_DIR/E3.csv"
 log "================================================================="
+
