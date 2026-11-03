@@ -380,6 +380,7 @@ for round in $(seq 1 "$ROUNDS"); do
                     EXTRA_LOADGEN_ARGS="--unthrottled"
                 fi
 
+                LOADGEN_LOG="/tmp/loadgen_run.log"
                 set +e
                 $LOADGEN_BIN \
                     --host "$SERVER_HOST" \
@@ -393,7 +394,7 @@ for round in $(seq 1 "$ROUNDS"); do
                     --cooldown "$COOLDOWN" \
                     --msg-size "$MSG_SIZE" \
                     --output "$RAW_OUTPUT_CSV" \
-                    > /dev/null 2>&1
+                    > "$LOADGEN_LOG" 2>&1
                 LOADGEN_RC=$?
                 set -e
 
@@ -409,10 +410,18 @@ for round in $(seq 1 "$ROUNDS"); do
                 CPU_FREQ_AFTER=$(cat /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq 2>/dev/null || echo 0)
 
                 # Check Loadgen Exit & Output file
-                if [[ $LOADGEN_RC -ne 0 || ! -s "$RAW_OUTPUT_CSV" ]]; then
+                # Note: RC=2 means loadgen completed but encountered errors (conn_failures, recv_errors, etc.)
+                # In that case, RAW_OUTPUT_CSV still has the full stats row!
+                if [[ ! -s "$RAW_OUTPUT_CSV" ]]; then
                     RUN_VALID=0
-                    RUN_INVALID_REASON="loadgen_failed_rc_${LOADGEN_RC}"
+                    RUN_INVALID_REASON="loadgen_failed_rc_${LOADGEN_RC}_no_output"
                     log "[WARNING] $RUN_INVALID_REASON"
+                    if [[ -f "$LOADGEN_LOG" ]]; then
+                        log "[DEBUG] Loadgen output: $(tail -n 3 "$LOADGEN_LOG")"
+                    fi
+                    sleep 1
+                    continue
+                fi
                     sleep 1
                     continue
                 fi

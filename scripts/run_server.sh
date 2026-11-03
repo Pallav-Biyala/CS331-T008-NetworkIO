@@ -43,6 +43,10 @@ if [[ ! -x "$BIN" ]]; then
   exit 1
 fi
 
-echo "[INFO] Starting $SERVER_TYPE server on port $PORT with msg size $MSG_SIZE"
-exec "$BIN" --port "$PORT" --msg-size "$MSG_SIZE"
+# Ensure high file descriptor limits for high-connection sweeps
+ulimit -n 65536 2>/dev/null || true
+ulimit -l unlimited 2>/dev/null || true
+
+echo "[INFO] Starting $SERVER_TYPE server on port $PORT with msg size $MSG_SIZE (max-conns: 16384, ulimit: $(ulimit -n))"
+exec "$BIN" --port "$PORT" --msg-size "$MSG_SIZE" --max-conns 16384 --buf-size 4096 --nodelay
 
