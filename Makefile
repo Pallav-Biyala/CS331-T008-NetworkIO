@@ -1,13 +1,17 @@
 CC       := gcc
+CXX      := g++
 PKG_CONFIG := pkg-config
 
 CFLAGS   := -std=c17 -D_GNU_SOURCE -Wall -Wextra -Wno-comment
+CXXFLAGS := -std=c++17 -O3 -Wall -Wextra -pthread
 CPPFLAGS := -Icode/core -Icode/io
 BUILD    := build
 
 CORE     := code/core/core.c
 ECHO     := code/apps/echo.c
 FILESRV  := code/apps/filesrv.c
+LOADGEN  := echo_loadgen
+LOADGEN_SRC := code/tools/echo_loadgen.cpp
 
 SELECT   := code/io/io_select.c
 POLL     := code/io/io_poll.c
@@ -24,13 +28,18 @@ FILESRV_BINS := $(BUILD)/filesrv-select \
                 $(BUILD)/filesrv-epoll \
                 $(BUILD)/filesrv-uring
 
-.PHONY: all echo filesrv clean
+.PHONY: all echo filesrv loadgen clean
 
-all: echo filesrv
+all: echo filesrv $(LOADGEN)
 
 echo: $(ECHO_BINS)
 
 filesrv: $(FILESRV_BINS)
+
+loadgen: $(LOADGEN)
+
+$(LOADGEN): $(LOADGEN_SRC)
+	$(CXX) $(CXXFLAGS) $(LOADGEN_SRC) -o $@
 
 $(BUILD):
 	mkdir -p $(BUILD)
@@ -62,7 +71,7 @@ $(BUILD)/filesrv-uring: $(CORE) $(URING) $(FILESRV) | $(BUILD)
 		$$($(PKG_CONFIG) --cflags --libs liburing) -o $@
 
 clean:
-	rm -rf $(BUILD)
+	rm -rf $(BUILD) $(LOADGEN)
 
 .PHONY: test-filesrv
 

@@ -133,6 +133,13 @@ These results describe the recorded correctness tests. They are not performance 
 
 ## Benchmarking
 
-Performance experiments will compare the I/O mechanisms under controlled, reproducible workloads. Comparisons should keep the workload and relevant server behavior consistent while changing the I/O mechanism being evaluated.
+Performance experiments compare the I/O mechanisms under controlled, reproducible workloads. Comparisons keep the workload and relevant server behavior consistent while changing the I/O mechanism being evaluated.
 
-Benchmark results will be documented after the experiments have been run and analyzed.
+For TCP echo server benchmarking, use the custom nonblocking C++ load generator [`echo_loadgen`](LOADGEN_README.md):
+
+```bash
+make echo_loadgen
+./echo_loadgen --help
+```
+
+See [LOADGEN_README.md](LOADGEN_README.md) for architecture, configuration flags, CSV output format, and sample commands for connection and rate scaling experiments.

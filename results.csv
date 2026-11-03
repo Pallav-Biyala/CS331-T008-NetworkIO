@@ -1,0 +1,2 @@
+target_rate,actual_send_rate,echoed_rate,total_sent,total_received,rtt_p50_us,rtt_p95_us,rtt_p99_us,conn_failures,send_errors,recv_errors,timeouts,mismatched,duration_s,actual_duration_s,host,port,connections,msg_size,rtt_min_us,rtt_max_us,rtt_avg_us,concurrency_stalls,target_achieved
+1000.00,999.84,999.84,9999,9999,250,400,487,0,0,0,0,0,10.00,10.00,127.0.0.1,8091,100,512,32,2424,262.03,0,1
