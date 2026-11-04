@@ -1,6 +1,5 @@
 # Compiled executables and generated build files
 /build/
-/echo_loadgen
 
 # Editor-specific settings
 /.vscode/
