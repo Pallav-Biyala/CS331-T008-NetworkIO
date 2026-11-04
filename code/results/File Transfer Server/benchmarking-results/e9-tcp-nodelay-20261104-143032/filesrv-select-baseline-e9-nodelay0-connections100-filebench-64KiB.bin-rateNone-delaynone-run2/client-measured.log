@@ -1,0 +1,23 @@
+Running 30s test @ http://127.0.0.1:20034/bench-64KiB.bin
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    39.29ms    1.54ms  50.09ms   88.92%
+    Req/Sec   638.79    112.05   767.00     53.50%
+  Latency Distribution
+     50%   38.99ms
+     75%   39.50ms
+     90%   40.61ms
+     99%   45.11ms
+  76356 requests in 30.05s, 4.67GB read
+Requests/sec:   2541.09
+Transfer/sec:    158.98MB
+wrk_requests 76356
+wrk_bytes 5009109744
+wrk_duration_us 30048474
+wrk_errors_total 0
+wrk_latency_p50_us 38989
+wrk_latency_p90_us 40606
+wrk_latency_p95_us 42006
+wrk_latency_p99_us 45107
+wrk_latency_p99_9_us 48166
+wrk_latency_max_us 50088

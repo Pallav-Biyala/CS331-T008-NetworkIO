@@ -1,0 +1,23 @@
+Running 15s test @ http://127.0.0.1:20002/bench-100MiB.bin
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.00us    0.00us   0.00us    -nan%
+    Req/Sec     0.00      0.00     0.00      -nan%
+  Latency Distribution
+     50%    0.00us
+     75%    0.00us
+     90%    0.00us
+     99%    0.00us
+  0 requests in 15.02s, 1.68GB read
+Requests/sec:      0.00
+Transfer/sec:    114.85MB
+wrk_requests 0
+wrk_bytes 1808800600
+wrk_duration_us 15019437
+wrk_errors_total 0
+wrk_latency_p50_us 0
+wrk_latency_p90_us 0
+wrk_latency_p95_us 0
+wrk_latency_p99_us 0
+wrk_latency_p99_9_us 0
+wrk_latency_max_us 0

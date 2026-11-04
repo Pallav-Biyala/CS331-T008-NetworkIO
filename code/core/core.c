@@ -51,12 +51,15 @@ const core_config_t *g_cfg;
 core_stats_t g_stats;
 volatile sig_atomic_t g_shutdown;
 volatile sig_atomic_t g_dump_stats;
+volatile sig_atomic_t g_reset_connection_peak;
 
 static core_config_t active_cfg;
 static conn_t *connections;
 static uint32_t *free_conn_ids;
 static uint32_t free_conn_count;
 static uint32_t allocated_conn_count;
+static uint32_t active_conn_count;
+static uint32_t peak_conn_count;
 static uint8_t *app_priv_storage;
 static uint8_t *io_priv_storage;
 static size_t app_priv_size;
@@ -565,6 +568,8 @@ core_init(const core_config_t *cfg, size_t app_size, size_t io_size)
         if (stats_file_stream == NULL) goto fail;
     }
     allocated_conn_count = 0;
+    active_conn_count = 0;
+    peak_conn_count = 0;
     memset(&g_stats, 0, sizeof(g_stats));
     g_shutdown = 0;
     g_dump_stats = 0;
@@ -618,6 +623,7 @@ core_conn_alloc(int fd)
     if (c->gen == 0) ++c->gen;
     c->fd = fd;
     c->state = CONN_ACCEPTED;
+    c->active = false;
     c->read_max = 0;
     c->wr_buf = NULL;
     c->wr_len = 0;
@@ -629,6 +635,16 @@ core_conn_alloc(int fd)
     if (c->io_priv != NULL) memset(c->io_priv, 0, module_priv_size);
     ++allocated_conn_count;
     return c;
+}
+
+void
+core_conn_activate(conn_t *c)
+{
+    if (c == NULL || c->state == CONN_FREE || c->active) return;
+    c->active = true;
+    ++active_conn_count;
+    if (active_conn_count > peak_conn_count)
+        peak_conn_count = active_conn_count;
 }
 
 void
@@ -645,6 +661,8 @@ core_conn_free(conn_t *c)
     if (ptr < base || ptr - base >= (size_t)active_cfg.max_conns * sizeof(*connections) ||
         (ptr - base) % sizeof(*connections) != 0 || c->state == CONN_FREE) return;
     id = c->id;
+    if (c->active && active_conn_count != 0) --active_conn_count;
+    c->active = false;
     if (c->carry != NULL) core_slot_free(c->carry);
     if (c->out_slot != NULL) core_slot_free(c->out_slot);
     c->carry = NULL;
@@ -860,6 +878,12 @@ core_stats_dump(void)
     JSON_U64(stream, "partial_writes", g_stats.partial_writes, true);
     JSON_U64(stream, "accepts", g_stats.accepts, true);
     JSON_U64(stream, "closes", g_stats.closes, true);
+    JSON_U32(stream, "active_connections", active_conn_count, true);
+    if (g_reset_connection_peak) {
+        peak_conn_count = 0;
+        g_reset_connection_peak = 0;
+    }
+    JSON_U32(stream, "peak_connections", peak_conn_count, true);
     JSON_U64(stream, "messages", g_stats.messages, true);
     JSON_U64(stream, "bytes_in", g_stats.bytes_in, true);
     JSON_U64(stream, "bytes_out", g_stats.bytes_out, true);
@@ -877,6 +901,7 @@ signal_handler(int signo)
     int saved_errno = errno;
     if (signo == SIGINT || signo == SIGTERM) g_shutdown = 1;
     else if (signo == SIGUSR1) g_dump_stats = 1;
+    else if (signo == SIGUSR2) g_reset_connection_peak = 1;
     errno = saved_errno;
 }
 
@@ -893,6 +918,7 @@ core_install_signals(void)
     (void)sigaction(SIGINT, &action, NULL);
     (void)sigaction(SIGTERM, &action, NULL);
     (void)sigaction(SIGUSR1, &action, NULL);
+    (void)sigaction(SIGUSR2, &action, NULL);
     memset(&ignore, 0, sizeof(ignore));
     ignore.sa_handler = SIG_IGN;
     sigemptyset(&ignore.sa_mask);

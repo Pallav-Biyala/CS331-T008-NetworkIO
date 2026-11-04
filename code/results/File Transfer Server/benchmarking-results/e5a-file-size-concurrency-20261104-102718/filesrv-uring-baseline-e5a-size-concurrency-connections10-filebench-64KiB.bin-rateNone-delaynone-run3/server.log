@@ -1,0 +1,2 @@
+flags app=filesrv io=uring--port=20004 --max-conns=10 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e5a-file-size-concurrency-20261104-102718/filesrv-uring-baseline-e5a-size-concurrency-connections10-filebench-64KiB.bin-rateNone-delaynone-run3/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

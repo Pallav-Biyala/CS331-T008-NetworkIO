@@ -304,9 +304,11 @@ static void handle_accept(struct io_uring_cqe *cqe)
         conn_t *c = core_conn_alloc(fd);
         if (c == NULL) {
             (void)close(fd);
+            CORE_STAT_INC(errors);
             CORE_STAT_INC(closes);
         } else {
             g_connections[c->id] = c;
+            core_conn_activate(c);
             CORE_STAT_INC(accepts);
             on_accept(c);
         }

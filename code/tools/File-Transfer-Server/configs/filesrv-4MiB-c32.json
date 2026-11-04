@@ -1,0 +1,89 @@
+{
+  "_comment": [
+    "File-transfer comparison of select/poll/epoll/io_uring. Run from the repository root",
+    "after `make filesrv bench-fixture`: python3 code/tools/File-Transfer-Server/run_experiment code/tools/File-Transfer-Server/configs/filesrv-4MiB-c32.json",
+    "Server pinned to CPU 1 (--cpu 1); wrk pinned to CPUs 2-5 with 4 threads, so the host needs >= 6 CPUs.",
+    "message_size is null: it is an echo dimension and does not apply to filesrv."
+  ],
+  "server": "filesrv",
+  "workload": "file-4MiB-c32",
+  "file": "bench-4MiB.bin",
+  "message_size": null,
+  "connections": 32,
+  "warmup_seconds": 5,
+  "measured_seconds": 15,
+  "cooldown_seconds": 1,
+  "repeats": 5,
+  "server_cpu": 1,
+  "client_validator": "wrk",
+  "run_root": "results",
+  "warmup_cmd": [
+    "taskset",
+    "-c",
+    "2-5",
+    "wrk",
+    "-t4",
+    "-c{connections}",
+    "-d{duration}s",
+    "--timeout",
+    "10s",
+    "http://127.0.0.1:{port}/{file}"
+  ],
+  "measured_cmd": [
+    "taskset",
+    "-c",
+    "2-5",
+    "wrk",
+    "-t4",
+    "-c{connections}",
+    "-d{duration}s",
+    "--timeout",
+    "10s",
+    "--latency",
+    "-s",
+    "code/tools/File-Transfer-Server/wrk_report.lua",
+    "http://127.0.0.1:{port}/{file}"
+  ],
+  "configurations": [
+    {
+      "mechanism": "select",
+      "server_cmd": [
+        "./build/filesrv-select",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "poll",
+      "server_cmd": [
+        "./build/filesrv-poll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "epoll",
+      "server_cmd": [
+        "./build/filesrv-epoll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "uring",
+      "server_cmd": [
+        "./build/filesrv-uring",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    }
+  ]
+}

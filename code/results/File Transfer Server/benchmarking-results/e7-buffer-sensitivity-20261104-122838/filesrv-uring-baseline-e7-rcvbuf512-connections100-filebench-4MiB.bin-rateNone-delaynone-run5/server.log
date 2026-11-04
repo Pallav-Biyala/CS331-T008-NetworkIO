@@ -1,0 +1,2 @@
+flags app=filesrv io=uring--port=20069 --max-conns=100 --buf-size=262144 --rcvbuf=524288 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e7-buffer-sensitivity-20261104-122838/filesrv-uring-baseline-e7-rcvbuf512-connections100-filebench-4MiB.bin-rateNone-delaynone-run5/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

@@ -1,0 +1,45 @@
+{
+  "session": "/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/pilot-c10-20261103-184042",
+  "random_seed": 20261102,
+  "cells": {
+    "filesrv-select-baseline-pilot-c10-connections10-filebench-64KiB.bin-rateNone-delaynone": {
+      "total_runs": 5,
+      "accepted_runs": 0,
+      "rejected_runs": 5,
+      "unverified_runs": 0,
+      "sufficient_accepted_runs": false,
+      "messages_per_second": null,
+      "message_rate_note": "Insufficient accepted runs; at least five are required."
+    },
+    "filesrv-poll-baseline-pilot-c10-connections10-filebench-64KiB.bin-rateNone-delaynone": {
+      "total_runs": 5,
+      "accepted_runs": 0,
+      "rejected_runs": 5,
+      "unverified_runs": 0,
+      "sufficient_accepted_runs": false,
+      "messages_per_second": null,
+      "message_rate_note": "Insufficient accepted runs; at least five are required."
+    },
+    "filesrv-epoll-baseline-pilot-c10-connections10-filebench-64KiB.bin-rateNone-delaynone": {
+      "total_runs": 5,
+      "accepted_runs": 0,
+      "rejected_runs": 5,
+      "unverified_runs": 0,
+      "sufficient_accepted_runs": false,
+      "messages_per_second": null,
+      "message_rate_note": "Insufficient accepted runs; at least five are required."
+    },
+    "filesrv-uring-baseline-pilot-c10-connections10-filebench-64KiB.bin-rateNone-delaynone": {
+      "total_runs": 5,
+      "accepted_runs": 0,
+      "rejected_runs": 5,
+      "unverified_runs": 0,
+      "sufficient_accepted_runs": false,
+      "messages_per_second": null,
+      "message_rate_note": "Insufficient accepted runs; at least five are required."
+    }
+  },
+  "all_runs_accepted": false,
+  "enough_valid_runs_for_every_cell": false,
+  "note": "Automated acceptance is not a substitute for reviewing raw logs, setup-dependent checks, and the experiment plan."
+}

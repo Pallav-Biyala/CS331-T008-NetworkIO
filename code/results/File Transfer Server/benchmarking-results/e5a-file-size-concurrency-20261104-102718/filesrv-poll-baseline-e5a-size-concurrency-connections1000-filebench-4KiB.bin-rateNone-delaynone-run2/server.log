@@ -1,0 +1,2 @@
+flags app=filesrv io=poll--port=20058 --max-conns=1000 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e5a-file-size-concurrency-20261104-102718/filesrv-poll-baseline-e5a-size-concurrency-connections1000-filebench-4KiB.bin-rateNone-delaynone-run2/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

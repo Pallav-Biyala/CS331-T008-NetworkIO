@@ -183,6 +183,7 @@ static void accept_ready(void)
         c = core_conn_alloc(fd);
         if (c == NULL) {
             (void)close(fd);
+            CORE_STAT_INC(errors);
             CORE_STAT_INC(closes);
             continue;
         }
@@ -195,6 +196,7 @@ static void accept_ready(void)
             core_conn_free(c);
             continue;
         }
+        core_conn_activate(c);
         CORE_STAT_INC(accepts);
         on_accept(c);
     }

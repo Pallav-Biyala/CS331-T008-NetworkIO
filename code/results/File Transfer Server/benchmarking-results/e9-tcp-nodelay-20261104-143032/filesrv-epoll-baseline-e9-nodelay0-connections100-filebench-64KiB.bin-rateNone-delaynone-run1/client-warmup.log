@@ -1,0 +1,8 @@
+Running 10s test @ http://127.0.0.1:20057/bench-64KiB.bin
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    37.90ms    2.87ms  58.38ms   93.17%
+    Req/Sec   661.65    104.28   757.00     76.00%
+  26353 requests in 10.02s, 1.61GB read
+Requests/sec:   2630.17
+Transfer/sec:    164.55MB

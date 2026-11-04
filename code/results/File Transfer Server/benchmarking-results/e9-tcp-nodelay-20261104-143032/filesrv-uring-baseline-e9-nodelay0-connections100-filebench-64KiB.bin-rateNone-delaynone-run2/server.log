@@ -1,0 +1,2 @@
+flags app=filesrv io=uring--nodelay=0 --port=20040 --max-conns=100 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e9-tcp-nodelay-20261104-143032/filesrv-uring-baseline-e9-nodelay0-connections100-filebench-64KiB.bin-rateNone-delaynone-run2/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

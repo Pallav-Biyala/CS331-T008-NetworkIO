@@ -1,138 +1,131 @@
-# Project Title: Scalable Network I/O: From select to io_uring
----
-* **Course:** CS 331 - Computer Networks (2026-27 Sem 1)
-* **Team ID:** T008
-* **Project ID:** 13
----
-## Team Members
+# Scalable Network I/O: From select to io_uring
+
+**Course:** CS 331 – Computer Networks (2026–27 Sem 1)
+**Team:** T008
+**Project ID:** 13
+
+## Team
+
 | Name | Roll Number | Role |
-| :--- | :--- | :--- |
+| :--- | ---: | :--- |
 | Chitiveli Hemcharan Varma | 2411095 | Benchmarking |
 | Gella Naga Sai Krishna | 24110122 | io_uring |
 | Guransh Kaur Saran | 24110127 | select |
 | Kowel P Laloo | 24110168 | poll |
 | Pallav Biyala | 24110234 | epoll |
 
----
+## Project layout
 
-## Project Overview
+```text
+code/
+  apps/Echo-Server/                 Echo server
+  apps/File-Transfer-Server/        HTTP file server and its fixtures
+  core/                             Shared connection and statistics code
+  io/                               select, poll, epoll, and io_uring backends
+  tests/File-Transfer-Server/       File server correctness and benchmark checks
+  tools/File-Transfer-Server/       Experiment runner, configs, and helpers
+  results/File Transfer Server/     Archived campaign, pilot, and smoke results
+build/                              Local compiled executables (generated)
+results/                            New local experiment output (generated)
+```
 
-This project investigates Linux network I/O mechanisms by implementing and evaluating server applications using four backends:
+Run build, test, and benchmark commands from the repository root. The root
+`Makefile` includes the project targets in `code/Makefile`.
 
-* **select**
-* **poll**
-* **epoll**
-* **io_uring**
+## Requirements
 
-The repository includes a shared networking core, an echo server, a file server, and tools for correctness testing and performance experiments.
+For building and correctness checks:
 
-## Prerequisites
+- Linux or WSL with GCC and GNU Make
+- Python 3
+- `pkg-config` and liburing development files
 
-* Linux or WSL with a suitable GCC toolchain
-* GNU Make
-* Python 3
-* `pkg-config`
-* liburing development files for the io_uring backend
+For benchmark campaigns, also install `wrk` and `curl`.
 
-On Ubuntu or Debian, the relevant dependencies can be installed with:
+On Ubuntu or Debian:
 
 ```bash
 sudo apt update
-sudo apt install build-essential pkg-config liburing-dev python3
+sudo apt install build-essential pkg-config liburing-dev python3 curl wrk
 ```
 
-## Building
+## Build
 
-From the repository root, build all eight server variants:
+From the repository root, build all eight variants:
 
 ```bash
 make
 ```
 
-Build only the echo-server variants:
+Or build one application family:
 
 ```bash
 make echo
-```
-
-Build only the file-server variants:
-
-```bash
 make filesrv
 ```
 
-Generated executables are placed in `build/`.
+Executables are generated in `build/`.
 
-## File Server
+## File server
 
-The file server provides a minimal HTTP/1.1 GET interface for the test files in the repository's `files/` directory.
-
-Run the server from the repository root so it can find that directory.
-
-Start one backend at a time, for example:
+The HTTP/1.1 file server serves files from
+`code/apps/File-Transfer-Server/files/`. Start it from the repository root,
+for example:
 
 ```bash
 ./build/filesrv-select --port 8081
 ```
 
-The other variants are:
-
-```bash
-./build/filesrv-poll --port 8081
-./build/filesrv-epoll --port 8081
-./build/filesrv-uring --port 8081
-```
-
-Stop the running server with `Ctrl+C` before starting another backend on the same port.
-
-For a basic manual test, request a fixture from another terminal:
+Other variants are `filesrv-poll`, `filesrv-epoll`, and `filesrv-uring`.
+Check a response from another terminal:
 
 ```bash
 curl -i http://127.0.0.1:8081/hello.txt
 ```
 
-The server should return an HTTP response with the file contents and the appropriate content length.
+## Tests
 
-## Automated File-Server Tests
+Run the complete automated suite:
 
-Run the complete file-server correctness suite:
+```bash
+make test
+```
+
+The focused targets are:
 
 ```bash
 make test-filesrv
+make test-filesrv-bench
+make test-runner-acceptance
 ```
 
-The target builds the file-server variants if necessary and runs `code/tests/filesrv_gate.py` against all four backends.
+`test-filesrv` checks HTTP correctness, malformed requests, persistent
+connections, concurrency, and server survival across all four backends.
+`test-filesrv-bench` verifies fixture bytes and response lengths. The runner
+test covers connection-acceptance validation.
 
-The suite checks:
+The recorded correctness run passed 9/9 checks per backend (36/36 total),
+including 4,000 successful requests in the concurrency checks. These are
+correctness results, not performance comparisons.
 
-1. Valid and empty file responses, including `Content-Length`
-2. Missing files and HTTP 404 responses
-3. Unsupported HTTP methods
-4. Path traversal attempts
-5. Malformed requests
-6. Incomplete requests
-7. Persistent connections
-8. A concurrent workload of 1,000 requests per backend
-9. Server survival and successful service after the other checks
+## Experiments
 
-### Verified Correctness Results
+Generate all deterministic file fixtures, then run a configuration from the
+repository root:
 
-In the recorded test run, all four backends passed all nine checks:
+```bash
+make bench-fixtures
+python3 code/tools/File-Transfer-Server/run_experiment \
+  code/tools/File-Transfer-Server/configs/filesrv-e5a-size-concurrency.json
+```
 
-| Backend   | Checks passed |
-| --------- | ------------: |
-| select    |           9/9 |
-| poll      |           9/9 |
-| epoll     |           9/9 |
-| io_uring  |           9/9 |
-| **Total** |     **36/36** |
+Experiment output defaults to the local, ignored `results/` directory. The
+campaign archives currently in the repository are under
+`code/results/File Transfer Server/`. Keep accepted and rejected raw runs
+together when reporting results; document rejected runs rather than counting
+them as accepted measurements.
 
-The concurrency workload passed for all four backends, accounting for 4,000 successful requests across the four test runs.
-
-These results describe the recorded correctness tests. They are not performance measurements and do not establish that one backend is faster than another.
-
-## Benchmarking
-
-Performance experiments will compare the I/O mechanisms under controlled, reproducible workloads. Comparisons should keep the workload and relevant server behavior consistent while changing the I/O mechanism being evaluated.
-
-Benchmark results will be documented after the experiments have been run and analyzed.
+The E5a, E5b, E7, E8, and E9 campaigns have been run. E8 currently has 57
+accepted runs and 3 rejected runs; those three should remain identified as
+rejected in any analysis. Graphs and the final interpretation are still to be
+prepared.

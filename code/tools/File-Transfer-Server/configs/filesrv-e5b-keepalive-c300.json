@@ -1,0 +1,190 @@
+{
+  "_comment": [
+    "Matched keep-alive campaign to the successful close-per-response C300 retry.",
+    "Only keep-alive configurations are included; the existing close-per-response results are reused for analysis.",
+    "Four backends x five repetitions = 20 runs.",
+    "Server max connections = 300; client connections = 100."
+  ],
+  "server": "filesrv",
+  "workload": "e5b-keepalive-c300",
+  "message_size": null,
+  "warmup_seconds": 10,
+  "measured_seconds": 30,
+  "cooldown_seconds": 10,
+  "repeats": 5,
+  "server_cpu": 1,
+  "client_validator": "wrk",
+  "run_root": "results",
+  "server_ready_timeout": 10,
+  "accept_timeout": 60,
+  "client_timeout_grace": 60,
+  "file": "bench-4KiB.bin",
+  "connections": 100,
+  "client_threads": 4,
+  "configurations": [
+    {
+      "mechanism": "select",
+      "workload": "e5b-keepalive-c300",
+      "warmup_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "measured_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "--latency",
+        "-s",
+        "code/tools/File-Transfer-Server/wrk_report.lua",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "server_cmd": [
+        "./build/filesrv-select",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1",
+        "--max-conns",
+        "300"
+      ],
+      "_comment": "HTTP/1.1 persistent connection; no close header"
+    },
+    {
+      "mechanism": "poll",
+      "workload": "e5b-keepalive-c300",
+      "warmup_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "measured_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "--latency",
+        "-s",
+        "code/tools/File-Transfer-Server/wrk_report.lua",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "server_cmd": [
+        "./build/filesrv-poll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1",
+        "--max-conns",
+        "300"
+      ],
+      "_comment": "HTTP/1.1 persistent connection; no close header"
+    },
+    {
+      "mechanism": "epoll",
+      "workload": "e5b-keepalive-c300",
+      "warmup_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "measured_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "--latency",
+        "-s",
+        "code/tools/File-Transfer-Server/wrk_report.lua",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "server_cmd": [
+        "./build/filesrv-epoll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1",
+        "--max-conns",
+        "300"
+      ],
+      "_comment": "HTTP/1.1 persistent connection; no close header"
+    },
+    {
+      "mechanism": "uring",
+      "workload": "e5b-keepalive-c300",
+      "warmup_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "measured_cmd": [
+        "taskset",
+        "-c",
+        "2-5",
+        "wrk",
+        "-t{threads}",
+        "-c{connections}",
+        "-d{duration}s",
+        "--timeout",
+        "120s",
+        "--latency",
+        "-s",
+        "code/tools/File-Transfer-Server/wrk_report.lua",
+        "http://127.0.0.1:{port}/{file}"
+      ],
+      "server_cmd": [
+        "./build/filesrv-uring",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1",
+        "--max-conns",
+        "300"
+      ],
+      "_comment": "HTTP/1.1 persistent connection; no close header"
+    }
+  ]
+}

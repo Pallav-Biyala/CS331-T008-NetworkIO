@@ -1,0 +1,2 @@
+flags app=filesrv io=uring--port=20030 --max-conns=300 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e8-slow-readers-20261104-183836/filesrv-uring-baseline-e8-slow10-connections100-filebench-100MiB.bin-rateNone-delaynone-run2/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

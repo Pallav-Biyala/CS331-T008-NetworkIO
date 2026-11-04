@@ -1,0 +1,2 @@
+flags app=filesrv io=select--port=20008 --max-conns=100 --cpu=1 --stats-file=/mnt/e/Linux/Semester 5/Computer Networks/Projects/CS331-T008-NetworkIO/results/e9-tcp-nodelay-20261104-143032/filesrv-select-baseline-e9-nodelay1-connections100-filebench-64KiB.bin-rateNone-delaynone-run3/server-stats.jsonl
+[INFO] filesrv serving 8 file(s) from 'files'

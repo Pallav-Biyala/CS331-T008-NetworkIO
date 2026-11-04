@@ -1,0 +1,88 @@
+{
+  "_comment": [
+    "Pilot run: filesrv comparison across select/poll/epoll/io_uring at concurrency 10.",
+    "Runs 5 repeats of 1s warmup, 3s measurement to validate the test harness."
+  ],
+  "server": "filesrv",
+  "workload": "pilot-c10",
+  "file": "bench-64KiB.bin",
+  "message_size": null,
+  "connections": 10,
+  "client_threads": 2,
+  "warmup_seconds": 1,
+  "measured_seconds": 3,
+  "cooldown_seconds": 0,
+  "repeats": 5,
+  "server_cpu": 1,
+  "client_validator": "wrk",
+  "run_root": "results",
+  "warmup_cmd": [
+    "taskset",
+    "-c",
+    "2-5",
+    "wrk",
+    "-t{threads}",
+    "-c{connections}",
+    "-d{duration}s",
+    "--timeout",
+    "10s",
+    "http://127.0.0.1:{port}/{file}"
+  ],
+  "measured_cmd": [
+    "taskset",
+    "-c",
+    "2-5",
+    "wrk",
+    "-t{threads}",
+    "-c{connections}",
+    "-d{duration}s",
+    "--timeout",
+    "10s",
+    "--latency",
+    "-s",
+    "code/tools/File-Transfer-Server/wrk_report.lua",
+    "http://127.0.0.1:{port}/{file}"
+  ],
+  "configurations": [
+    {
+      "mechanism": "select",
+      "server_cmd": [
+        "./build/filesrv-select",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "poll",
+      "server_cmd": [
+        "./build/filesrv-poll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "epoll",
+      "server_cmd": [
+        "./build/filesrv-epoll",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    },
+    {
+      "mechanism": "uring",
+      "server_cmd": [
+        "./build/filesrv-uring",
+        "--port",
+        "{port}",
+        "--cpu",
+        "1"
+      ]
+    }
+  ]
+}

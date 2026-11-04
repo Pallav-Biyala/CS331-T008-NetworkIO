@@ -1,0 +1,23 @@
+Running 2m test @ http://127.0.0.1:20017/bench-100MiB.bin
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     1.07m    20.75ms   1.07m    75.00%
+    Req/Sec     0.00      0.00     0.00    100.00%
+  Latency Distribution
+     50%    1.07m 
+     75%    1.07m 
+     90%    1.07m 
+     99%    1.07m 
+  100 requests in 1.50m, 13.76GB read
+Requests/sec:      1.11
+Transfer/sec:    156.37MB
+wrk_requests 100
+wrk_bytes 14773597872
+wrk_duration_us 90099165
+wrk_errors_total 0
+wrk_latency_p50_us 64035169
+wrk_latency_p90_us 64047906
+wrk_latency_p95_us 64048101
+wrk_latency_p99_us 64048260
+wrk_latency_p99_9_us 64048260
+wrk_latency_max_us 64048260

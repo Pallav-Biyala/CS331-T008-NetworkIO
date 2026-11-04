@@ -1,5 +1,6 @@
 # Compiled executables and generated build files
 /build/
+/code/build/
 
 # Editor-specific settings
 /.vscode/
@@ -8,11 +9,18 @@
 *.jsonl
 *.stats
 
-# Benchmark campaign output (code/tools/run_experiment)
+# Default benchmark campaign output (run_experiment)
 /results/
 
 # Generated benchmark fixture (make bench-fixture)
 /files/bench-4MiB.bin
+
+# Generated file-transfer benchmark fixtures
+/code/apps/File-Transfer-Server/files/*.bin
+
+# Local safety copies of experiment configurations
+*.bak-*
+*.before-*
 
 # Python cache files
 __pycache__/

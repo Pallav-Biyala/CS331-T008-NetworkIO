@@ -1,0 +1,23 @@
+Running 30s test @ http://127.0.0.1:20074/bench-4KiB.bin
+  1 threads and 1 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   236.90us  100.02us   3.54ms   98.58%
+    Req/Sec     4.31k   212.19     4.45k    95.35%
+  Latency Distribution
+     50%  226.00us
+     75%  233.00us
+     90%  248.00us
+     99%  381.00us
+  129038 requests in 30.10s, 512.05MB read
+Requests/sec:   4287.05
+Transfer/sec:     17.01MB
+wrk_requests 129038
+wrk_bytes 536927118
+wrk_duration_us 30099512
+wrk_errors_total 0
+wrk_latency_p50_us 226
+wrk_latency_p90_us 248
+wrk_latency_p95_us 262
+wrk_latency_p99_us 381
+wrk_latency_p99_9_us 1945
+wrk_latency_max_us 3541

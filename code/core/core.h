@@ -127,6 +127,7 @@ typedef struct conn {
                                 put (id, gen) into async request tags so a late
                                 completion for a closed connection is recognized    */
     conn_state_t  state;
+    bool          active;
 
     /* Pending request bookkeeping. Written by the module, read-only for apps. */
     size_t        read_max;
@@ -156,6 +157,7 @@ void core_shutdown(void);
 /* Returns NULL when max_conns connections already exist. Sets fd, state = ACCEPTED,
  * zeroes app_priv and io_priv, bumps gen. */
 conn_t *core_conn_alloc(int fd);
+void    core_conn_activate(conn_t *c);
 /* Releases carry and out_slot, sets CONN_FREE, bumps gen. */
 void    core_conn_free(conn_t *c);
 conn_t *core_conn_by_fd(int fd);
@@ -223,6 +225,7 @@ void core_stats_dump(void);
 /* ------------------------------------------------------------------ */
 
 extern volatile sig_atomic_t g_shutdown;     /* set by SIGINT / SIGTERM; io_run() returns when set */
+extern volatile sig_atomic_t g_reset_connection_peak;
 extern volatile sig_atomic_t g_dump_stats;   /* set by SIGUSR1; io_run() calls core_stats_dump()   */
 
 void core_install_signals(void);             /* SIGPIPE ignored; SIGINT/SIGTERM/SIGUSR1 handlers  */

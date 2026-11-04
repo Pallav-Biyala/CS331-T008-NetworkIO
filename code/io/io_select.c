@@ -172,14 +172,17 @@ static void accept_ready(void)
         c = core_conn_alloc(fd);
         if (c == NULL) {
             (void)close(fd);
+            CORE_STAT_INC(errors);
             CORE_STAT_INC(closes);
             continue;
         }
         add_connection(c);
         if (fd >= FD_SETSIZE) {
+            CORE_STAT_INC(errors);
             defer_close(c, IO_CLOSE_LIMIT);
             continue;
         }
+        core_conn_activate(c);
         CORE_STAT_INC(accepts);
         on_accept(c);
     }

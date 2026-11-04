@@ -1,0 +1,8 @@
+Running 10s test @ http://127.0.0.1:20035/bench-100MiB.bin
+  4 threads and 100 connections
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency     0.00us    0.00us   0.00us    -nan%
+    Req/Sec     0.00      0.00     0.00      -nan%
+  0 requests in 10.03s, 1.52GB read
+Requests/sec:      0.00
+Transfer/sec:    154.96MB
