@@ -1,0 +1,2250 @@
+[2026-11-05 20:14:54] Backend=poll rep=1 mode=full target=192.168.50.1:8080 output=/home/kowel2/CS331-T008-NetworkIO/results/poll_rep1_20261105_201454
+[2026-11-05 20:14:54] [poll rep 1] #1 S1_CONN/c50_r1000 conns=50 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 50 persistent TCP connections (50 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 50 / 50 established (50 active, max_fd=54).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c50_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  50 total (50 active, max_fd=54), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.02 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 35 / 47 / 48 / 30.72 / 61 us
+  Application RTT (recv-send):114 / 124 / 132 / 106.76 / 162 us
+  End-to-End (recv-sched):    145 / 162 / 168 / 137.95 / 189 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 399 / 400 / 0.04 %
+  Client CPU / TCP Retrans:   3.25 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:15:20] [poll rep 1] #2 S1_CONN/c50_r10000 conns=50 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 50 persistent TCP connections (50 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 50 / 50 established (50 active, max_fd=54).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c50_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  50 total (50 active, max_fd=54), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.00 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 5 / 32 / 4.33 / 1444 us
+  Application RTT (recv-send):66 / 77 / 91 / 67.49 / 2926 us
+  End-to-End (recv-sched):    70 / 87 / 98 / 72.11 / 2931 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 3999 / 4000 / 0.00 %
+  Client CPU / TCP Retrans:   5.90 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:15:46] [poll rep 1] #3 S1_CONN/c100_r1000 conns=100 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 100 persistent TCP connections (100 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 100 / 100 established (100 active, max_fd=104).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c100_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  100 total (100 active, max_fd=104), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.02 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 36 / 42 / 49 / 33.79 / 278 us
+  Application RTT (recv-send):122 / 130 / 133 / 113.38 / 268 us
+  End-to-End (recv-sched):    158 / 168 / 175 / 147.66 / 384 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 199 / 200 / 0.05 %
+  Client CPU / TCP Retrans:   3.53 % / 0 retrans
+  Max Pending Queue / Drops:  108 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:16:12] [poll rep 1] #4 S1_CONN/c100_r10000 conns=100 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 100 persistent TCP connections (100 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 100 / 100 established (100 active, max_fd=104).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c100_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  100 total (100 active, max_fd=104), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.01 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 5 / 3.22 / 56 us
+  Application RTT (recv-send):248 / 373 / 396 / 241.78 / 446 us
+  End-to-End (recv-sched):    252 / 376 / 400 / 245.29 / 456 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1999 / 2000 / 0.00 %
+  Client CPU / TCP Retrans:   4.83 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:16:38] [poll rep 1] #5 S1_CONN/c250_r1000 conns=250 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 250 persistent TCP connections (250 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 250 / 250 established (250 active, max_fd=254).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c250_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  250 total (250 active, max_fd=254), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.02 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 35 / 37 / 48 / 35.05 / 63 us
+  Application RTT (recv-send):86 / 187 / 212 / 103.69 / 583 us
+  End-to-End (recv-sched):    122 / 222 / 248 / 139.23 / 619 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 79 / 80 / 0.08 %
+  Client CPU / TCP Retrans:   3.60 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:17:04] [poll rep 1] #6 S1_CONN/c250_r10000 conns=250 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 250 persistent TCP connections (250 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 250 / 250 established (250 active, max_fd=254).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c250_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  250 total (250 active, max_fd=254), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.04 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 6 / 3.32 / 69 us
+  Application RTT (recv-send):575 / 967 / 1030 / 572.73 / 1144 us
+  End-to-End (recv-sched):    578 / 970 / 1034 / 576.33 / 1148 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 799 / 800 / 0.01 %
+  Client CPU / TCP Retrans:   4.70 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:17:30] [poll rep 1] #7 S1_CONN/c500_r1000 conns=500 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c500_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.02 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 35 / 44 / 48 / 33.20 / 64 us
+  Application RTT (recv-send):112 / 159 / 217 / 116.33 / 859 us
+  End-to-End (recv-sched):    147 / 192 / 252 / 150.02 / 862 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.11 %
+  Client CPU / TCP Retrans:   3.43 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:17:56] [poll rep 1] #8 S1_CONN/c500_r10000 conns=500 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c500_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.04 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 5 / 3.15 / 120 us
+  Application RTT (recv-send):624 / 1051 / 1119 / 621.66 / 1394 us
+  End-to-End (recv-sched):    627 / 1055 / 1122 / 625.10 / 1397 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 399 / 400 / 0.01 %
+  Client CPU / TCP Retrans:   5.27 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:18:22] [poll rep 1] #9 S1_CONN/c900_r1000 conns=900 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 900 persistent TCP connections (900 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (900 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c900_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (900 active, max_fd=904), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.15 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 4 / 35 / 36 / 6.40 / 600 us
+  Application RTT (recv-send):1751 / 3082 / 3237 / 1719.15 / 3528 us
+  End-to-End (recv-sched):    1759 / 3088 / 3243 / 1725.95 / 3542 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 22 / 23 / 1.87 %
+  Client CPU / TCP Retrans:   1.43 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:18:48] [poll rep 1] #10 S1_CONN/c900_r10000 conns=900 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 900 persistent TCP connections (900 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (900 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c900_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (900 active, max_fd=904), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.11 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 6 / 3.17 / 404 us
+  Application RTT (recv-send):1836 / 3240 / 3410 / 1836.35 / 4344 us
+  End-to-End (recv-sched):    1839 / 3243 / 3414 / 1839.88 / 4348 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 222 / 223 / 0.19 %
+  Client CPU / TCP Retrans:   5.29 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:19:14] [poll rep 1] #11 S1_CONN/c2500_r1000 conns=2500 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 2500 persistent TCP connections (2500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 2500 / 2500 established (2500 active, max_fd=2504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c2500_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  2500 total (2500 active, max_fd=2504), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.18 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 36 / 38 / 49 / 31.20 / 536 us
+  Application RTT (recv-send):12371 / 23150 / 24128 / 12406.08 / 27687 us
+  End-to-End (recv-sched):    12402 / 23185 / 24149 / 12437.78 / 27727 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 7 / 8 / 0.25 %
+  Client CPU / TCP Retrans:   3.57 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:19:40] [poll rep 1] #12 S1_CONN/c2500_r10000 conns=2500 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 2500 persistent TCP connections (2500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 2500 / 2500 established (2500 active, max_fd=2504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c2500_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  2500 total (2500 active, max_fd=2504), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.17 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 6 / 3.19 / 1315 us
+  Application RTT (recv-send):14021 / 25502 / 26926 / 14028.56 / 233015 us
+  End-to-End (recv-sched):    14024 / 25506 / 26930 / 14032.29 / 233018 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 79 / 80 / 0.02 %
+  Client CPU / TCP Retrans:   5.31 % / 2 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:20:06] [poll rep 1] #13 S1_CONN/c5000_r1000 conns=5000 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c5000_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        4.93 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 4 / 6 / 36 / 5.36 / 1901 us
+  Application RTT (recv-send):48635 / 91273 / 95078 / 48642.12 / 99286 us
+  End-to-End (recv-sched):    48639 / 91277 / 95082 / 48647.90 / 99290 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 3 / 4 / 0.35 %
+  Client CPU / TCP Retrans:   0.92 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:20:32] [poll rep 1] #14 S1_CONN/c5000_r10000 conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c5000_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        4.86 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 6 / 3.38 / 2629 us
+  Application RTT (recv-send):59090 / 104635 / 113394 / 59086.54 / 124906 us
+  End-to-End (recv-sched):    59094 / 104639 / 113398 / 59090.45 / 124910 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.04 %
+  Client CPU / TCP Retrans:   5.78 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:20:59] [poll rep 1] #15 S1_CONN/c10000_r1000 conns=10000 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 10000 persistent TCP connections (10000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 10000 / 10000 established (10000 active, max_fd=10004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c10000_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (10000 active, max_fd=10004), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        20.05 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 4 / 12 / 70 / 9.28 / 4754 us
+  Application RTT (recv-send):194289 / 364132 / 379863 / 194533.30 / 390199 us
+  End-to-End (recv-sched):    194294 / 364204 / 379870 / 194543.05 / 390207 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1 / 2 / 0.50 %
+  Client CPU / TCP Retrans:   1.22 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:21:29] [poll rep 1] #16 S1_CONN/c10000_r10000 conns=10000 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 10000 persistent TCP connections (10000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 8642 / 10000 established (8642 active, max_fd=8646).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_c10000_r10000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (8642 active, max_fd=8646), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        12.16 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 6 / 3.83 / 4721 us
+  Application RTT (recv-send):194321 / 342258 / 372906 / 194503.63 / 409028 us
+  End-to-End (recv-sched):    194324 / 342260 / 372910 / 194507.98 / 409031 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 23 / 24 / 1.51 %
+  Client CPU / TCP Retrans:   6.12 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   1358 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:22:00] WARN: S1_CONN/c10000_r10000 exited 2 (errors/failed conns; row still recorded if run completed)
+[2026-11-05 20:22:01] [poll rep 1] #17 S1_CONN_MAX/c50_closed conns=50 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 50 persistent TCP connections (50 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 50 / 50 established (50 active, max_fd=54).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c50_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  50 total (50 active, max_fd=54), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      1975710 (98785.49 msgs/sec)
+  Messages Sent:           1975710 (98785.49 msgs/sec)
+  Valid Echoes Completed:  1975710 (98785.49 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.65 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 2 / 1.03 / 24 us
+  Application RTT (recv-send):501 / 540 / 565 / 504.10 / 3776 us
+  End-to-End (recv-sched):    502 / 541 / 566 / 505.61 / 3777 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39085 / 39546 / 0.23 %
+  Client CPU / TCP Retrans:   26.52 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:22:27] [poll rep 1] #18 S1_CONN_MAX/c100_closed conns=100 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 100 persistent TCP connections (100 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 100 / 100 established (100 active, max_fd=104).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c100_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  100 total (100 active, max_fd=104), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      2323996 (116199.67 msgs/sec)
+  Messages Sent:           2323996 (116199.67 msgs/sec)
+  Valid Echoes Completed:  2323996 (116199.67 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.55 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 2 / 1.03 / 32 us
+  Application RTT (recv-send):855 / 892 / 1455 / 858.54 / 9127 us
+  End-to-End (recv-sched):    857 / 894 / 1456 / 860.05 / 9128 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 18597 / 23502 / 3.27 %
+  Client CPU / TCP Retrans:   31.23 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:22:53] [poll rep 1] #19 S1_CONN_MAX/c250_closed conns=250 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 250 persistent TCP connections (250 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 250 / 250 established (250 active, max_fd=254).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c250_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  250 total (250 active, max_fd=254), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      2632323 (131616.03 msgs/sec)
+  Messages Sent:           2632323 (131616.03 msgs/sec)
+  Valid Echoes Completed:  2632323 (131616.03 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.19 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 3 / 1.02 / 35 us
+  Application RTT (recv-send):1821 / 3045 / 4114 / 1897.40 / 13177 us
+  End-to-End (recv-sched):    1822 / 3047 / 4115 / 1898.91 / 13179 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 5828 / 12414 / 17.80 %
+  Client CPU / TCP Retrans:   35.62 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:23:19] [poll rep 1] #20 S1_CONN_MAX/c500_closed conns=500 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c500_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      2634480 (131723.91 msgs/sec)
+  Messages Sent:           2634480 (131723.91 msgs/sec)
+  Valid Echoes Completed:  2634480 (131723.91 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.15 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 3 / 0.99 / 29 us
+  Application RTT (recv-send):4508 / 5957 / 10002 / 3793.60 / 17332 us
+  End-to-End (recv-sched):    4510 / 5959 / 10003 / 3795.09 / 17333 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 2179 / 6337 / 19.56 %
+  Client CPU / TCP Retrans:   35.70 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:23:45] [poll rep 1] #21 S1_CONN_MAX/c900_closed conns=900 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 900 persistent TCP connections (900 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (900 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c900_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  900 total (900 active, max_fd=904), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      2537404 (126870.15 msgs/sec)
+  Messages Sent:           2537404 (126870.15 msgs/sec)
+  Valid Echoes Completed:  2537404 (126870.15 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.26 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 3 / 0.99 / 81 us
+  Application RTT (recv-send):7092 / 7218 / 7315 / 7091.83 / 17969 us
+  End-to-End (recv-sched):    7093 / 7220 / 7316 / 7093.35 / 17970 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 2717 / 2821 / 0.24 %
+  Client CPU / TCP Retrans:   35.67 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:24:12] [poll rep 1] #22 S1_CONN_MAX/c2500_closed conns=2500 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 2500 persistent TCP connections (2500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 2500 / 2500 established (2500 active, max_fd=2504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c2500_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  2500 total (2500 active, max_fd=2504), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      1137499 (56874.11 msgs/sec)
+  Messages Sent:           1137499 (56874.11 msgs/sec)
+  Valid Echoes Completed:  1137499 (56874.11 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.64 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 2 / 4 / 1.11 / 63 us
+  Application RTT (recv-send):43681 / 45589 / 50149 / 43977.93 / 86816 us
+  End-to-End (recv-sched):    43683 / 45591 / 50150 / 43979.60 / 86819 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 454 / 455 / 0.00 %
+  Client CPU / TCP Retrans:   18.70 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:24:38] [poll rep 1] #23 S1_CONN_MAX/c5000_closed conns=5000 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c5000_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      625000 (31248.70 msgs/sec)
+  Messages Sent:           625000 (31248.70 msgs/sec)
+  Valid Echoes Completed:  625000 (31248.70 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        6.62 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 3 / 4 / 1.11 / 30 us
+  Application RTT (recv-send):158945 / 166919 / 168643 / 160449.24 / 183682 us
+  End-to-End (recv-sched):    158946 / 166920 / 168643 / 160450.91 / 183682 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 125 / 125 / 0.00 %
+  Client CPU / TCP Retrans:   11.96 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:25:04] [poll rep 1] #24 S1_CONN_MAX/c10000_closed conns=10000 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 10000 persistent TCP connections (10000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 10000 / 10000 established (10000 active, max_fd=10004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S1_CONN_MAX_c10000_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (10000 active, max_fd=10004), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      340000 (16999.37 msgs/sec)
+  Messages Sent:           340000 (16999.37 msgs/sec)
+  Valid Echoes Completed:  340000 (16999.37 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        28.09 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 2 / 4 / 1.10 / 36 us
+  Application RTT (recv-send):596855 / 597684 / 601098 / 596881.92 / 616503 us
+  End-to-End (recv-sched):    596857 / 597686 / 601100 / 596883.61 / 616504 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 34 / 34 / 0.00 %
+  Client CPU / TCP Retrans:   8.28 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:25:33] [poll rep 1] #25 S2_RATE/c500_r1000 conns=500 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.14 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 35 / 47 / 50 / 32.32 / 73 us
+  Application RTT (recv-send):1628 / 3023 / 3118 / 1605.53 / 3442 us
+  End-to-End (recv-sched):    1663 / 3054 / 3152 / 1638.34 / 3479 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.11 %
+  Client CPU / TCP Retrans:   4.01 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:25:59] [poll rep 1] #26 S2_RATE/c500_r4000 conns=500 mode=open-loop rate=4000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r4000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     4000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      79999 (3999.95 msgs/sec)
+  Messages Sent:           79999 (3999.95 msgs/sec)
+  Valid Echoes Completed:  79999 (3999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.10 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 33 / 41 / 6.23 / 487 us
+  Application RTT (recv-send):1565 / 2918 / 3148 / 1581.63 / 5704 us
+  End-to-End (recv-sched):    1573 / 2924 / 3154 / 1588.27 / 5745 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 159 / 160 / 0.03 %
+  Client CPU / TCP Retrans:   3.37 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:26:25] [poll rep 1] #27 S2_RATE/c500_r8000 conns=500 mode=open-loop rate=8000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r8000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     8000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      159999 (7999.95 msgs/sec)
+  Messages Sent:           159999 (7999.95 msgs/sec)
+  Valid Echoes Completed:  159999 (7999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.12 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 6 / 3.36 / 1889 us
+  Application RTT (recv-send):1662 / 2991 / 3215 / 1672.93 / 6247 us
+  End-to-End (recv-sched):    1666 / 2995 / 3220 / 1676.59 / 6250 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 319 / 320 / 0.01 %
+  Client CPU / TCP Retrans:   4.25 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:26:51] [poll rep 1] #28 S2_RATE/c500_r12000 conns=500 mode=open-loop rate=12000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r12000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     12000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      239999 (11999.95 msgs/sec)
+  Messages Sent:           239999 (11999.95 msgs/sec)
+  Valid Echoes Completed:  239999 (11999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.12 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 40 / 80 / 84 / 41.29 / 131 us
+  Application RTT (recv-send):1718 / 3096 / 3342 / 1732.50 / 6536 us
+  End-to-End (recv-sched):    1765 / 3121 / 3370 / 1774.30 / 6550 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 479 / 480 / 0.01 %
+  Client CPU / TCP Retrans:   5.64 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:27:17] [poll rep 1] #29 S2_RATE/c500_r16000 conns=500 mode=open-loop rate=16000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r16000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     16000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      319999 (15999.95 msgs/sec)
+  Messages Sent:           319999 (15999.95 msgs/sec)
+  Valid Echoes Completed:  319999 (15999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.13 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 5 / 3.05 / 115 us
+  Application RTT (recv-send):1803 / 3162 / 3416 / 1811.44 / 6563 us
+  End-to-End (recv-sched):    1807 / 3166 / 3420 / 1814.77 / 6567 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 639 / 640 / 0.01 %
+  Client CPU / TCP Retrans:   6.91 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:27:43] [poll rep 1] #30 S2_RATE/c500_r25000 conns=500 mode=open-loop rate=25000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           499999 (24999.90 msgs/sec)
+  Valid Echoes Completed:  499999 (24999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.12 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 23 / 43 / 43 / 20.84 / 110 us
+  Application RTT (recv-send):1996 / 3410 / 3672 / 2007.22 / 4218 us
+  End-to-End (recv-sched):    2019 / 3423 / 3687 / 2028.43 / 4227 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 999 / 1000 / 0.00 %
+  Client CPU / TCP Retrans:   9.94 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:28:09] [poll rep 1] #31 S2_RATE/c500_r35000 conns=500 mode=open-loop rate=35000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r35000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     35000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      699999 (34999.90 msgs/sec)
+  Messages Sent:           699999 (34999.90 msgs/sec)
+  Valid Echoes Completed:  699999 (34999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.12 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 19 / 46 / 46 / 21.17 / 219 us
+  Application RTT (recv-send):2276 / 3673 / 3966 / 2292.44 / 4744 us
+  End-to-End (recv-sched):    2301 / 3687 / 3982 / 2314.16 / 4751 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1399 / 1400 / 0.00 %
+  Client CPU / TCP Retrans:   12.72 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:28:35] [poll rep 1] #32 S2_RATE/c500_r50000 conns=500 mode=open-loop rate=50000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_c500_r50000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     50000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      999998 (49999.85 msgs/sec)
+  Messages Sent:           999998 (49999.85 msgs/sec)
+  Valid Echoes Completed:  999998 (49999.85 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.15 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 14 / 43 / 43 / 19.08 / 129 us
+  Application RTT (recv-send):2813 / 4455 / 4974 / 2805.94 / 5804 us
+  End-to-End (recv-sched):    2835 / 4469 / 4988 / 2825.48 / 5837 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1999 / 2000 / 0.00 %
+  Client CPU / TCP Retrans:   16.80 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:29:01] [poll rep 1] #33 S2_RATE_HIGHCONN/c5000_r1000 conns=5000 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      19999 (999.95 msgs/sec)
+  Messages Sent:           19999 (999.95 msgs/sec)
+  Valid Echoes Completed:  19999 (999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        2.93 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 36 / 44 / 51 / 33.64 / 1868 us
+  Application RTT (recv-send):51399 / 96312 / 101168 / 51357.66 / 107490 us
+  End-to-End (recv-sched):    51436 / 96346 / 101185 / 51391.80 / 107494 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 3 / 4 / 0.35 %
+  Client CPU / TCP Retrans:   3.88 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:29:28] [poll rep 1] #34 S2_RATE_HIGHCONN/c5000_r4000 conns=5000 mode=open-loop rate=4000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r4000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     4000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      79999 (3999.95 msgs/sec)
+  Messages Sent:           79999 (3999.95 msgs/sec)
+  Valid Echoes Completed:  79999 (3999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        5.50 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 33 / 45 / 5.89 / 2590 us
+  Application RTT (recv-send):54793 / 101829 / 107961 / 54889.85 / 117069 us
+  End-to-End (recv-sched):    54800 / 101834 / 107965 / 54896.32 / 117072 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 15 / 16 / 0.09 %
+  Client CPU / TCP Retrans:   3.33 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:29:54] [poll rep 1] #35 S2_RATE_HIGHCONN/c5000_r8000 conns=5000 mode=open-loop rate=8000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r8000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     8000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      159999 (7999.95 msgs/sec)
+  Messages Sent:           159999 (7999.95 msgs/sec)
+  Valid Echoes Completed:  159999 (7999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        2.81 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 6 / 3.39 / 2746 us
+  Application RTT (recv-send):60195 / 108077 / 115954 / 60237.44 / 125753 us
+  End-to-End (recv-sched):    60199 / 108080 / 115967 / 60241.38 / 125757 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 31 / 32 / 0.04 %
+  Client CPU / TCP Retrans:   4.68 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:30:21] [poll rep 1] #36 S2_RATE_HIGHCONN/c5000_r16000 conns=5000 mode=open-loop rate=16000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r16000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     16000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      319999 (15999.95 msgs/sec)
+  Messages Sent:           319999 (15999.95 msgs/sec)
+  Valid Echoes Completed:  319999 (15999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        5.18 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 12 / 3.64 / 2752 us
+  Application RTT (recv-send):72723 / 126532 / 138778 / 72763.56 / 159976 us
+  End-to-End (recv-sched):    72727 / 126538 / 138781 / 72767.74 / 159980 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 63 / 64 / 0.02 %
+  Client CPU / TCP Retrans:   9.52 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:30:49] [poll rep 1] #37 S2_RATE_HIGHCONN/c5000_r25000 conns=5000 mode=open-loop rate=25000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           499999 (24999.90 msgs/sec)
+  Valid Echoes Completed:  499999 (24999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        7.45 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 23 / 43 / 43 / 20.88 / 2781 us
+  Application RTT (recv-send):91437 / 154699 / 167388 / 90720.27 / 193222 us
+  End-to-End (recv-sched):    91462 / 154710 / 167403 / 90741.62 / 193225 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 99 / 100 / 0.01 %
+  Client CPU / TCP Retrans:   13.07 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:31:15] [poll rep 1] #38 S2_RATE_HIGHCONN/c5000_r50000 conns=5000 mode=open-loop rate=50000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S2_RATE_HIGHCONN_c5000_r50000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     50000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      999998 (49999.85 msgs/sec)
+  Messages Sent:           593898 (29694.87 msgs/sec)
+  Valid Echoes Completed:  593898 (29694.87 msgs/sec)
+  Delivery Ratio:          59.39 % (Incomplete at end: 0)
+  1s Throughput CV:        34.50 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2165425 / 2349744 / 2404542 / 2179455.73 / 2701417 us
+  Application RTT (recv-send):167778 / 176391 / 177561 / 168151.36 / 190568 us
+  End-to-End (recv-sched):    2333791 / 2518964 / 2577282 / 2347607.59 / 2866655 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 117 / 122 / 0.38 %
+  Client CPU / TCP Retrans:   12.92 % / 0 retrans
+  Max Pending Queue / Drops:  65536 / 406100
+  Pipeline Stalls / Timeouts: 999998 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:31:44] [poll rep 1] #39 S3_ACTIVE/c900_share0.05 conns=900 mode=open-loop rate=5000 W=1 share=0.05 dist=constant
+Establishing 900 persistent TCP connections (45 active, 855 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (45 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c900_share0.05]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (45 active, max_fd=904), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.16 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 37 / 6.30 / 3487 us
+  Application RTT (recv-send):1768 / 3174 / 3321 / 1766.65 / 4062 us
+  End-to-End (recv-sched):    1774 / 3181 / 3328 / 1773.37 / 6005 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 2222 / 2223 / 0.02 %
+  Client CPU / TCP Retrans:   3.60 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:32:10] [poll rep 1] #40 S3_ACTIVE/c900_share0.1 conns=900 mode=open-loop rate=5000 W=1 share=0.1 dist=constant
+Establishing 900 persistent TCP connections (90 active, 810 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (90 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c900_share0.1]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (90 active, max_fd=904), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.12 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 34 / 5.42 / 686 us
+  Application RTT (recv-send):1756 / 3178 / 3328 / 1758.27 / 3821 us
+  End-to-End (recv-sched):    1762 / 3184 / 3334 / 1764.05 / 3824 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1111 / 1112 / 0.03 %
+  Client CPU / TCP Retrans:   3.42 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:32:36] [poll rep 1] #41 S3_ACTIVE/c900_share0.25 conns=900 mode=open-loop rate=5000 W=1 share=0.25 dist=constant
+Establishing 900 persistent TCP connections (225 active, 675 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (225 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c900_share0.25]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (225 active, max_fd=904), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.14 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 34 / 5.75 / 955 us
+  Application RTT (recv-send):1759 / 3178 / 3314 / 1760.91 / 3748 us
+  End-to-End (recv-sched):    1766 / 3184 / 3322 / 1767.05 / 3751 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 444 / 445 / 0.11 %
+  Client CPU / TCP Retrans:   4.07 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:33:02] [poll rep 1] #42 S3_ACTIVE/c900_share0.5 conns=900 mode=open-loop rate=5000 W=1 share=0.5 dist=constant
+Establishing 900 persistent TCP connections (450 active, 450 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (450 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c900_share0.5]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (450 active, max_fd=904), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.14 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 31 / 33 / 5.23 / 432 us
+  Application RTT (recv-send):1761 / 3178 / 3317 / 1761.88 / 7007 us
+  End-to-End (recv-sched):    1766 / 3183 / 3324 / 1767.47 / 7010 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 222 / 223 / 0.19 %
+  Client CPU / TCP Retrans:   3.71 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:33:28] [poll rep 1] #43 S3_ACTIVE/c900_share1.0 conns=900 mode=open-loop rate=5000 W=1 share=1.0 dist=constant
+Establishing 900 persistent TCP connections (900 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 900 / 900 established (900 active, max_fd=904).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c900_share1.0]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  900 total (900 active, max_fd=904), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.13 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 34 / 5.51 / 113 us
+  Application RTT (recv-send):1772 / 3199 / 3368 / 1774.67 / 6430 us
+  End-to-End (recv-sched):    1779 / 3204 / 3375 / 1780.59 / 6433 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 111 / 112 / 0.28 %
+  Client CPU / TCP Retrans:   3.90 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:33:54] [poll rep 1] #44 S3_ACTIVE/c10000_share0.05 conns=10000 mode=open-loop rate=5000 W=1 share=0.05 dist=constant
+Establishing 10000 persistent TCP connections (500 active, 9500 idle) to 192.168.50.1:8080...
+Connection barrier complete: 10000 / 10000 established (500 active, max_fd=10004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c10000_share0.05]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (500 active, max_fd=10004), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           14447 (722.35 msgs/sec)
+  Valid Echoes Completed:  13947 (697.35 msgs/sec)
+  Delivery Ratio:          13.95 % (Incomplete at end: 59536)
+  1s Throughput CV:        157.45 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 17963615 / 21425113 / 21719307 / 17889726.48 / 21772740 us
+  Application RTT (recv-send):383235 / 383488 / 383549 / 383243.36 / 386999 us
+  End-to-End (recv-sched):    18347177 / 21808276 / 22102467 / 18272970.34 / 22155893 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 28 / 30 / 1.09 %
+  Client CPU / TCP Retrans:   2.58 % / 0 retrans
+  Max Pending Queue / Drops:  65536 / 26516
+  Pipeline Stalls / Timeouts: 99999 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:34:26] [poll rep 1] #45 S3_ACTIVE/c10000_share0.1 conns=10000 mode=open-loop rate=5000 W=1 share=0.1 dist=constant
+Establishing 10000 persistent TCP connections (1000 active, 9000 idle) to 192.168.50.1:8080...
+Connection barrier complete: 10000 / 10000 established (1000 active, max_fd=10004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c10000_share0.1]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (1000 active, max_fd=10004), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           51986 (2599.30 msgs/sec)
+  Valid Echoes Completed:  50986 (2549.30 msgs/sec)
+  Delivery Ratio:          50.99 % (Incomplete at end: 49013)
+  1s Throughput CV:        62.04 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 9541192 / 14009063 / 14406347 / 9542084.32 / 14516285 us
+  Application RTT (recv-send):394704 / 394892 / 395218 / 394718.93 / 396372 us
+  End-to-End (recv-sched):    9935818 / 14403764 / 14800979 / 9936803.75 / 14910964 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 51 / 52 / 0.23 %
+  Client CPU / TCP Retrans:   3.08 % / 0 retrans
+  Max Pending Queue / Drops:  61013 / 0
+  Pipeline Stalls / Timeouts: 99999 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:35:01] [poll rep 1] #46 S3_ACTIVE/c10000_share0.25 conns=10000 mode=open-loop rate=5000 W=1 share=0.25 dist=constant
+Establishing 10000 persistent TCP connections (2500 active, 7500 idle) to 192.168.50.1:8080...
+Connection barrier complete: 9732 / 10000 established (2433 active, max_fd=9737).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c10000_share0.25]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (2433 active, max_fd=9737), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        21.38 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 36 / 6.52 / 5303 us
+  Application RTT (recv-send):223379 / 411994 / 430396 / 223954.73 / 448734 us
+  End-to-End (recv-sched):    223383 / 411997 / 430401 / 223961.85 / 448738 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 41 / 42 / 0.73 %
+  Client CPU / TCP Retrans:   4.28 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   268 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:35:31] WARN: S3_ACTIVE/c10000_share0.25 exited 2 (errors/failed conns; row still recorded if run completed)
+[2026-11-05 20:35:32] [poll rep 1] #47 S3_ACTIVE/c10000_share0.5 conns=10000 mode=open-loop rate=5000 W=1 share=0.5 dist=constant
+Establishing 10000 persistent TCP connections (5000 active, 5000 idle) to 192.168.50.1:8080...
+Connection barrier complete: 9500 / 10000 established (4750 active, max_fd=9505).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c10000_share0.5]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (4750 active, max_fd=9505), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        17.83 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 32 / 33 / 5.72 / 5221 us
+  Application RTT (recv-send):234556 / 424420 / 446224 / 232976.33 / 467336 us
+  End-to-End (recv-sched):    234563 / 424425 / 446228 / 232982.64 / 467340 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 21 / 22 / 1.06 %
+  Client CPU / TCP Retrans:   4.09 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   500 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:35:58] WARN: S3_ACTIVE/c10000_share0.5 exited 2 (errors/failed conns; row still recorded if run completed)
+[2026-11-05 20:35:59] [poll rep 1] #48 S3_ACTIVE/c10000_share1.0 conns=10000 mode=open-loop rate=5000 W=1 share=1.0 dist=constant
+Establishing 10000 persistent TCP connections (10000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 7707 / 10000 established (7707 active, max_fd=7711).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S3_ACTIVE_c10000_share1.0]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (7707 active, max_fd=7711), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      99999 (4999.95 msgs/sec)
+  Messages Sent:           99999 (4999.95 msgs/sec)
+  Valid Echoes Completed:  99999 (4999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        8.65 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 31 / 33 / 5.46 / 4225 us
+  Application RTT (recv-send):175839 / 316235 / 342498 / 176001.58 / 365674 us
+  End-to-End (recv-sched):    175843 / 316239 / 342501 / 176007.60 / 365678 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 12 / 13 / 1.20 %
+  Client CPU / TCP Retrans:   4.01 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   2293 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:36:31] WARN: S3_ACTIVE/c10000_share1.0 exited 2 (errors/failed conns; row still recorded if run completed)
+[2026-11-05 20:36:32] [poll rep 1] #49 S4_PIPE/c500_w1_r25000 conns=500 mode=open-loop rate=25000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_c500_w1_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           267980 (13398.97 msgs/sec)
+  Valid Echoes Completed:  267501 (13375.02 msgs/sec)
+  Delivery Ratio:          53.50 % (Incomplete at end: 536)
+  1s Throughput CV:        52.98 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 4992888 / 5027267 / 5047397 / 4983870.99 / 5072063 us
+  Application RTT (recv-send):37974 / 40471 / 42014 / 38138.31 / 44489 us
+  End-to-End (recv-sched):    5031020 / 5065343 / 5085102 / 5022009.80 / 5109608 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 535 / 536 / 0.04 %
+  Client CPU / TCP Retrans:   6.60 % / 0 retrans
+  Max Pending Queue / Drops:  65536 / 231962
+  Pipeline Stalls / Timeouts: 499999 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:37:03] [poll rep 1] #50 S4_PIPE/c500_w2_r25000 conns=500 mode=open-loop rate=25000 W=2 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_c500_w2_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=2
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           499999 (24999.90 msgs/sec)
+  Valid Echoes Completed:  499999 (24999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.51 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 22 / 43 / 887 / 43.97 / 5970 us
+  Application RTT (recv-send):20324 / 37979 / 40153 / 20183.92 / 44471 us
+  End-to-End (recv-sched):    20347 / 38081 / 40870 / 20228.26 / 45968 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 999 / 1000 / 0.00 %
+  Client CPU / TCP Retrans:   9.56 % / 0 retrans
+  Max Pending Queue / Drops:  130 / 0
+  Pipeline Stalls / Timeouts: 8646 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:37:29] [poll rep 1] #51 S4_PIPE/c500_w4_r25000 conns=500 mode=open-loop rate=25000 W=4 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_c500_w4_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=4
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           499999 (24999.90 msgs/sec)
+  Valid Echoes Completed:  499999 (24999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.34 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 19 / 43 / 43 / 20.38 / 108 us
+  Application RTT (recv-send):19619 / 37314 / 39438 / 19856.12 / 43785 us
+  End-to-End (recv-sched):    19642 / 37328 / 39450 / 19876.85 / 43790 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 999 / 1000 / 0.00 %
+  Client CPU / TCP Retrans:   9.53 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:37:55] [poll rep 1] #52 S4_PIPE/c500_w8_r25000 conns=500 mode=open-loop rate=25000 W=8 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_c500_w8_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=8
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      499999 (24999.90 msgs/sec)
+  Messages Sent:           499999 (24999.90 msgs/sec)
+  Valid Echoes Completed:  499999 (24999.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.71 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 19 / 43 / 43 / 20.39 / 111 us
+  Application RTT (recv-send):19718 / 37515 / 39708 / 19642.39 / 43183 us
+  End-to-End (recv-sched):    19741 / 37529 / 39719 / 19663.13 / 43194 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 999 / 1000 / 0.00 %
+  Client CPU / TCP Retrans:   9.50 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:38:21] [poll rep 1] #53 S4_PIPE_MAX/c500_w1_closed conns=500 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_MAX_c500_w1_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      261000 (13049.85 msgs/sec)
+  Messages Sent:           261000 (13049.85 msgs/sec)
+  Valid Echoes Completed:  261000 (13049.85 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.56 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 1 / 3 / 1.06 / 24 us
+  Application RTT (recv-send):38230 / 40847 / 42578 / 38316.15 / 44901 us
+  End-to-End (recv-sched):    38232 / 40849 / 42580 / 38317.74 / 44903 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 522 / 522 / 0.00 %
+  Client CPU / TCP Retrans:   5.70 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:38:47] [poll rep 1] #54 S4_PIPE_MAX/c500_w2_closed conns=500 mode=closed-loop rate=0 W=2 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_MAX_c500_w2_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=2
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      511000 (25549.77 msgs/sec)
+  Messages Sent:           511000 (25549.77 msgs/sec)
+  Valid Echoes Completed:  511000 (25549.77 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        2.13 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 1 / 3 / 4 / 1.65 / 49 us
+  Application RTT (recv-send):39022 / 41312 / 42406 / 39125.94 / 43267 us
+  End-to-End (recv-sched):    39024 / 41314 / 42407 / 39128.04 / 43270 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 1022 / 1022 / 0.00 %
+  Client CPU / TCP Retrans:   6.74 % / 16474 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:39:13] [poll rep 1] #55 S4_PIPE_MAX/c500_w4_closed conns=500 mode=closed-loop rate=0 W=4 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_MAX_c500_w4_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=4
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      1009344 (50467.16 msgs/sec)
+  Messages Sent:           1009344 (50467.16 msgs/sec)
+  Valid Echoes Completed:  1009344 (50467.16 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.06 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2 / 3 / 5 / 1.65 / 41 us
+  Application RTT (recv-send):39535 / 41468 / 43148 / 39668.28 / 46547 us
+  End-to-End (recv-sched):    39537 / 41470 / 43150 / 39670.44 / 46549 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 2016 / 2020 / 0.09 %
+  Client CPU / TCP Retrans:   9.23 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:39:39] [poll rep 1] #56 S4_PIPE_MAX/c500_w8_closed conns=500 mode=closed-loop rate=0 W=8 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S4_PIPE_MAX_c500_w8_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=8
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      2008832 (100441.53 msgs/sec)
+  Messages Sent:           2008832 (100441.53 msgs/sec)
+  Valid Echoes Completed:  2008832 (100441.53 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.24 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 6 / 7 / 2.79 / 43 us
+  Application RTT (recv-send):39755 / 41398 / 44603 / 39792.91 / 54708 us
+  End-to-End (recv-sched):    39759 / 41401 / 44606 / 39796.18 / 54711 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 4016 / 4024 / 0.08 %
+  Client CPU / TCP Retrans:   14.58 % / 25490 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:40:05] [poll rep 1] #57 S5_DIST/c500_r15000_constant conns=500 mode=open-loop rate=15000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c500_r15000_constant]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     15000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      299999 (14999.95 msgs/sec)
+  Messages Sent:           299999 (14999.95 msgs/sec)
+  Valid Echoes Completed:  299999 (14999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        18.57 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2405362 / 3964035 / 4099093 / 2426879.00 / 4148862 us
+  Application RTT (recv-send):38831 / 41325 / 41926 / 38925.94 / 43816 us
+  End-to-End (recv-sched):    2444517 / 4002642 / 4138705 / 2465805.44 / 4184779 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 599 / 600 / 0.01 %
+  Client CPU / TCP Retrans:   6.88 % / 0 retrans
+  Max Pending Queue / Drops:  53008 / 0
+  Pipeline Stalls / Timeouts: 299999 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:40:36] [poll rep 1] #58 S5_DIST/c500_r15000_poisson conns=500 mode=open-loop rate=15000 W=1 share=1.0 dist=poisson
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c500_r15000_poisson]
+  Mode / Dist / Policy:    open-loop / poisson / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     15000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      299622 (14981.10 msgs/sec)
+  Messages Sent:           299622 (14981.10 msgs/sec)
+  Valid Echoes Completed:  299622 (14981.10 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        17.29 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2233260 / 3645947 / 3765401 / 2248642.68 / 3947323 us
+  Application RTT (recv-send):38385 / 40715 / 42110 / 38488.68 / 79619 us
+  End-to-End (recv-sched):    2272197 / 3683761 / 3804135 / 2287131.86 / 3980388 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 599 / 600 / 0.07 %
+  Client CPU / TCP Retrans:   8.28 % / 0 retrans
+  Max Pending Queue / Drops:  49504 / 0
+  Pipeline Stalls / Timeouts: 299622 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:41:06] [poll rep 1] #59 S5_DIST/c500_r15000_burst2x conns=500 mode=open-loop rate=15000 W=1 share=1.0 dist=burst2x
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c500_r15000_burst2x]
+  Mode / Dist / Policy:    open-loop / burst2x / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     15000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      300099 (15004.95 msgs/sec)
+  Messages Sent:           300099 (15004.95 msgs/sec)
+  Valid Echoes Completed:  300099 (15004.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        18.40 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2372140 / 3765452 / 3898973 / 2369087.15 / 3990291 us
+  Application RTT (recv-send):38406 / 40835 / 42139 / 38500.83 / 43750 us
+  End-to-End (recv-sched):    2410693 / 3804948 / 3937367 / 2407588.48 / 4021659 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 600 / 601 / 0.07 %
+  Client CPU / TCP Retrans:   6.32 % / 0 retrans
+  Max Pending Queue / Drops:  51613 / 0
+  Pipeline Stalls / Timeouts: 300099 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:41:36] [poll rep 1] #60 S5_DIST/c500_r15000_burst conns=500 mode=open-loop rate=15000 W=1 share=1.0 dist=burst
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c500_r15000_burst]
+  Mode / Dist / Policy:    open-loop / burst / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     15000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      300099 (15004.93 msgs/sec)
+  Messages Sent:           300099 (15004.93 msgs/sec)
+  Valid Echoes Completed:  300099 (15004.93 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        17.39 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2388919 / 3774614 / 3929500 / 2374110.33 / 4031399 us
+  Application RTT (recv-send):38429 / 40785 / 41847 / 38568.18 / 44601 us
+  End-to-End (recv-sched):    2427354 / 3814284 / 3968204 / 2412679.01 / 4070468 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 600 / 601 / 0.07 %
+  Client CPU / TCP Retrans:   6.59 % / 0 retrans
+  Max Pending Queue / Drops:  52071 / 0
+  Pipeline Stalls / Timeouts: 300099 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:42:06] [poll rep 1] #61 S5_DIST/c500_r15000_burst10x conns=500 mode=open-loop rate=15000 W=1 share=1.0 dist=burst10x
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c500_r15000_burst10x]
+  Mode / Dist / Policy:    open-loop / burst10x / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     15000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      300099 (15004.95 msgs/sec)
+  Messages Sent:           300099 (15004.95 msgs/sec)
+  Valid Echoes Completed:  300099 (15004.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        18.42 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 2517246 / 4060972 / 4227039 / 2537633.07 / 4340435 us
+  Application RTT (recv-send):38815 / 41154 / 42023 / 38919.96 / 76700 us
+  End-to-End (recv-sched):    2556037 / 4100621 / 4267383 / 2576553.54 / 4373158 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 600 / 601 / 0.07 %
+  Client CPU / TCP Retrans:   6.38 % / 0 retrans
+  Max Pending Queue / Drops:  55624 / 0
+  Pipeline Stalls / Timeouts: 300099 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:42:36] [poll rep 1] #62 S5_DIST/c5000_r10000_constant conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=constant
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c5000_r10000_constant]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        3.99 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 6 / 3.37 / 2833 us
+  Application RTT (recv-send):111792 / 196030 / 209273 / 112162.42 / 228312 us
+  End-to-End (recv-sched):    111796 / 196034 / 209277 / 112166.34 / 228315 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.04 %
+  Client CPU / TCP Retrans:   5.92 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:43:02] [poll rep 1] #63 S5_DIST/c5000_r10000_poisson conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=poisson
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c5000_r10000_poisson]
+  Mode / Dist / Policy:    open-loop / poisson / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      200139 (10006.93 msgs/sec)
+  Messages Sent:           200139 (10006.93 msgs/sec)
+  Valid Echoes Completed:  200139 (10006.93 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        3.71 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 31 / 42 / 5.71 / 3032 us
+  Application RTT (recv-send):113332 / 198532 / 211644 / 113363.45 / 233043 us
+  End-to-End (recv-sched):    113337 / 198540 / 211651 / 113369.64 / 233047 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 40 / 41 / 0.41 %
+  Client CPU / TCP Retrans:   7.95 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:43:28] [poll rep 1] #64 S5_DIST/c5000_r10000_burst2x conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=burst2x
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c5000_r10000_burst2x]
+  Mode / Dist / Policy:    open-loop / burst2x / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.94 msgs/sec)
+  Messages Sent:           199999 (9999.94 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.94 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        4.59 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 3 / 5 / 3.58 / 2809 us
+  Application RTT (recv-send):116234 / 194626 / 207864 / 113870.17 / 230957 us
+  End-to-End (recv-sched):    116237 / 194630 / 207867 / 113874.19 / 230961 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.04 %
+  Client CPU / TCP Retrans:   6.24 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:43:55] [poll rep 1] #65 S5_DIST/c5000_r10000_burst conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=burst
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c5000_r10000_burst]
+  Mode / Dist / Policy:    open-loop / burst / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.94 msgs/sec)
+  Messages Sent:           199999 (9999.94 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.94 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        6.00 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 7 / 4.05 / 2724 us
+  Application RTT (recv-send):122840 / 188699 / 198686 / 118006.00 / 225030 us
+  End-to-End (recv-sched):    122843 / 188703 / 198692 / 118010.47 / 225034 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.04 %
+  Client CPU / TCP Retrans:   6.33 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:44:23] [poll rep 1] #66 S5_DIST/c5000_r10000_burst10x conns=5000 mode=open-loop rate=10000 W=1 share=1.0 dist=burst10x
+Establishing 5000 persistent TCP connections (5000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 5000 / 5000 established (5000 active, max_fd=5004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [poll_rep1_S5_DIST_c5000_r10000_burst10x]
+  Mode / Dist / Policy:    open-loop / burst10x / round-robin
+  Connections / Pipeline:  5000 total (5000 active, max_fd=5004), W=1
+  Target Offered Rate:     10000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    20.00 s (Warmup: 5.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      199999 (9999.95 msgs/sec)
+  Messages Sent:           199999 (9999.95 msgs/sec)
+  Valid Echoes Completed:  199999 (9999.95 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        1.18 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 4 / 11 / 6.28 / 2932 us
+  Application RTT (recv-send):108667 / 181118 / 191367 / 108034.77 / 214078 us
+  End-to-End (recv-sched):    108670 / 181121 / 191371 / 108041.42 / 214081 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 39 / 40 / 0.04 %
+  Client CPU / TCP Retrans:   6.33 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 20:44:50] Completed 66 cases (4 non-zero exits). CSV: /home/kowel2/CS331-T008-NetworkIO/results/poll_rep1_20261105_201454/results.csv

@@ -1,0 +1,4 @@
+poll_rep1_S1_CONN_c10000_r10000 rc=2
+poll_rep1_S3_ACTIVE_c10000_share0.25 rc=2
+poll_rep1_S3_ACTIVE_c10000_share0.5 rc=2
+poll_rep1_S3_ACTIVE_c10000_share1.0 rc=2
