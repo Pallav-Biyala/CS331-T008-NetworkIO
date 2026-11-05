@@ -54,7 +54,22 @@ def parse_run(d: Path):
     lat = re.search(r"Latency\s+([\d.]+)(us|ms|s|m|h)\b", log)
     avg_s = float(lat.group(1)) * UNIT_S[lat.group(2)] if lat else float("nan")
     dur = kv.get("wrk_duration_us", 0) / 1e6
+    # Whole-core usage of the server CPU from /proc/stat before/after the measured window
+    core = {}
+    b, a = (meta.get("before") or {}).get("cpu_stat"), (meta.get("after") or {}).get("cpu_stat")
+    if b and a:
+        d_ = [int(y) - int(x) for x, y in zip(b.split()[1:9], a.split()[1:9])]
+        tot = sum(d_)
+        if tot > 0:
+            core = {"core_busy": 1 - (d_[3] + d_[4]) / tot, "core_user": (d_[0] + d_[1]) / tot,
+                    "core_sys": (d_[2] + d_[5]) / tot, "core_softirq": d_[6] / tot}
+    cnt = meta.get("counter_delta") or {}
+    el = meta.get("measured_elapsed_seconds") or dur or 1
     return {
+        **core,
+        "cpu_us_per_resp": (meta.get("metrics") or {}).get("server_cpu_us_per_response", float("nan")),
+        "wait_calls_s": cnt.get("wait_calls", 0) / el,
+        "rw_calls_s": (cnt.get("reads", 0) + cnt.get("writes", 0)) / el,
         "backend": backend, "workload": workload, "conns": int(conns), "file": fsize,
         "run": int(rep), "accepted": bool(meta.get("accepted_run")),
         "reason": meta.get("client_output_note"),
@@ -70,7 +85,8 @@ runs = [r for d in RES.rglob("filesrv-*-run*") if d.is_dir() and (r := parse_run
 
 def stat(backend, workload, conns, fsize, metric):
     vals = [r[metric] for r in runs if r["accepted"] and r["backend"] == backend
-            and r["workload"] == workload and r["conns"] == conns and r["file"] == fsize]
+            and r["workload"] == workload and r["conns"] == conns and r["file"] == fsize
+            and metric in r and r[metric] == r[metric]]
     if not vals:
         return None
     q1, med, q3 = np.percentile(vals, [25, 50, 75])
@@ -196,6 +212,75 @@ for metric, ylab, tag, title in [("rps", "Throughput (responses/s)", "10_through
     fig.savefig(OUT / f"e9_{tag}_nodelay.png", bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
+# ---------------- E-CPU: where the backends actually differ ----------------
+cpu_cells = [
+    ("4 KiB\n100 conns", (E5A, 100, "4KiB")),
+    ("4 KiB\n1000 conns", (E5A, 1000, "4KiB")),
+    ("4 KiB close\n100 conns", ("e5b-close-per-response", 100, "4KiB")),
+    ("1 MiB\n100 conns", (E5A, 100, "1MiB")),
+    ("4 MiB\n100 conns", ("e7-baseline", 100, "4MiB")),
+    ("100 MiB\n100 conns", ("e8-slow0", 100, "100MiB")),
+]
+fig, ax = plt.subplots(figsize=(8.5, 4.4))
+x = np.arange(len(cpu_cells))
+others = ["select", "poll", "uring"]
+w = 0.26
+for i, b in enumerate(others):
+    vals = []
+    for _, c in cpu_cells:
+        base = stat("epoll", *c, "cpu_us_per_resp")["median"]
+        vals.append((stat(b, *c, "cpu_us_per_resp")["median"] / base - 1) * 100)
+    pos = x + (i - 1) * w
+    ax.bar(pos, vals, width=w - 0.03, color=COLOR[b], label=LABEL[b])
+    for p, v in zip(pos, vals):
+        if abs(v) >= 9:
+            ax.annotate(f"{v:+.0f}%", (p, v), xytext=(0, 3 if v > 0 else -11), textcoords="offset points",
+                        ha="center", fontsize=8, color=INK)
+ax.axhline(0, color=INK2, lw=1)
+ax.set_ylim(-18, 31)
+ax.set_xticks(x, [l for l, _ in cpu_cells])
+ax.set_ylabel("Server CPU per response vs epoll (%)")
+ax.grid(axis="x", visible=False)
+ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.5, -0.17))
+ax.set_title("E-CPU-12  Server CPU per response, relative to epoll (lower = cheaper)")
+save(fig, "cpu_12_cpu_per_response_vs_epoll.png")
+
+core_cells = [
+    ("E5a 4 KiB, 1 conn", (E5A, 1, "4KiB")), ("E5a 4 KiB, 100 conns", (E5A, 100, "4KiB")),
+    ("E5a 4 KiB, 1000 conns", (E5A, 1000, "4KiB")), ("E5a 1 MiB, 100 conns", (E5A, 100, "1MiB")),
+    ("E5b close, 100 conns", ("e5b-close-per-response", 100, "4KiB")),
+    ("E7 4 MiB baseline", ("e7-baseline", 100, "4MiB")), ("E7 4 MiB, 16 KiB chunk", ("e7-chunk16", 100, "4MiB")),
+    ("E8 100 MiB, 0 slow", ("e8-slow0", 100, "100MiB")), ("E8 100 MiB, 100 slow", ("e8-slow100", 100, "100MiB")),
+    ("E9 4 KiB, NODELAY on", ("e9-nodelay1", 100, "4KiB")), ("E9 4 KiB, NODELAY off", ("e9-nodelay0", 100, "4KiB")),
+]
+
+
+def core_med(c, m):
+    """Median over all accepted runs of all four backends for one cell."""
+    vals = [r[m] for r in runs if r["accepted"] and m in r and (r["workload"], r["conns"], r["file"]) == c]
+    return float(np.median(vals)) * 100 if vals else 0.0
+
+
+fig, ax = plt.subplots(figsize=(8.5, 5.0))
+y = np.arange(len(core_cells))[::-1]
+left = np.zeros(len(core_cells))
+for m, lab, col in [("core_user", "User space", "#2a78d6"), ("core_sys", "Kernel (syscalls)", "#eb6834"),
+                    ("core_softirq", "Kernel (network softirq)", "#1baf7a")]:
+    v = np.array([core_med(c, m) for _, c in core_cells])
+    ax.barh(y, v, left=left, color=col, label=lab, height=0.62, edgecolor="white", linewidth=1.5)
+    left += v
+for yy, tot in zip(y, left):
+    ax.annotate(f"{tot:.0f}% busy", (tot, yy), xytext=(5, 0), textcoords="offset points", va="center", fontsize=8.5, color=INK)
+ax.axvline(100, color="#e34948", lw=1.5, ls="--")
+ax.annotate("Saturated (100%)", (100, y[0] + 0.55), ha="right", fontsize=8.5, color="#e34948")
+ax.set_xlim(0, 105)
+ax.set_yticks(y, [l for l, _ in core_cells])
+ax.set_xlabel("Server CPU core time during the measured window (%)")
+ax.grid(axis="y", visible=False)
+ax.legend(ncol=3, loc="upper center", bbox_to_anchor=(0.45, -0.12))
+ax.set_title("E-CPU-13  The server core is never saturated")
+save(fig, "cpu_13_server_core_utilisation.png")
+
 # ---------------- data dump for the report ----------------
 data = {}
 for r in runs:
@@ -203,8 +288,17 @@ for r in runs:
     data.setdefault(key, {})
 for key in data:
     w, c, f = key.split("|")
-    data[key] = {b: {m: stat(b, w, int(c[1:]), f, m) for m in ("rps", "mbps", "lat_avg_ms", "lat_p99_ms")}
+    data[key] = {b: {m: stat(b, w, int(c[1:]), f, m)
+                     for m in ("rps", "mbps", "lat_avg_ms", "lat_p99_ms", "cpu_us_per_resp", "core_busy",
+                               "core_user", "core_sys", "core_softirq", "wait_calls_s", "rw_calls_s")}
                  for b in BACKENDS}
 rejected = [{k: r[k] for k in ("backend", "workload", "run", "reason")} for r in runs if not r["accepted"]]
-(HERE / "data.json").write_text(json.dumps({"cells": data, "rejected_runs": rejected}, indent=1))
+core_summary = [{"label": lab, "user": core_med(c, "core_user"), "sys": core_med(c, "core_sys"),
+                 "softirq": core_med(c, "core_softirq"), "busy": core_med(c, "core_busy")} for lab, c in core_cells]
+cpu_rel = [{"label": lab.replace("\n", ", "),
+            **{b: (stat(b, *c, "cpu_us_per_resp")["median"] / stat("epoll", *c, "cpu_us_per_resp")["median"] - 1) * 100
+               for b in BACKENDS}} for lab, c in cpu_cells]
+(HERE / "data.json").write_text(json.dumps({"cells": data, "rejected_runs": rejected,
+                                            "core_utilisation": core_summary, "cpu_per_response_vs_epoll": cpu_rel},
+                                           indent=1))
 print(f"{len(runs)} runs parsed, {len(rejected)} rejected; figures in {OUT}")
