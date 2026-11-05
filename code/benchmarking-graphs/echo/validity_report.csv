@@ -1,0 +1,18 @@
+tag,issues
+epoll_rep1_S1_CONN_MAX_c10000_closed,3 conn/send/recv/timeout/mismatch errors
+poll_rep1_S1_CONN_c10000_r10000,1358 conn/send/recv/timeout/mismatch errors
+poll_rep1_S2_RATE_HIGHCONN_c5000_r50000,delivery 59.4%
+poll_rep1_S3_ACTIVE_c10000_share0.05,delivery 13.9%
+poll_rep1_S3_ACTIVE_c10000_share0.1,delivery 51.0%
+poll_rep1_S3_ACTIVE_c10000_share0.25,268 conn/send/recv/timeout/mismatch errors
+poll_rep1_S3_ACTIVE_c10000_share0.5,500 conn/send/recv/timeout/mismatch errors
+poll_rep1_S3_ACTIVE_c10000_share1.0,2293 conn/send/recv/timeout/mismatch errors
+poll_rep1_S4_PIPE_c500_w1_r25000,delivery 53.5%
+uring_rep1_S1_CONN_MAX_c10000_closed,15 conn/send/recv/timeout/mismatch errors
+epollbuf_rep1_S1_CONN_MAX_c10000_closed,9 conn/send/recv/timeout/mismatch errors
+epollet_rep1_S1_CONN_MAX_c10000_closed,13 conn/send/recv/timeout/mismatch errors
+epollnagle_rep1_S1_CONN_MAX_c10000_closed,3 conn/send/recv/timeout/mismatch errors
+epolloneshot_rep1_S1_CONN_MAX_c10000_closed,5 conn/send/recv/timeout/mismatch errors
+selectnagle_rep1_S1_CONN_c10000_r10000,delivery 10.2%
+uringnagle_rep1_S1_CONN_MAX_c10000_closed,5 conn/send/recv/timeout/mismatch errors
+uringsmall_rep1_S1_CONN_MAX_c10000_closed,7 conn/send/recv/timeout/mismatch errors
