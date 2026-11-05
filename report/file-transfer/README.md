@@ -7,7 +7,7 @@ Comparison of four I/O backends — **select, poll, epoll, io_uring** — servin
 | # | Finding |
 |---|---------|
 | 1 | **Throughput and mean latency are nearly identical across backends because the server is never saturated.** Its CPU core is 4–48% busy in every test, so the client and the loopback path set the limit, not the backend. |
-| 2 | **The backends differ in CPU cost.** io_uring needs **10–13% less** server CPU per response on large files. poll needs **27% more** at 1000 connections. io_uring needs **15% more** when every response opens a new connection. |
+| 2 | **The backends differ in CPU cost.** io_uring needs **10–13% less** server CPU per response on large files, mostly because our readiness backends make one extra copy of the file data (see *Flaws in our implementation*). poll needs **27% more** at 1000 connections. io_uring needs **15% more** when every response opens a new connection. |
 | 3 | **The step that differs between backends is ~1% of the server's work.** At 100 connections the server waits for events ~180 times/s and handles ~33 responses per wakeup, against ~17,700 read/write calls/s that are the same code on every backend. |
 | 4 | **TCP_NODELAY is the largest single effect.** Turning it off cuts 4 KiB throughput by **62%** (5.9k → 2.27k req/s) because of a Nagle + delayed-ACK stall. |
 | 5 | **Chunk size matters; socket buffer sizes do not.** 16 KiB chunks lose **41%** throughput. Changing SO_RCVBUF or SO_SNDBUF has no effect. |
@@ -64,7 +64,7 @@ With many connections, each wakeup returns dozens of ready sockets, so the wait 
 | 4 KiB, Connection: close | −10% | +2% | **+15%** |
 | 1 MiB / 4 MiB / 100 MiB | −2 to 0% | −1 to +2% | **−12 / −12 / −13%** |
 
-- **io_uring is cheaper on large files.** One wakeup returns several completions (29 vs 53 wait calls/s), and a read or write needs no separate readiness check first.
+- **io_uring is cheaper on large files, mainly because of how we implemented the others.** select, poll and epoll `pread()` each file chunk into a staging slot and then `memcpy` it into the send buffer. io_uring `pread()`s straight into the send buffer. That extra 64 KiB copy per chunk is user-space time: ~2% of the core for the readiness backends versus ~0–1% for io_uring, which accounts for most of the gap. io_uring also needs fewer wakeups (29 vs 53 wait calls/s), because one wakeup returns several completions.
 - **poll is expensive at 1000 connections.** Every loop it rebuilds and rescans its 1000-entry `pollfd` array in user space, three passes with a connection lookup each, against two passes for select. Its user CPU rises from ~2% to 9%.
 - **io_uring is expensive when every response uses a new connection.** Setting up each connection costs it more (new submissions for each socket), which matches its E5b throughput.
 - These differences would show up as throughput only on a saturated server. See *Limitations and future work*.
@@ -187,23 +187,61 @@ With many connections, each wakeup returns dozens of ready sockets, so the wait 
 ## Conclusions
 
 1. **In this setup the backends tie on throughput and mean latency because the server is never saturated.** The client and loopback set the limit, and the backend-specific step is ~1% of the work.
-2. **The backends do differ in CPU cost.** io_uring is ~12% cheaper per large file. poll is 27% more expensive at 1000 connections. io_uring is 15% more expensive when every response needs a new connection. On a saturated server these differences would become throughput differences.
+2. **The backends do differ in CPU cost.** io_uring is ~12% cheaper per large file, mostly because it avoids a copy our other backends make. poll is 27% more expensive at 1000 connections. io_uring is 15% more expensive when every response needs a new connection. On a saturated server these differences would become throughput differences.
 3. **Socket and protocol settings matter far more than the backend:** TCP_NODELAY (2.6× latency) and chunk size (−41% throughput).
 4. **At high connection counts the backends start to differ:** poll's O(n) scans cost 9%, and io_uring shows a serious tail-latency and fairness problem.
 
-## Limitations and future work
+## Why the results look this way
 
-| Limitation | Fix |
+The results follow from five causes, roughly in order of importance:
+
+1. **The server was never the bottleneck.** Its core was at most 48% busy, so a backend that saves CPU just leaves the server idle a little longer; it cannot serve more requests than the client sends. The limit was most likely wrk, which had only two physical cores, plus the WSL2 loopback path.
+2. **The backend-specific step is about 1% of the work.** With many connections, each wakeup returns dozens of ready sockets (33 at 100 connections, up to 282 at 1000), so the cost of the wait call is shared across them. The other ~99% — parsing requests, reading the file, writing to the socket — is the same code on every backend.
+3. **File transfer is dominated by copying bytes.** Most of the server's CPU goes to kernel time copying data through TCP (16–25% of the core), and every backend does that the same way. This is why large files hit the same ~170 MB/s ceiling.
+4. **The biggest effects are in TCP, below the backends.** Nagle + delayed ACK (E9) and chunk size (E7) happen in the kernel's TCP stack and treat every backend the same. That is why those graphs move all four bars together.
+5. **The backends separate only where the workload stresses them.** At 1000 connections poll's O(n) scans finally cost something (−9% throughput, +27% CPU), and io_uring's completion handling shows a fairness problem. CPU per response shows smaller differences everywhere else, but throughput cannot show them while the server is idle half the time.
+
+So "all four look the same" is an honest result for this setup, not a measurement error. It shows that for file transfer at these loads, the event-notification mechanism is not what limits performance.
+
+## Flaws in our implementation
+
+### Server and backends
+| Flaw | Where | Effect on the results |
+|---|---|---|
+| **Extra copy of the file data in the readiness backends.** select, poll and epoll `pread()` each chunk into a staging slot, then `memcpy` it into the send buffer. io_uring reads straight into the send buffer. | `io_select.c:219`, `io_poll.c:235`, `io_epoll.c:239` | Makes io_uring look ~12% cheaper per large file, mostly because of this copy rather than io_uring itself. The comparison is not fully like-for-like. |
+| **io_uring backend is the basic version.** File reads are a synchronous `pread()`. Async file reads and splice are rejected, and multishot receive, provided buffers, registered files/buffers and SQPOLL are not used. | `io_uring.c:23`, `filesrv.c` (non-goals) | io_uring is not shown at its best; it behaves much like a readiness backend with a different wait call. |
+| **io_uring starves connections at 1000 connections** (p99 13.5 s, max ~19 s). | `io_uring.c` completion and re-submit handling | Unexplained tail-latency bug; it would hurt real users even though throughput looks fine. |
+| **poll rebuilds and rescans its whole `pollfd` array every loop** (three passes, each with a connection lookup). | `io_poll.c:581–646` | Costs +27% CPU and −9% throughput at 1000 connections. Keeping the array in sync on state changes would avoid most of this. |
+| **select rebuilds its fd_sets every loop and is capped at `FD_SETSIZE` (1024).** | `io_select.c:180`, `:365`, `:570–608` | Connections above 1024 cannot be served; 1000 connections was the practical limit for comparison. |
+| **Header and body are sent as two `write()` calls.** | `filesrv.c` response path | Causes the 40 ms Nagle + delayed-ACK stall when TCP_NODELAY is off (E9). One `writev()` would remove it. |
+| **No zero-copy send** (`sendfile`, `splice`, `mmap`). | `filesrv.c` (non-goals) | Every byte is copied through user space, so data copying dominates and hides backend differences. |
+| **Single-threaded server, sequential keep-alive** (one request at a time per connection, no concurrent pipelining). | `filesrv.c` | Limits how hard the server can be driven, and is less realistic than a production server. |
+
+### Benchmark setup
+| Flaw | Effect on the results |
 |---|---|
-| Server never saturated; client likely the bottleneck | Cap the server with a cgroup (for example `cpu.max = 25000 100000`, 25% of a core) so it becomes the bottleneck. The runner already supports `cgroup_cpu_stat`. Count only runs where the server was throttled. |
-| Client CPU not recorded; client on 2 physical cores; server shares a core with CPU 0 | Set `client_cpu_stat`. Pin the server to CPU 2 and leave CPU 3 idle, and give wrk CPUs 4–7. Better still, run wrk on a second machine. |
-| Closed-loop latency adds nothing beyond throughput | Add a fixed-rate test (for example `wrk2 -R`) to measure latency at a set load. |
-| E5b halves ran in separate sessions | Rerun close and keep-alive in one session, in random order. |
-| E5a mixes concurrency and file size; E7 never varied `--buf-size` | Run a full size × concurrency grid; sweep `--buf-size` and chunk size. |
-| E8 window too short; slow readers not measured | Use a window of 3× the download time, and record the slow readers' throughput. |
-| Only 5 runs per test, no significance testing | More runs, plus confidence intervals or a Mann-Whitney test before claiming differences under 5%. |
-| Loopback on WSL2 (~64 KiB segments, no real RTT) | Repeat key tests over a real network. |
-| io_uring tail at 1000 connections not explained | Profile completion order; try multishot receive and provided buffers. |
+| **Server never saturated; client CPU not recorded.** wrk ran on CPUs 2–5, which are only two physical cores, and the server's CPU 1 shares a physical core with CPU 0. | Throughput measures the client and host more than the backends. This is the main reason the graphs look alike. |
+| **Closed-loop load only.** wrk sends the next request as soon as the last one finishes, and no test used a fixed request rate. | Mean latency just mirrors throughput (Little's law); we never measured latency at a set load. |
+| **WSL2 loopback.** Segments are ~64 KiB, there is no real round-trip time and no network card. | Changes Nagle (E9) and keep-alive (E5b) behaviour compared with a real network. |
+| **E5b halves ran in separate sessions.** | The 7–12% variation between sessions is bigger than the keep-alive effect. |
+| **E5a is not a full grid; E7 never varied `--buf-size`.** | File size and concurrency are mixed in E5a, and the app buffer's effect is untested. |
+| **E8 window too short** (~62 s of 90 s per download); slow readers' own speed not measured. | Some runs finished no downloads and were rejected, which makes the result optimistic. |
+| **5 runs per test, no significance testing.** | Differences under ~5% cannot be told apart from noise. |
+
+## Future work
+
+**Implementation**
+1. Remove the extra copy in the readiness backends: `pread()` straight into the send buffer, as io_uring does. Then rerun to see how much of io_uring's saving remains.
+2. Add zero-copy sending (`sendfile` for readiness backends, splice or `IORING_OP_SEND_ZC` for io_uring), and send the header and body with one `writev()`.
+3. Bring io_uring up to a realistic level: async file reads, multishot receive, provided and registered buffers. Find and fix the starvation tail at 1000 connections, starting with the order in which completions are processed and receives re-submitted.
+4. Keep poll's `pollfd` array in sync as connections change state, instead of rebuilding and rescanning it on every loop.
+
+**Benchmark**
+5. Make the server the bottleneck: cap it with a cgroup (for example `cpu.max = 25000 100000`, 25% of a core). The runner already supports `cgroup_cpu_stat`. Count only runs where the server was throttled.
+6. Record client CPU (`client_cpu_stat`), pin wrk to its own physical cores (server on CPU 2 with CPU 3 idle, wrk on CPUs 4–7), or run wrk on a second machine over a real network.
+7. Add a fixed-rate test (for example `wrk2 -R`) to measure latency at a set load.
+8. Rerun E5b with close and keep-alive in one session, in random order. Run a full file-size × concurrency grid, sweep `--buf-size` and chunk size, and lengthen the E8 window to ~3× the download time.
+9. Use more runs, with confidence intervals or a Mann-Whitney test, before claiming differences under 5%.
 
 ## Reproducing
 

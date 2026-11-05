@@ -312,12 +312,12 @@ s.addChart(pres.charts.BAR, ["select", "poll", "uring"].map((b) => ({
   x: 0.6, y: 2.25, w: 7.9, h: 4.6, objectName: "CPU per response vs epoll chart",
 });
 sidePanel(s, "What we see", [
-  "io_uring: −12 to −13% on 1 MiB to 100 MiB files. One wakeup returns several completions.",
+  "io_uring: −12 to −13% on 1 MiB to 100 MiB files, mostly because our other backends copy each chunk one extra time.",
   "poll: +27% at 1000 connections, from O(n) user-space scans.",
   "io_uring: +15% when every response opens a new connection.",
   "On a saturated server, these would become throughput gaps.",
 ]);
-s.addNotes("Server CPU per response is the server process's user plus kernel CPU time divided by responses served, as a percentage relative to epoll (0 means equal to epoll). Lower is cheaper. These differences do not appear in throughput because the server is never the bottleneck.");
+s.addNotes("Server CPU per response is the server process's user plus kernel CPU time divided by responses served, as a percentage relative to epoll (0 means equal to epoll). Lower is cheaper. These differences do not appear in throughput because the server is never the bottleneck. Caveat on io_uring: select, poll and epoll pread each file chunk into a staging slot and then memcpy it into the send buffer, while io_uring preads straight into the send buffer. That extra copy accounts for most of io_uring's saving, so it is partly an implementation artefact.");
 
 // ================= Conclusions =================
 pres.addSection({ title: "Conclusions" });
