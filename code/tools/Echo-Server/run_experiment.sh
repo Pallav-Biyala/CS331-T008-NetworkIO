@@ -63,7 +63,7 @@ case "$MECH" in select|poll|epoll|uring) ;; *) echo "Pass --mechanism select|pol
 if [[ "$DRY_RUN" != 1 ]]; then
     [[ -n "$CLIENT_CPU" ]] || { echo "Set CLIENT_CPU to the dedicated client core from the setup guide" >&2; exit 2; }
     command -v taskset >/dev/null || { echo "taskset is required to pin the load generator" >&2; exit 1; }
-    [[ -x "$LOADGEN_BIN" ]] || { echo "Load generator not found: $LOADGEN_BIN (run: make loadgen)" >&2; exit 1; }
+    [[ -x "$LOADGEN_BIN" ]] || { echo "Load generator not found: $LOADGEN_BIN (run: make -f code/Makefile loadgen)" >&2; exit 1; }
     # 10K connections need ~21K fds on the client (loadgen raises soft limit up to the hard limit).
     if [[ "$MECH" != select ]] && (( $(ulimit -Hn) < 21000 )); then
         echo "Hard fd limit $(ulimit -Hn) < 21000; run: sudo prlimit --pid \$\$ --nofile=65536:65536" >&2; exit 1

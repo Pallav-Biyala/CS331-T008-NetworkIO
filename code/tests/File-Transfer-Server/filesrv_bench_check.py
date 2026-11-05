@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Check that all four file-server backends serve the benchmark fixture intact.
 
-Run from the repository root after `make bench-fixture`, for example:
+Run from the repository root after `make -f code/Makefile bench-fixture`, for example:
   python3 code/tests/File-Transfer-Server/filesrv_bench_check.py \
     --select ./build/filesrv-select --poll ./build/filesrv-poll \
     --epoll ./build/filesrv-epoll --uring ./build/filesrv-uring
@@ -95,7 +95,7 @@ def main() -> int:
 
     fixture = ROOT / "code" / "apps" / "File-Transfer-Server" / "files" / args.file
     if not fixture.is_file():
-        print(f"ERROR: {fixture} not found; run `make bench-fixture` from the repository root.", file=sys.stderr)
+        print(f"ERROR: {fixture} not found; run `make -f code/Makefile bench-fixture` from the repository root.", file=sys.stderr)
         return 2
     data = fixture.read_bytes()
     digest = hashlib.sha256(data).hexdigest()

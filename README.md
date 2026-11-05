@@ -35,7 +35,6 @@ The project compares their implementation characteristics and performance under 
 ```text
 CS331-T008-NetworkIO/
 ├── README.md
-├── Makefile                          Includes code/Makefile
 ├── code/                             All source code
 │   ├── apps/
 │   │   ├── Echo-Server/
@@ -56,7 +55,7 @@ CS331-T008-NetworkIO/
 
 Build artifacts and new local experiment outputs are generated locally and are not part of the submitted source structure.
 
-Run all build, test, and benchmark commands from the repository root. The root `Makefile` includes the project targets defined in `code/Makefile`.
+Run all build, test, and benchmark commands from the repository root. Build targets are defined in `code/Makefile` and are invoked with `make -f code/Makefile <target>`.
 
 ## Requirements
 
@@ -85,14 +84,14 @@ sudo apt install build-essential pkg-config liburing-dev python3 curl wrk
 Build all eight server variants:
 
 ```bash
-make
+make -f code/Makefile
 ```
 
 Alternatively, build only one application family:
 
 ```bash
-make echo
-make filesrv
+make -f code/Makefile echo
+make -f code/Makefile filesrv
 ```
 
 The compiled executables are generated in the local `build/` directory.
@@ -156,15 +155,15 @@ The other implementations are available as `filesrv-poll`, `filesrv-epoll`, and 
 Run the automated test suite:
 
 ```bash
-make test
+make -f code/Makefile test
 ```
 
 The focused test targets are:
 
 ```bash
-make test-filesrv
-make test-filesrv-bench
-make test-runner-acceptance
+make -f code/Makefile test-filesrv
+make -f code/Makefile test-filesrv-bench
+make -f code/Makefile test-runner-acceptance
 ```
 
 Their purposes are:
@@ -184,7 +183,7 @@ These are correctness results and should not be interpreted as performance compa
 Generate the deterministic benchmark fixtures:
 
 ```bash
-make bench-fixtures
+make -f code/Makefile bench-fixtures
 ```
 
 Run an experiment configuration from the repository root:
@@ -229,7 +228,7 @@ The echo server was benchmarked on two native Linux machines connected by a dire
 Build the servers and the load generator:
 
 ```bash
-make echo loadgen
+make -f code/Makefile echo loadgen
 ```
 
 On the server machine, start one backend pinned to a core, for example:
