@@ -1,0 +1,207 @@
+[2026-11-05 18:35:08] Backend=uring rep=1 mode=pilot target=192.168.50.1:8080 output=/home/kowel2/CS331-T008-NetworkIO/results/pilot_uring
+[2026-11-05 18:35:08] [uring rep 1] #1 PILOT/c100_r5000 conns=100 mode=open-loop rate=5000 W=1 share=1.0 dist=constant
+Establishing 100 persistent TCP connections (100 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 100 / 100 established (100 active, max_fd=104).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c100_r5000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  100 total (100 active, max_fd=104), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    4.74 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      23709 (4999.87 msgs/sec)
+  Messages Sent:           23709 (4999.87 msgs/sec)
+  Valid Echoes Completed:  23709 (4999.87 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        10.88 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 33 / 40 / 6.45 / 1348 us
+  Application RTT (recv-send):54 / 64 / 84 / 58.45 / 3197 us
+  End-to-End (recv-sched):    58 / 87 / 103 / 65.32 / 3200 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 237 / 238 / 0.12 %
+  Client CPU / TCP Retrans:   4.12 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:35:16] [uring rep 1] #2 PILOT/c500_r25000 conns=500 mode=open-loop rate=25000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c500_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    8195.64 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      0 (0.00 msgs/sec)
+  Messages Sent:           0 (0.00 msgs/sec)
+  Valid Echoes Completed:  0 (0.00 msgs/sec)
+  Delivery Ratio:          0.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.00 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 0 / 0 / 0 / 0.00 / 0 us
+  Application RTT (recv-send):0 / 0 / 0 / 0.00 / 0 us
+  End-to-End (recv-sched):    0 / 0 / 0 / 0.00 / 0 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 0 / 0 / 0.00 %
+  Client CPU / TCP Retrans:   0.00 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:36:12] Backend=uring rep=1 mode=pilot target=192.168.50.1:8080 output=/home/kowel2/CS331-T008-NetworkIO/results/pilot_uring
+[2026-11-05 18:36:12] [uring rep 1] #1 PILOT/c100_r5000 conns=100 mode=open-loop rate=5000 W=1 share=1.0 dist=constant
+Establishing 100 persistent TCP connections (100 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 100 / 100 established (100 active, max_fd=104).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c100_r5000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  100 total (100 active, max_fd=104), W=1
+  Target Offered Rate:     5000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    5.00 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      24999 (4999.80 msgs/sec)
+  Messages Sent:           24999 (4999.80 msgs/sec)
+  Valid Echoes Completed:  24999 (4999.80 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.01 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 3 / 33 / 34 / 5.92 / 43 us
+  Application RTT (recv-send):79 / 80 / 91 / 79.13 / 220 us
+  End-to-End (recv-sched):    82 / 111 / 113 / 85.47 / 224 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 249 / 250 / 0.04 %
+  Client CPU / TCP Retrans:   4.05 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:36:20] [uring rep 1] #2 PILOT/c500_r25000 conns=500 mode=open-loop rate=25000 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c500_r25000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     25000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    5.00 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      124999 (24999.64 msgs/sec)
+  Messages Sent:           124999 (24999.64 msgs/sec)
+  Valid Echoes Completed:  124999 (24999.64 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.01 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 13 / 36 / 44 / 15.51 / 112 us
+  Application RTT (recv-send):95 / 119 / 127 / 98.19 / 1516 us
+  End-to-End (recv-sched):    114 / 133 / 144 / 114.16 / 1531 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 249 / 250 / 0.02 %
+  Client CPU / TCP Retrans:   12.14 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:36:28] [uring rep 1] #3 PILOT/c500_closed conns=500 mode=closed-loop rate=0 W=1 share=1.0 dist=constant
+Establishing 500 persistent TCP connections (500 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 500 / 500 established (500 active, max_fd=504).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c500_closed]
+  Mode / Dist / Policy:    closed-loop / constant / round-robin
+  Connections / Pipeline:  500 total (500 active, max_fd=504), W=1
+  Target Offered Rate:     CLOSED-LOOP (max concurrency)
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    5.00 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      660487 (132096.90 msgs/sec)
+  Messages Sent:           660487 (132096.90 msgs/sec)
+  Valid Echoes Completed:  660487 (132096.90 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.22 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 0 / 1 / 3 / 0.31 / 31 us
+  Application RTT (recv-send):3646 / 6502 / 11302 / 3783.02 / 227985 us
+  End-to-End (recv-sched):    3647 / 6503 / 11303 / 3784.04 / 227986 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 418 / 1549 / 22.77 %
+  Client CPU / TCP Retrans:   29.79 % / 146 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:36:36] [uring rep 1] #4 PILOT/c10000_r1000 conns=10000 mode=open-loop rate=1000 W=1 share=1.0 dist=constant
+Establishing 10000 persistent TCP connections (10000 active, 0 idle) to 192.168.50.1:8080...
+Connection barrier complete: 10000 / 10000 established (10000 active, max_fd=10004).
+
+======================================================================
+               TCP ECHO LOAD GENERATOR SUMMARY
+======================================================================
+Target Configuration:
+  Server:                  192.168.50.1:8080 [uring_rep1_PILOT_c10000_r1000]
+  Mode / Dist / Policy:    open-loop / constant / round-robin
+  Connections / Pipeline:  10000 total (10000 active, max_fd=10004), W=1
+  Target Offered Rate:     1000 msgs/sec
+  Frame Size / Seed:       512 B (32B hdr + 480B payload), seed=1001
+
+Accounting & Throughput:
+  Measurement Duration:    5.00 s (Warmup: 2.00 s, Cooldown cap: 5.00 s)
+  Scheduled Arrivals:      4999 (999.80 msgs/sec)
+  Messages Sent:           4999 (999.80 msgs/sec)
+  Valid Echoes Completed:  4999 (999.80 msgs/sec)
+  Delivery Ratio:          100.00 % (Incomplete at end: 0)
+  1s Throughput CV:        0.04 %
+
+Latency Breakdown (microseconds) — [p50 / p95 / p99 / avg / max]:
+  Scheduler Lag (send-sched): 49 / 64 / 77 / 51.90 / 5296 us
+  Application RTT (recv-send):157 / 174 / 207 / 157.20 / 308 us
+  End-to-End (recv-sched):    206 / 230 / 259 / 209.61 / 5499 us
+
+Diagnostics, Fairness & Client Health:
+  Per-Conn Sent [min/max/CV]: 0 / 1 / 100.02 %
+  Client CPU / TCP Retrans:   5.47 % / 0 retrans
+  Max Pending Queue / Drops:  0 / 0
+  Pipeline Stalls / Timeouts: 0 / 0
+  Conn / Send / Recv / Bad:   0 / 0 / 0 / 0
+======================================================================
+[2026-11-05 18:36:45] Completed 4 cases (0 non-zero exits). CSV: /home/kowel2/CS331-T008-NetworkIO/results/pilot_uring/results.csv

@@ -1,13 +1,17 @@
 CC       := gcc
+CXX      := g++
 PKG_CONFIG := pkg-config
 
 CFLAGS   := -std=c17 -D_GNU_SOURCE -Wall -Wextra -Wno-comment
+CXXFLAGS := -std=c++17 -O3 -Wall -Wextra -pthread
 CPPFLAGS := -Icode/core -Icode/io
 BUILD    := build
 
 CORE     := code/core/core.c
 ECHO     := code/apps/Echo-Server/echo.c
 FILESRV  := code/apps/File-Transfer-Server/filesrv.c
+LOADGEN  := $(BUILD)/echo_loadgen
+LOADGEN_SRC := code/tools/Echo-Server/echo_loadgen.cpp
 
 SELECT   := code/io/io_select.c
 POLL     := code/io/io_poll.c
@@ -24,13 +28,19 @@ FILESRV_BINS := $(BUILD)/filesrv-select \
                 $(BUILD)/filesrv-epoll \
                 $(BUILD)/filesrv-uring
 
-.PHONY: all echo filesrv clean
+.PHONY: all echo filesrv loadgen clean
 
-all: echo filesrv
+all: echo filesrv $(LOADGEN)
 
 echo: $(ECHO_BINS)
 
 filesrv: $(FILESRV_BINS)
+
+# Echo-server load generator (C++17)
+loadgen: $(LOADGEN)
+
+$(LOADGEN): $(LOADGEN_SRC) | $(BUILD)
+	$(CXX) $(CXXFLAGS) $(LOADGEN_SRC) -o $@
 
 $(BUILD):
 	mkdir -p $(BUILD)
