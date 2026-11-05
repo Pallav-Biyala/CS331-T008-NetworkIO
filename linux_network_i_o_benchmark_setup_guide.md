@@ -6,6 +6,46 @@ Every step is designed to ensure that any observed differences in throughput, la
 
 ---
 
+## Phase 0: While Still Online — Install, Clone, Build (Both Laptops)
+
+> **The benchmark runs fully offline.** This phase is the **only** step that needs internet. Finish it on **both**
+> laptops, confirm the checklist at the end, and only then disconnect. Nothing later downloads anything.
+
+```bash
+# 1. Clone the repo to the SAME path on both laptops (all docs assume this path)
+git clone <repo-url> ~/CS331-T008-NetworkIO
+cd ~/CS331-T008-NetworkIO
+git checkout loadgen-bench
+
+# 2. Install every package, incl. liburing-dev and python3-pandas/matplotlib for plotting
+#    (pip does NOT work offline, so the plot libraries must come from apt now)
+sudo ./scripts/install_prerequisites.sh          # must end with [SUCCESS]
+
+# 3. Build
+make echo        # Laptop 1 (server): build/echo-{select,poll,epoll,uring}
+make loadgen     # Laptop 2 (client): ./echo_loadgen
+```
+
+**Offline-readiness checklist** (run on each laptop; every line must pass):
+```bash
+gcc --version >/dev/null && echo gcc-ok
+pkg-config --exists liburing && echo liburing-ok
+python3 -c "import numpy, pandas, matplotlib; print('plot-libs-ok')"
+command -v taskset prlimit ethtool >/dev/null && echo tools-ok
+ls build/echo-uring 2>/dev/null || ls echo_loadgen   # binary for this laptop exists
+./run_experiment.sh --self-test 2>/dev/null | tail -1   # Laptop 2: [SELF-TEST PASSED]
+file run_experiment.sh                                    # must NOT say "CRLF"
+```
+
+**If a laptop cannot get internet at all:** use phone USB tethering just for step 2 (the install script prompts for it).
+For the code, copy it by USB instead of cloning: on a connected machine run
+`git bundle create /media/$USER/<USB>/repo.bundle --all`, then on the offline laptop
+`git clone /media/$USER/<USB>/repo.bundle ~/CS331-T008-NetworkIO && cd ~/CS331-T008-NetworkIO && git checkout loadgen-bench`.
+Do **not** copy the folder from a Windows machine: Windows checkouts can have CRLF line endings, and bash scripts with CRLF fail with `$'\r': command not found`.
+If that happens anyway, fix it with `sed -i 's/\r$//' run_experiment.sh scripts/*.sh`.
+
+---
+
 ## Phase 1: Power-Off & Physical Hardware Preparation
 
 1. **Power off both laptops completely** (`shutdown -h now`). Allowing the laptops to cool before starting resets initial thermal conditions.
@@ -42,6 +82,10 @@ sudo systemctl stop ModemManager.service 2>/dev/null || true
 sudo systemctl stop packagekit.service 2>/dev/null || true
 sudo systemctl stop unattended-upgrades.service 2>/dev/null || true
 sudo systemctl stop docker.service docker.socket 2>/dev/null || true
+
+# 4. Offline machines: stop timers that keep retrying the network (updates, snaps, time sync)
+sudo systemctl stop apt-daily.timer apt-daily-upgrade.timer snapd.service 2>/dev/null || true
+sudo systemctl stop systemd-timesyncd.service 2>/dev/null || true   # no NTP offline; latency uses CLOCK_MONOTONIC
 ```
 
 **Verify Radio Isolation**:
@@ -171,7 +215,7 @@ head -n 20 /sys/class/net/"$NIC"/queues/rx-*/rps_cpus 2>/dev/null || true
 
 ## Phase 6: Configure Laptop 1 (Server / Omen)
 
-Run the following commands on **Laptop 1 (Server)** from the repository root (`~/linux-network-io-bench`):
+Run the following commands on **Laptop 1 (Server)** from the repository root (`~/CS331-T008-NetworkIO`):
 
 ### 1. Run the Server Setup Script Explicitly Passing `$NIC`
 ```bash
@@ -228,7 +272,7 @@ ethtool -c "$NIC" 2>/dev/null | grep -i "Adaptive"                # Expected: Ad
 
 ## Phase 7: Configure Laptop 2 (Client / Load Generator)
 
-Run the following commands on **Laptop 2 (Client)** from the repository root (`~/linux-network-io-bench`):
+Run the following commands on **Laptop 2 (Client)** from the repository root (`~/CS331-T008-NetworkIO`):
 
 ### 1. Run the Client Setup Script Explicitly Passing `$NIC`
 ```bash
@@ -267,9 +311,11 @@ cat /sys/devices/system/cpu/cpu${CLIENT_CPU}/cpufreq/scaling_governor # Expected
 
 ## Phase 8: Build Binaries & Pass the Correctness Gate
 
-1. **Build all server variants and `echo_loadgen`** on their respective machines:
+1. **Build** (already done in Phase 0; re-run only if the code changed — no internet needed):
    ```bash
-   make clean && make all
+   make echo        # Laptop 1: build/echo-{select,poll,epoll,uring}
+   make loadgen     # Laptop 2: ./echo_loadgen  (repo root, not build/)
+   ./run_experiment.sh --self-test   # Laptop 2: must end with [SELF-TEST PASSED]
    ```
 2. **Verify Async-Signal-Safe `SIGUSR1` Handling**:
    - Confirm in `code/core/core.c` that the `SIGUSR1` handler only sets a `volatile sig_atomic_t` flag and does **not** invoke `fopen()`, `fprintf()`, or `fflush()` inside signal context. The JSON stats dump must occur inside the main event loop iteration.
@@ -285,8 +331,8 @@ cat /sys/devices/system/cpu/cpu${CLIENT_CPU}/cpufreq/scaling_governor # Expected
 
 ### 1. Understanding the `select()` Descriptor Ceiling (`FD_SETSIZE = 1024`)
 `select()` checks file descriptor **numbers** (`fd < 1024`), not connection count. Because `0` (`stdin`), `1` (`stdout`), `2` (`stderr`), the listening socket, and any open stats file consume ~4–6 descriptors:
-- Use `--connections 1000` (or `950` if needed) as the maximum common point across all 4 backends (`select`, `poll`, `epoll`, `io_uring`).
-- Run `5000` and `10000` connection tests on `poll`, `epoll`, and `io_uring`, documenting `select` as unsupported above `FD_SETSIZE`.
+- `run_experiment.sh` uses **900 connections** as the largest common point across all 4 backends (headroom below 1024).
+- `2500`, `5000` and `10000` connection cases run only on `poll`, `epoll` and `io_uring`; `select` is documented as unsupported above `FD_SETSIZE`. The runner skips those cases automatically for `--mechanism select`.
 
 ### 2. Start the Server Process Inside the `bench` cgroup (Laptop 1)
 Launch a fresh server process for every run, pinned to the single physical core `$SERVER_CPU`:
@@ -313,76 +359,21 @@ taskset -cp $PID                             # Must show: current affinity list:
 grep -E "Max open files|Max locked memory" /proc/$PID/limits
 ```
 
-### 4. Local Server-Side Monotonic Snapshot Script (No SSH Over Test Wire)
-To avoid injecting SSH packets onto the test interface during measurement, use this lightweight local helper on **Laptop 1** (pinned to housekeeping core `0`). It waits for connections to establish, uses `CLOCK_MONOTONIC` (`python3` monotonic clock) to capture exact snapshots at $t = 10.000\text{ s}$ (end of warmup) and $t = 40.000\text{ s}$ (end of 30s measurement), and records actual timing deviations, CPU frequency, and temperature:
+### 4. Server-Side Counters (No SSH Over the Test Wire)
+Server counters are captured per backend run, before and after the client suite, with `kill -USR1` (appends a JSON
+snapshot to `--stats-file`) plus `cpu.stat`, CPU frequency and temperature. See `experiment_run_workflow.md` Steps 5 and 7.
+No helper script is needed.
+
+### 5. Single-Threaded Client Pinned to ONE Core (Laptop 2)
+`run_experiment.sh` pins every `echo_loadgen` invocation to `$CLIENT_CPU` (one core, never a range like `1-2`).
+You don't normally run the load generator by hand. For a one-off manual check:
 
 ```bash
-cat << 'EOF' > /tmp/server_snapshot.py
-#!/usr/bin/env python3
-import os, sys, time, signal, shutil
-
-if len(sys.argv) < 3:
-    print("Usage: server_snapshot.py <server_pid> <out_dir> [warmup_s=10] [measure_s=30]")
-    sys.exit(1)
-
-pid = int(sys.argv[1])
-out_dir = sys.argv[2]
-warmup_s = float(sys.argv[3]) if len(sys.argv) > 3 else 10.0
-measure_s = float(sys.argv[4]) if len(sys.argv) > 4 else 30.0
-os.makedirs(out_dir, exist_ok=True)
-
-def snap(tag, target_elapsed, t0):
-    now = time.monotonic()
-    actual_elapsed = now - t0
-    deviation_us = (actual_elapsed - target_elapsed) * 1e6
-    os.kill(pid, signal.SIGUSR1)
-    shutil.copyfile("/sys/fs/cgroup/bench/cpu.stat", f"{out_dir}/cpu_stat_{tag}.txt")
-    with open("/proc/stat", "r") as f_in, open(f"{out_dir}/proc_stat_{tag}.txt", "w") as f_out:
-        for line in f_in:
-            if line.startswith("cpu"):
-                f_out.write(line)
-    with open(f"{out_dir}/meta_{tag}.txt", "w") as f_meta:
-        f_meta.write(f"monotonic_ns={time.monotonic_ns()}\n")
-        f_meta.write(f"target_elapsed_s={target_elapsed:.6f}\n")
-        f_meta.write(f"actual_elapsed_s={actual_elapsed:.6f}\n")
-        f_meta.write(f"deviation_us={deviation_us:.2f}\n")
-        try:
-            with open("/proc/self/status") as _: pass
-            with open(f"/proc/{pid}/status") as f_st:
-                for l in f_st:
-                    if l.startswith(("VmHWM:", "VmRSS:")):
-                        f_meta.write(l)
-        except Exception:
-            pass
-
-t0 = time.monotonic()
-# Sleep until t = warmup_s (10.0s)
-rem1 = warmup_s - (time.monotonic() - t0)
-if rem1 > 0:
-    time.sleep(rem1)
-snap("t10_warmup_end", warmup_s, t0)
-
-# Sleep until t = warmup_s + measure_s (40.0s)
-target2 = warmup_s + measure_s
-rem2 = target2 - (time.monotonic() - t0)
-if rem2 > 0:
-    time.sleep(rem2)
-snap("t40_measure_end", target2, t0)
-print(f"[Snapshot] Completed t10 and t40 snapshots in {out_dir}")
-EOF
-chmod +x /tmp/server_snapshot.py
-```
-
-### 5. Start the Single-Threaded Client Pinned to ONE Core (Laptop 2)
-On **Laptop 2 (Client)**, pin `echo_loadgen` to the single dedicated physical core `$CLIENT_CPU` (never a multi-core range like `1-2`):
-
-```bash
-taskset -c ${CLIENT_CPU} ./build/echo_loadgen \
+taskset -c ${CLIENT_CPU} ./echo_loadgen \
     --host 192.168.50.1 --port 8080 \
-    --connections 1000 --rate 20000 \
+    --connections 900 --rate 10000 \
     --active-share 1.0 --msg-size 512 \
-    --warmup 10 --duration 30 --cooldown 10 \
-    --output results_epoll_1000c.csv
+    --warmup 5 --duration 20 --cooldown 5
 ```
 *(Verify on Laptop 2 during the first run that `grep -E "Max open files" /proc/$(pidof echo_loadgen)/limits` shows `65536`.)*
 
@@ -390,19 +381,21 @@ taskset -c ${CLIENT_CPU} ./build/echo_loadgen \
 
 ## Phase 10: Thermal, Frequency & Validity Checks Between Runs
 
-After every 30-second measured run (during the 10-second cooldown), verify that the run is valid before accepting the data:
+The runner executes all cases for one backend back to back (about 31 min). Run these checks **after each backend's suite**
+(`experiment_run_workflow.md` Steps 7 and 9), not after every case:
 
 1. **Check CPU Frequency & Thermal Stability (Laptop 1 & Laptop 2)**:
    ```bash
    cat /sys/devices/system/cpu/cpu${SERVER_CPU}/cpufreq/scaling_cur_freq
    paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp)
    ```
-   If CPU frequency dropped by more than 5% between `t10` and `t40` due to thermal throttling, let the laptop cool down and repeat the run.
+   If CPU frequency dropped by more than 5% between the before/after captures, let the laptop cool for 5 minutes before the next backend.
 2. **Check Server & Client Error Counters**:
    - Server `errors` in `server_stats.jsonl` must be `0`.
    - For `io_uring`, CQ overflow must be `0`.
-   - Client `conn_failures`, `send_errors`, `recv_errors`, `timeouts`, and `mismatched` in the CSV must all be `0`.
+   - Client `conn_failures`, `send_errors`, `recv_errors`, `timeouts`, and `mismatched` must be `0` for light-load cases (≤ 10K msgs/s, ≤ 900 connections). At overload points (35K–50K msgs/s, 5K–10K connections near saturation), drops and timeouts are expected and are part of the result.
 3. **Check Offered Rate vs. Achieved Rate**:
-   - Compare `target_rate`, `actual_send_rate`, `echoed_rate`, and `concurrency_stalls` in the client output. Never claim a target rate was achieved if `concurrency_stalls` prevented the generator from reaching it.
+   - Compare `target_rate`, `actual_send_rate` and `echoed_rate`. Never claim a target rate was achieved unless `delivery_ratio_pct` ≥ 95%.
+   - `client_cpu_pct` ≥ 90% means the single-core load generator, not the server, was the bottleneck at that point. `plot_results.py` lists these in `plots/validity_report.csv`.
 4. **Separate `perf` Syscall Profiling from Primary Latency Runs**:
    - Never run `perf trace`, `strace`, or `perf record` during primary latency/throughput runs. Execute short diagnostic runs separately when collecting syscall breakdowns.

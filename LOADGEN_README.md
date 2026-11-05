@@ -28,7 +28,7 @@ A high-performance, nonblocking C++ TCP load generator designed for benchmarking
   - On frame completion, `echo_loadgen` validates the magic number, connection ID, sequence number, and payload checksum against the front of `conn.in_flight`.
 
 ### Strict Per-Connection FIFO Queuing & Pipelining ($W$)
-- Pipelining window $W$ is configured via `--pipeline-window W` (or `-W`, default 1).
+- Pipelining window $W$ is configured via `--pipeline-window W` (alias `--pipeline-depth`, default 1).
 - Each connection maintains:
   - `conn.tx_queue`: strict FIFO queue of scheduled arrivals awaiting dispatch.
   - `conn.in_flight`: tracking queue of up to $W$ in-flight requests on the wire.
@@ -96,7 +96,7 @@ g++ -std=c++17 -O3 -Wall -Wextra -Werror -pthread code/tools/echo_loadgen.cpp -o
 | `--mode` | Benchmark mode (`open-loop` or `closed-loop`) | `open-loop` |
 | `--unthrottled` | Alias for `--mode closed-loop` (maximum throughput) | `false` |
 | `--dist` | Arrival distribution (`constant`, `poisson`, `burst`) | `constant` |
-| `--pipeline-window`, `-W` | Pipelining depth per connection ($W$) | `1` |
+| `--pipeline-window`, `--pipeline-depth` | Pipelining depth per connection ($W$) | `1` |
 | `--active-share` | Fraction of connections active ($0.0 < \text{share} \le 1.0$) | `1.0` |
 | `--duration` | Measurement duration (seconds) | `30` |
 | `--msg-size` | Application message size in bytes | `512` |

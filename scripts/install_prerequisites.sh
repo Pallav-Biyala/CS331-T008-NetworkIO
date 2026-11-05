@@ -86,6 +86,9 @@ PACKAGES=(
     # --- Scripting & Automation ---
     python3
     python3-pip
+    python3-numpy            # plot_results.py (pip will NOT work offline)
+    python3-pandas
+    python3-matplotlib
 )
 
 echo "[4/5] Installing core dependencies (this may take 1-3 minutes)..."
@@ -128,6 +131,13 @@ check "PRLimit (Limits)"   "prlimit"
 check "Python 3"           "python3"
 check "Git"                "git"
 check "Nano Editor"        "nano"
+
+if python3 -c "import numpy, pandas, matplotlib" 2>/dev/null; then
+    printf "  %-20s [OK]\n" "pandas+matplotlib"
+else
+    printf "  %-20s [FAIL] (needed by plot_results.py; install BEFORE going offline)\n" "pandas+matplotlib"
+    MISSING=1
+fi
 
 # Verify liburing specifically
 if pkg-config --exists liburing; then
