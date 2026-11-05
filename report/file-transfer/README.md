@@ -216,6 +216,7 @@ So "all four look the same" is an honest result for this setup, not a measuremen
 | **Header and body are sent as two `write()` calls.** | `filesrv.c` response path | Causes the 40 ms Nagle + delayed-ACK stall when TCP_NODELAY is off (E9). One `writev()` would remove it. |
 | **No zero-copy send** (`sendfile`, `splice`, `mmap`). | `filesrv.c` (non-goals) | Every byte is copied through user space, so data copying dominates and hides backend differences. |
 | **Single-threaded server, sequential keep-alive** (one request at a time per connection, no concurrent pipelining). | `filesrv.c` | Limits how hard the server can be driven, and is less realistic than a production server. |
+| **Built without an optimisation flag.** `CFLAGS` has no `-O2`, so GCC compiled the benchmarked binaries at `-O0`. | `Makefile:4` | Inflates user-space CPU, especially poll's and select's per-loop scans. The effect is modest because user space is only ~2% of the core. |
 
 ### Benchmark setup
 | Flaw | Effect on the results |
@@ -231,7 +232,7 @@ So "all four look the same" is an honest result for this setup, not a measuremen
 ## Future work
 
 **Implementation**
-1. Remove the extra copy in the readiness backends: `pread()` straight into the send buffer, as io_uring does. Then rerun to see how much of io_uring's saving remains.
+1. Build with `-O2` and rerun. Remove the extra copy in the readiness backends: `pread()` straight into the send buffer, as io_uring does. Then rerun to see how much of io_uring's saving remains.
 2. Add zero-copy sending (`sendfile` for readiness backends, splice or `IORING_OP_SEND_ZC` for io_uring), and send the header and body with one `writev()`.
 3. Bring io_uring up to a realistic level: async file reads, multishot receive, provided and registered buffers. Find and fix the starvation tail at 1000 connections, starting with the order in which completions are processed and receives re-submitted.
 4. Keep poll's `pollfd` array in sync as connections change state, instead of rebuilding and rescanning it on every loop.
