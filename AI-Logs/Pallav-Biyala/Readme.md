@@ -11,10 +11,12 @@
 
 ## AI Tools Used
 
-| Tool | Purpose | Link |
+| Tool | Purpose | Source |
 |---|---|---|
 | ChatGPT Classic (OpenAI) | Technical clarification, debugging assistance, documentation support, report structuring, and writing refinement. | https://chatgpt.com/g/g-p-6ae4c7d7be548191adb38bcda1cbb69d-computer-networks/project|
 | ChatGPT Codex (OpenAI) | Technical clarification, debugging assistance, documentation support, report structuring, and writing refinement. | https://chatgpt.com/s/cx_6aecc2abc00881919665f7887aaff6db |
+| AntiGravity | Technical clarification, debugging assistance, documentation support, report structuring, and writing refinement. | Given Above |
+| TraeAI | Technical clarification, debugging assistance, documentation support, report structuring, and writing refinement. | Given Above |
 
 ## Summary of AI Usage
 
