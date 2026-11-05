@@ -119,6 +119,9 @@ The client suite has many workload cells, so the old fixed t=10s/t=40s helper do
 PID=$(pgrep -n -x echo-${MECH})
 kill -USR1 "$PID"                 # appends a cumulative JSON snapshot
 sleep 1
+# Run the snapshot helper: captures cgroup cpu.stat, /proc/stat,
+# timing deviation and server memory at the measurement-start point.
+/tmp/server_snapshot.py "$PID" "$RUN_DIR/snapshots" "${WARMUP_S:-10}" "${DURATION_S:-30}"
 cat /sys/fs/cgroup/bench/cpu.stat > "$RUN_DIR/cpu_stat_before.txt"
 cat /sys/devices/system/cpu/cpu${SERVER_CPU}/cpufreq/scaling_cur_freq > "$RUN_DIR/cpu_freq_before.txt"
 paste <(cat /sys/class/thermal/thermal_zone*/type) \
@@ -150,6 +153,9 @@ After the full client suite finishes, on Laptop 1:
 PID=$(pgrep -n -x echo-${MECH})
 kill -USR1 "$PID"
 sleep 1
+# Run the snapshot helper again: captures cgroup cpu.stat, /proc/stat,
+# timing deviation and server memory at the measurement-end point.
+/tmp/server_snapshot.py "$PID" "$RUN_DIR/snapshots" "${WARMUP_S:-10}" "${DURATION_S:-30}"
 cat /sys/fs/cgroup/bench/cpu.stat > "$RUN_DIR/cpu_stat_after.txt"
 cat /sys/devices/system/cpu/cpu${SERVER_CPU}/cpufreq/scaling_cur_freq > "$RUN_DIR/cpu_freq_after.txt"
 paste <(cat /sys/class/thermal/thermal_zone*/type) \
@@ -241,6 +247,7 @@ git push origin loadgen-bench
 |------|----------|-----------|
 | `server_stats.jsonl` | `results/<mech>_rep<n>_<ts>/` | Server (`--stats-file`) |
 | `system_info.txt`, `cpu_stat_*`, `cpu_freq_*`, `thermal_*` | `results/<mech>_rep<n>_<ts>/` | Laptop 1 operator |
+| `snapshots/cpu_stat_*.txt`, `snapshots/proc_stat_*.txt`, `snapshots/meta_*.txt` | `results/<mech>_rep<n>_<ts>/snapshots/` | `server_snapshot.py` (Steps 5 & 7) |
 | `results.csv` | Per-run output directory on Laptop 2 | `run_experiment.sh` |
 | `manifest.txt` (key/value text) | Per-run output directory on Laptop 2 | `run_experiment.sh` |
 | `commands.log` | Per-run output directory on Laptop 2 | `run_experiment.sh` |

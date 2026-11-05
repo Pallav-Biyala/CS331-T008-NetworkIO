@@ -371,6 +371,13 @@ snap("t40_measure_end", target2, t0)
 print(f"[Snapshot] Completed t10 and t40 snapshots in {out_dir}")
 EOF
 chmod +x /tmp/server_snapshot.py
+
+# This script is REQUIRED. Call it twice per repetition (see experiment_run_workflow.md Steps 5 and 7):
+#   Before the client run  (measurement-start snapshot):
+#     /tmp/server_snapshot.py "$SERVER_PID" "$RUN_DIR/snapshots" "$WARMUP_S" "$DURATION_S"
+#   After the client run   (measurement-end snapshot):
+#     /tmp/server_snapshot.py "$SERVER_PID" "$RUN_DIR/snapshots" "$WARMUP_S" "$DURATION_S"
+# Output files land in $RUN_DIR/snapshots/ (cpu_stat_*.txt, proc_stat_*.txt, meta_*.txt).
 ```
 
 ### 5. Start the Single-Threaded Client Pinned to ONE Core (Laptop 2)
