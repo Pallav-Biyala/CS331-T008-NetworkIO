@@ -8,11 +8,11 @@
 
 | Name | Roll Number | Role |
 | :--- | ---: | :--- |
-| Chitiveli Hemcharan Varma | 2411095 | Benchmarking |
-| Gella Naga Sai Krishna | 24110122 | io_uring |
-| Guransh Kaur Saran | 24110127 | select |
-| Kowel P Laloo | 24110168 | poll |
-| Pallav Biyala | 24110234 | epoll |
+| Chitiveli Hemcharan Varma | 2411095 | Echo Server |
+| Gella Naga Sai Krishna | 24110122 | File Transfer Server |
+| Guransh Kaur Saran | 24110127 | Echo Server |
+| Kowel P Laloo | 24110168 | Echo Server |
+| Pallav Biyala | 24110234 | File Transfer Server |
 
 ## Project Overview
 
