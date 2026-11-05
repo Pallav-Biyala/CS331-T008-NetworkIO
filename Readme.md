@@ -1,7 +1,7 @@
-# Scalable Network I/O: From select to io_uring
+# Scalable Network I/O: From `select` to `io_uring`
 
-**Course:** CS 331 – Computer Networks (2026–27 Sem 1)
-**Team:** T008
+**Course:** CS 331 – Computer Networks (2026–27 Sem 1)  
+**Team:** T008  
 **Project ID:** 13
 
 ## Team
@@ -14,84 +14,147 @@
 | Kowel P Laloo | 24110168 | poll |
 | Pallav Biyala | 24110234 | epoll |
 
-## Project layout
+## Project Overview
+
+This project implements and evaluates two network server applications:
+
+- **TCP Echo Server:** Receives client data and sends it back to the originating client.
+- **HTTP File Transfer Server:** Serves files over HTTP/1.1.
+
+Both applications support four I/O multiplexing mechanisms:
+
+- `select`
+- `poll`
+- `epoll`
+- `io_uring`
+
+The project compares their implementation characteristics and performance under different workloads, connection counts, and server configurations.
+
+## Repository Structure
 
 ```text
-code/
-  apps/Echo-Server/                 Echo server
-  apps/File-Transfer-Server/        HTTP file server and its fixtures
-  core/                             Shared connection and statistics code
-  io/                               select, poll, epoll, and io_uring backends
-  tests/File-Transfer-Server/       File server correctness and benchmark checks
-  tools/File-Transfer-Server/       Experiment runner, configs, and helpers
-  results/File Transfer Server/     Archived campaign, pilot, and smoke results
-build/                              Local compiled executables (generated)
-results/                            New local experiment output (generated)
+CS331-T008-NetworkIO/
+├── code/
+│   ├── apps/
+│   │   ├── Echo-Server/
+│   │   └── File-Transfer-Server/
+│   ├── core/                         Shared connection and statistics code
+│   ├── io/                           Four I/O backend implementations
+│   ├── tests/                        Correctness and benchmark checks
+│   ├── tools/                        Experiment runners and configurations
+│   ├── results/                      Archived experiment results
+│   └── benchmarking-graphs/          Benchmark analysis and figures
+├── report/                           Final project report
+├── presentation-slides/              Project presentation
+└── AI-logs/                          AI usage disclosure
 ```
 
-Run build, test, and benchmark commands from the repository root. The root
-`Makefile` includes the project targets in `code/Makefile`.
+Build artifacts and new local experiment outputs are generated locally and are not part of the submitted source structure.
+
+Run all build, test, and benchmark commands from the repository root. The root `Makefile` includes the project targets defined in `code/Makefile`.
 
 ## Requirements
 
-For building and correctness checks:
+For building and running correctness checks:
 
-- Linux or WSL with GCC and GNU Make
+- Linux or WSL
+- GCC and GNU Make
 - Python 3
-- `pkg-config` and liburing development files
+- `pkg-config`
+- liburing development files
 
-For benchmark campaigns, also install `wrk` and `curl`.
+For benchmark campaigns, the following additional tools are required:
 
-On Ubuntu or Debian:
+- `wrk`
+- `curl`
+
+On Ubuntu or Debian, install the dependencies using:
 
 ```bash
 sudo apt update
 sudo apt install build-essential pkg-config liburing-dev python3 curl wrk
 ```
 
-## Build
+## Building
 
-From the repository root, build all eight variants:
+Build all eight server variants:
 
 ```bash
 make
 ```
 
-Or build one application family:
+Alternatively, build only one application family:
 
 ```bash
 make echo
 make filesrv
 ```
 
-Executables are generated in `build/`.
+The compiled executables are generated in the local `build/` directory.
 
-## File server
+### Available Executables
 
-The HTTP/1.1 file server serves files from
-`code/apps/File-Transfer-Server/files/`. Start it from the repository root,
-for example:
+**Echo Server**
+
+```text
+build/echo-select
+build/echo-poll
+build/echo-epoll
+build/echo-uring
+```
+
+**File Transfer Server**
+
+```text
+build/filesrv-select
+build/filesrv-poll
+build/filesrv-epoll
+build/filesrv-uring
+```
+
+## Running the Servers
+
+### TCP Echo Server
+
+For example, start the `select` implementation:
+
+```bash
+./build/echo-select --port 8080
+```
+
+The other implementations can be started by replacing `select` with `poll`, `epoll`, or `uring`.
+
+### HTTP File Transfer Server
+
+The HTTP file server serves files from:
+
+```text
+code/apps/File-Transfer-Server/files/
+```
+
+Start the `select` implementation:
 
 ```bash
 ./build/filesrv-select --port 8081
 ```
 
-Other variants are `filesrv-poll`, `filesrv-epoll`, and `filesrv-uring`.
-Check a response from another terminal:
+From another terminal, request a file:
 
 ```bash
 curl -i http://127.0.0.1:8081/hello.txt
 ```
 
-## Tests
+The other implementations are available as `filesrv-poll`, `filesrv-epoll`, and `filesrv-uring`.
 
-Run the complete automated suite:
+## Testing
+
+Run the automated test suite:
 
 ```bash
 make test
 ```
 
-The focused targets are:
+The focused test targets are:
 
 ```bash
 make test-filesrv
@@ -99,33 +162,83 @@ make test-filesrv-bench
 make test-runner-acceptance
 ```
 
-`test-filesrv` checks HTTP correctness, malformed requests, persistent
-connections, concurrency, and server survival across all four backends.
-`test-filesrv-bench` verifies fixture bytes and response lengths. The runner
-test covers connection-acceptance validation.
+Their purposes are:
 
-The recorded correctness run passed 9/9 checks per backend (36/36 total),
-including 4,000 successful requests in the concurrency checks. These are
-correctness results, not performance comparisons.
+| Target | Purpose |
+| :--- | :--- |
+| `test-filesrv` | Checks HTTP correctness, malformed requests, persistent connections, concurrency, and server survival across all four backends. |
+| `test-filesrv-bench` | Verifies benchmark fixture contents and HTTP response lengths. |
+| `test-runner-acceptance` | Checks the experiment runner's connection-acceptance validation. |
 
-## Experiments
+The recorded File Transfer Server correctness run passed **9/9 checks per backend (36/36 total)**, including 4,000 successful requests in the concurrency checks.
 
-Generate all deterministic file fixtures, then run a configuration from the
-repository root:
+These are correctness results and should not be interpreted as performance comparisons.
+
+## Benchmarking and Experiments
+
+Generate the deterministic benchmark fixtures:
 
 ```bash
 make bench-fixtures
+```
+
+Run an experiment configuration from the repository root:
+
+```bash
 python3 code/tools/File-Transfer-Server/run_experiment \
   code/tools/File-Transfer-Server/configs/filesrv-e5a-size-concurrency.json
 ```
 
-Experiment output defaults to the local, ignored `results/` directory. The
-campaign archives currently in the repository are under
-`code/results/File Transfer Server/`. Keep accepted and rejected raw runs
-together when reporting results; document rejected runs rather than counting
-them as accepted measurements.
+Experiment output defaults to the local, ignored `results/` directory. Archived campaign results are maintained under:
 
-The E5a, E5b, E7, E8, and E9 campaigns have been run. E8 currently has 57
-accepted runs and 3 rejected runs; those three should remain identified as
-rejected in any analysis. Graphs and the final interpretation are still to be
-prepared.
+```text
+code/results/File Transfer Server/
+```
+
+### Completed Experiment Campaigns
+
+The File Transfer Server evaluation includes the following campaigns:
+
+| Campaign | Focus |
+| :--- | :--- |
+| E5a | File-size and concurrency effects |
+| E5b | Connection reuse and keep-alive behaviour |
+| E7 | Application and socket buffer sensitivity |
+| E8 | Impact of slow-reading clients |
+| E9 | Effect of `TCP_NODELAY` |
+
+The E8 campaign contains **57 accepted runs and 3 rejected runs**. Rejected runs are retained for transparency but excluded from accepted measurements. They must remain explicitly identified as rejected when interpreting or reproducing the results.
+
+Benchmark analysis scripts and generated figures are maintained under:
+
+```text
+code/benchmarking-graphs/file-transfer/
+```
+
+The final report discusses the experimental methodology, measured results, limitations, and performance observations.
+
+## Reproducibility
+
+For reproducible results:
+
+1. Build the required server variants.
+2. Generate the deterministic benchmark fixtures.
+3. Run the desired experiment configuration from the repository root.
+4. Retain the raw experiment output.
+5. Use the provided analysis scripts to process the accepted runs and generate figures.
+6. Consult the project report for the experimental methodology and interpretation.
+
+Use the same system configuration and workload parameters when comparing results across backends.
+
+## Documentation
+
+Additional project materials are available in the repository:
+
+- **Final Report:** `report/`
+- **Presentation:** `presentation-slides/`
+- **AI Usage Disclosure:** `AI-logs/`
+- **Benchmark Analysis:** `code/benchmarking-graphs/file-transfer/`
+
+---
+
+**CS331-T008 | Project 13 | 2026–27 Semester 1**
